@@ -24,8 +24,8 @@ github_username:  Vertfromage
 
 # Build settings
 markdown: kramdown
-theme: minima
-#remote_theme: 7kim/agency-jekyll-theme
+#theme: minima
+remote_theme: jekyll/minima
 plugins:
   - jekyll-feed
   
