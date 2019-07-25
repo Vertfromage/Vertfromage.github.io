@@ -11,4 +11,5 @@ Summary of my progress as a baby programmer:
 * Summer 2018 - Built a [website](https://www.riversidealbertchurch.com "My final project for CS50") for a small rural church in New Brunswick using Flask Framework.
 * Spring 2019 Completed [MITx 6.00.2x]( https://courses.edx.org/certificates/675b83f497ad40f7a4896e4055c51d35), got 87% should have studied, might have done better, good news: I realized that datascience isn't "my thing."
 * May 2019 Completed Lighthouse Labs 21-Day Javascript coding challenge. Supper easy, really fun, my only complaint being that I didn't win a prize. 
-* Currently working on learning Java from Tim Buchalka on Udemy, hoping to also take his courses on android app development. 
+* May 2019 Discovered and played with hacker rank. Periodically do some challenges when they email me. https://www.hackerrank.com/vertfromage?
+* Currently working on learning Java from Tim Buchalka on Udemy, hoping to also take his courses on android app development.
