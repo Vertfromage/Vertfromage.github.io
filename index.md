@@ -12,4 +12,5 @@ Summary of my progress as a baby programmer:
 * Spring 2019 Completed [MITx 6.00.2x]( https://courses.edx.org/certificates/675b83f497ad40f7a4896e4055c51d35), got 87% should have studied, might have done better, good news: I realized that datascience isn't "my thing."
 * May 2019 Completed Lighthouse Labs 21-Day Javascript coding challenge. Supper easy, really fun, my only complaint being that I didn't win a prize. 
 * May 2019 Discovered and played with hacker rank. Periodically do some challenges when they email me. https://www.hackerrank.com/vertfromage?
+* August 2019 Secret Javascript Pong game hidden on Dad's church website: riversidealbertchurch.com/pong, followed tutorial: https://medium.com/@hershybateea/how-to-make-pong-with-javascript-1a6bd6226ea1 lots of fun. 
 * Currently working on learning Java from Tim Buchalka on Udemy, hoping to also take his courses on android app development.
