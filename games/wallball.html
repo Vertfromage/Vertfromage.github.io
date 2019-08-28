@@ -402,7 +402,10 @@ function sprite (options) {
 		that.context = options.context;
 		that.width = options.width;
 		that.height = options.height;
+		that.x = 0;
+		that.y = 0;
 		that.image = options.image;
+		that.scaleRatio = 1;
 		
 		that.update = function () {
 
@@ -421,11 +424,9 @@ function sprite (options) {
                 }
             }
         };
-		that.render = function () {
 		
-		  // Clear the canvas
-		  that.context.clearRect(0, 0, that.width, that.height);
-		  
+		that.render = function () {
+
 		  // Draw the animation
 		  that.context.drawImage(
 		    that.image,
@@ -433,10 +434,14 @@ function sprite (options) {
 		    0,
 		    that.width / numberOfFrames,
 		    that.height,
-		    0,
-		    0,
-		    that.width / numberOfFrames,
-		    that.height);
+		    that.x,
+		    that.y,
+		    that.width / numberOfFrames * that.scaleRatio,
+		    that.height * that.scaleRatio);
+		};
+		
+		that.getFrameWidth = function () {
+			return that.width / numberOfFrames;
 		};
 		
 		return that;
