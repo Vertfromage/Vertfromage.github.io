@@ -306,14 +306,14 @@ function draw() {
   // Dont let the paddles overlap
 
   if (Math.abs(leftPaddle.x-rightPaddle.x)<leftPaddle.w){
-      if(keys.D||rightPaddle.x===midWall){
+      if(keys.D||rightPaddle.x===midWall||mouseX>rightPaddle.x){
           rightPaddle.x = leftPaddle.x+leftPaddle.w;
       }else{
           leftPaddle.x = rightPaddle.x-leftPaddle.w;
           }
   }
   if (Math.abs(leftPaddle.x-rightPaddle.x)>armLength){
-      if(keys.A){
+      if(keys.A||mouseX<leftPaddle.x){
           rightPaddle.x = leftPaddle.x+armLength;
       }else{
           leftPaddle.x = rightPaddle.x-armLength;
