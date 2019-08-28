@@ -386,8 +386,8 @@ function resize() {
     armLength = canvas.width*0.2;
     wallThickness = canvas.height*0.2;
     coin.scaleRatio = canvas.width/1600*0.5;
-    coin.width = canvas.width/2;
-    coin.height = canvas.height/2;  
+    coin.x = canvas.width/2;
+    coin.y = canvas.height/2;  
     floor = makeRect(wallThickness,wallThickness,canvas.width-(2*wallThickness),canvas.height-wallThickness,0, '#F0F8FF');
     midWall = canvas.height*0.1;
     resetBall();	  
@@ -456,12 +456,14 @@ coinImage = new Image();
 // Create sprite
 coin = sprite({
 	context: canvas.getContext("2d"),
-	width: canvas.width/2,
-	height: canvas.height/2,
+	width: 1000,
+	height: 100,
 	image: coinImage,
 	numberOfFrames: 10,
 	ticksPerFrame: 4,
 });
+coin.x = canvas.width/2;
+coin.y = canvas.height/2;  
 // Start game	    
 coinImage.addEventListener("load", menu());
 coinImage.src = "images/coin-sprite-animation.png";
