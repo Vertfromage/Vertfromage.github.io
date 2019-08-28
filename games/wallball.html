@@ -397,7 +397,8 @@ function sprite (options) {
 			frameIndex = 0,
 			tickCount = 0,
 			ticksPerFrame = options.ticksPerFrame || 0,
-			numberOfFrames = options.numberOfFrames || 1;
+			numberOfFrames = options.numberOfFrames || 1,
+		    	scaleRatio = options.scaleRatio||1;
 		
 		that.context = options.context;
 		that.width = options.width;
@@ -431,10 +432,10 @@ function sprite (options) {
 		    0,
 		    that.width / numberOfFrames,
 		    that.height,
-		    0,
-		    0,
-		    that.width / numberOfFrames,
-		    that.height);
+		    that.x,
+		    that.y,
+		    that.width / numberOfFrames * that.scaleRatio,
+		    that.height * that.scaleRatio);
 		};
 		
 		return that;
@@ -451,6 +452,7 @@ coin = sprite({
 	image: coinImage,
 	numberOfFrames: 10,
 	ticksPerFrame: 4
+	scaleRatio: canvas.width*.001;
 });	    
 // Start game	    
 coinImage.addEventListener("load", menu());
