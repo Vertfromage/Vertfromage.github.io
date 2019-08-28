@@ -16,8 +16,7 @@
     </body>
     
 <script>
-var coinImage = new Image();
-coinImage.src = "images/coin-sprite-animation.png";
+
 
 var canvas = document.getElementById("coinAnimation");
 canvas.width = 100;
@@ -89,7 +88,10 @@ function gameLoop () {
 }
 
 // Start the game loop as soon as the sprite sheet is loaded
-gameLoop();
+coinImage.addEventListener("load", gameLoop);
+// Start the game loop as soon as the sprite sheet is loaded
+var coinImage = new Image();
+coinImage.src = "images/coin-sprite-animation.png";
 
 
 </script>
