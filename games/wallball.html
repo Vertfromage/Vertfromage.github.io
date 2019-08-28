@@ -14,7 +14,10 @@
       margin:0%;border:0px;">
     <canvas id="canvas" tabindex="1">Your browser does not support the HTML5 canvas tag.</canvas>
     </body>
-    <script>
+
+
+<script>
+//Everything after this tag is javascript... it should move into js files.	
 var canvas = document.querySelector("#canvas");
 canvas.width = document.documentElement.clientWidth;
 canvas.height = document.documentElement.clientHeight;
@@ -385,6 +388,7 @@ function resize() {
     floor = makeRect(wallThickness,wallThickness,canvas.width-(2*wallThickness),canvas.height-wallThickness,0, '#F0F8FF');
     midWall = canvas.height*0.1;
     resetBall();
+    //TODO resize sprite	  
   }
 }
 function sprite (options) {
@@ -442,8 +446,8 @@ coinImage = new Image();
 // Create sprite
 coin = sprite({
 	context: canvas.getContext("2d"),
-	width: 1000,
-	height: 100,
+	width: canvas.width*0.10,
+	height: canvas.height*0.01,
 	image: coinImage,
 	numberOfFrames: 10,
 	ticksPerFrame: 4
