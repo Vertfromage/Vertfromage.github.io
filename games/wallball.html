@@ -350,7 +350,7 @@ function draw() {
     ball.sY *= -1;
   }
   // Check if ball is touching sprite
-  that.isTouching(ball.x,ball.y);
+  coin.isTouching(ball.x,ball.y);
 	
   // Draw the paddles and ball
   floor.draw();
@@ -458,7 +458,7 @@ function sprite (options) {
 			that.w = that.width / numberOfFrames * that.scaleRatio;
 			that.h = that.height * that.scaleRatio;
 		};
-	        that.touching(x,y){
+	        that.isTouching = function(x,y){
 			var dx = (that.x + that.getFrameWidth() / 2 * that.scaleRatio) - x,
 			dy = (that.y + that.getFrameWidth() / 2 * that.scaleRatio) - y;
 			
