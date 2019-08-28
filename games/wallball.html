@@ -200,7 +200,24 @@ canvas.addEventListener('keyup', function(e) {
     keys.RIGHT = false;
   }
 });
+	    
+//Listen for mouse move
+var mouseX = 0;
+var mouseY = 0;
+function mouse(e) {
+    var pos = getMousePos(canvas, e);
+    mouseX = pos.x;
+    mouseY = pos.y;
+}
 
+function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width,
+        y: (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
+    };
+}
+	    
 // Show the menu
 function menu() {
   erase();
@@ -264,6 +281,15 @@ function draw() {
   }
   if (keys.RIGHT) {
     rightPaddle.x += rightPaddle.s;
+  }
+  // move the paddles with mouse simplified controls
+  if (mouseY>rightPaddle.y){
+      if (mouseX>rightPaddle.x){
+          rightPaddle.x += rightPaddle.s;
+      }
+      if (mouseX<leftPaddle.x){
+          leftPaddle.x -= leftPaddle.s;
+      }
   }
   // Move the ball
   ball.x += ball.sX;
