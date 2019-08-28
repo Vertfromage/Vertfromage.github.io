@@ -119,7 +119,7 @@ var score = 0;
 
 // Create the ball
 var ballLength = 0.008*canvas.width;
-var ballSpeed = 2;
+var ballSpeed = 3;
 var ball = makeCircle(0, 0, ballLength, ballSpeed, '#FFA62F');
 
 // Modify the ball object to have two speed properties, one for X and one for Y
@@ -231,7 +231,8 @@ function menu() {
   context.fillText('Click to Start', canvas.width / 2, canvas.height / 2);
   context.font = '14px Arial';
   context.textAlign = 'center';
-  context.fillText('Left Hand: A and D keys. Right Hand: LEFT and RIGHT keys', canvas.width/2, (canvas.height / 3) * 2);
+  context.fillText('Left Hand: A / D keys. Right Hand: LEFT / RIGHT keys', canvas.width/2, (canvas.height / 3) * 2);
+  context.fillText('For simplified controls MOUSE/SWIPE at base.', canvas.width/2, (canvas.height / 3) * 2.2)
   // Start the game on a click
   canvas.addEventListener('click', startGame);
 }
@@ -407,7 +408,7 @@ function sprite (options) {
 		that.width = options.width;
 		that.height = options.height;
 		that.x = 0;
-		that.y = canvas.height/1.5;
+		that.y = canvas.height/4;
 		that.image = options.image;
 	        that.scaleRatio = (canvas.width/1200)*0.75;
 		
