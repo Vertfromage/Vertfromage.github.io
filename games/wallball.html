@@ -239,6 +239,8 @@ function menu() {
 function startGame() {
 // Don't accept any more clicks
   canvas.removeEventListener('click', startGame);
+    //Add mouse listener
+  window.addEventListener('mousemove', mouse, false);
   // Put the ball in place
   resetBall();
   // Kick off the game loop
