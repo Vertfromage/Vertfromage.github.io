@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<head></head>
+    <title>Wall Ball</title>
+  <style>
+    #canvas {
+      border-width: 1px;
+    }
+  </style>
+</head>
+
+
+<body style="overflow: hidden;width:100%;height:100%;padding:0%;
+      margin:0%;border:0px;">
+    <canvas id="coinAnimation" tabindex="1">Your browser does not support the HTML5 canvas tag.</canvas>
+    </body>
+    
+<script>
+var coinImage = new Image();
+coinImage.src = "images/coin-sprite-animation.png";
+
+var canvas = document.getElementById("coinAnimation");
+canvas.width = 100;
+canvas.height = 100;
+
+var coin = sprite({
+    context: canvas.getContext("2d"),
+    width: 100,
+    height: 100,
+    image: coinImage
+});
+
+coin.render();
+
+
+
+// makes sprites
+function sprite (options) {
+				
+    var that = {};
+					
+    that.context = options.context;
+    that.width = options.width;
+    that.height = options.height;
+    that.image = options.image;
+    
+    that.render = function () {
+
+        // Draw the animation
+        that.context.drawImage(
+           that.image,
+           0,
+           0,
+           that.width,
+           that.height,
+           0,
+           0,
+           that.width,
+           that.height);
+    };
+
+    return that;
+}
+
+
+
+
+</script>
