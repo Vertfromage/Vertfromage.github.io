@@ -351,7 +351,7 @@ function draw() {
   }
   // Check if ball is touching sprite
   if (ball.x + ball.r/2 >= coin.x && ball.x + ball.r/2 <= coin.x + coin.w) {
-    if (ball.y + ball.r >= coin.y) {
+    if (ball.y + ball.r <= coin.y) {
       resetBall();
     }
   }
