@@ -122,8 +122,6 @@ var ballLength = 0.008*canvas.width;
 var ballSpeed = 2;
 var ball = makeCircle(0, 0, ballLength, ballSpeed, '#FFA62F');
 
-
-
 // Modify the ball object to have two speed properties, one for X and one for Y
 ball.sX = ballSpeed;
 ball.sY = ballSpeed / 2;
@@ -350,7 +348,10 @@ function draw() {
     ball.sY *= -1;
   }
   // Check if ball is touching sprite
-  coin.isTouching(ball.x,ball.y);
+  if(coin.isTouching(ball.x,ball.y)){
+	  score += 100;
+	  resetBall();
+  };
 	
   // Draw the paddles and ball
   floor.draw();
@@ -406,9 +407,9 @@ function sprite (options) {
 		that.width = options.width;
 		that.height = options.height;
 		that.x = 0;
-		that.y = 0;
+		that.y = canvas.height/1.5;
 		that.image = options.image;
-	        that.scaleRatio = canvas.width/1600*0.5;
+	        that.scaleRatio = canvas.width/1600*0.75;
 		
 		
 		that.update = function () {
@@ -448,7 +449,7 @@ function sprite (options) {
 			return that.width / numberOfFrames;
 		};
 	        that.move = function (){
-			that.x = Math.random() * (canvas.width - that.getFrameWidth() * that.scaleRatio);
+			//that.x = Math.random() * (canvas.width - that.getFrameWidth() * that.scaleRatio);
 		        that.y = Math.random() * (canvas.height - that.height * that.scaleRatio);
 		};
 		that.resize = function(){
@@ -466,7 +467,10 @@ function sprite (options) {
 			
 			if (dist < that.getFrameWidth() / 2 * that.scaleRatio) {
 				that.move();
+				// do any other changes reduce ball speed & add points
+				return true;
 			}
+			return false;
 		}
 		
 		return that;
