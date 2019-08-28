@@ -385,11 +385,12 @@ function resize() {
     rightPaddle = makeRect(canvas.width - paddleWidth - 25, canvas.height-paddleHeight-25, paddleWidth, paddleHeight, 5, '#eebb99');
     armLength = canvas.width*0.2;
     wallThickness = canvas.height*0.2;
-    coin.scaleRatio = canvas.width/1200*0.5;
+    coin.scaleRatio = canvas.width/1600*0.5;
+    coin.width = canvas.width/2;
+    coin.height = canvas.height/2;  
     floor = makeRect(wallThickness,wallThickness,canvas.width-(2*wallThickness),canvas.height-wallThickness,0, '#F0F8FF');
     midWall = canvas.height*0.1;
-    resetBall();
-    //TODO resize sprite	  
+    resetBall();	  
   }
 }
 function sprite (options) {
@@ -406,7 +407,7 @@ function sprite (options) {
 		that.x = 0;
 		that.y = 0;
 		that.image = options.image;
-	        that.scaleRatio = canvas.width/1200*0.5;
+	        that.scaleRatio = canvas.width/1600*0.5;
 		
 		
 		that.update = function () {
@@ -455,8 +456,8 @@ coinImage = new Image();
 // Create sprite
 coin = sprite({
 	context: canvas.getContext("2d"),
-	width: 1000,
-	height: 100,
+	width: canvas.width/2,
+	height: canvas.height/2,
 	image: coinImage,
 	numberOfFrames: 10,
 	ticksPerFrame: 4,
