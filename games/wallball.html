@@ -409,7 +409,7 @@ function sprite (options) {
 		that.x = 0;
 		that.y = canvas.height/1.5;
 		that.image = options.image;
-	        that.scaleRatio = canvas.width/1600*0.75;
+	        that.scaleRatio = (canvas.width/1200)*0.75;
 		
 		
 		that.update = function () {
@@ -449,8 +449,8 @@ function sprite (options) {
 			return that.width / numberOfFrames;
 		};
 	        that.move = function (){
-			//that.x = Math.random() * (canvas.width - that.getFrameWidth() * that.scaleRatio);
-		        that.y = Math.random() * (canvas.height - that.height * that.scaleRatio);
+			that.x = Math.random() * (canvas.width - that.getFrameWidth() * that.scaleRatio);
+		        // that.y = Math.random() * (canvas.height - that.height * that.scaleRatio);
 		};
 		that.resize = function(){
 			that.scaleRatio = canvas.width/1600*0.5;
