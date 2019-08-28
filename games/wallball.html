@@ -405,8 +405,11 @@ function sprite (options) {
 		that.image = options.image;
 		
 		that.update = function () {
+
             tickCount += 1;
+
             if (tickCount > ticksPerFrame) {
+
 				tickCount = 0;
 				
                 // If the current frame index is in range
@@ -418,7 +421,6 @@ function sprite (options) {
                 }
             }
         };
-		
 		that.render = function () {
 		
 		  // Clear the canvas
@@ -431,8 +433,8 @@ function sprite (options) {
 		    0,
 		    that.width / numberOfFrames,
 		    that.height,
-		    that.x,
-		    that.y,
+		    0,
+		    0,
 		    that.width / numberOfFrames,
 		    that.height);
 		};
@@ -451,7 +453,7 @@ coin = sprite({
 	image: coinImage,
 	numberOfFrames: 10,
 	ticksPerFrame: 4,
-});	    
+});
 // Start game	    
 coinImage.addEventListener("load", menu());
 coinImage.src = "images/coin-sprite-animation.png";
