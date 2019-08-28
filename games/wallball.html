@@ -349,6 +349,12 @@ function draw() {
     resetBall();
     ball.sY *= -1;
   }
+  // Check if ball is touching sprite
+  if (ball.x + ball.r/2 >= coin.x && ball.x + ball.r/2 <= coin.x + coin.w) {
+    if (ball.y + ball.r >= coin.y) {
+      resetBall();
+    }
+	
   // Draw the paddles and ball
   floor.draw();
   coin.update();
@@ -385,11 +391,9 @@ function resize() {
     rightPaddle = makeRect(canvas.width - paddleWidth - 25, canvas.height-paddleHeight-25, paddleWidth, paddleHeight, 5, '#eebb99');
     armLength = canvas.width*0.2;
     wallThickness = canvas.height*0.2;
-    coin.scaleRatio = canvas.width/1600*0.5;
-    coin.x = canvas.width/2;
-    coin.y = canvas.height/2;  
     floor = makeRect(wallThickness,wallThickness,canvas.width-(2*wallThickness),canvas.height-wallThickness,0, '#F0F8FF');
     midWall = canvas.height*0.1;
+    coin.resize();
     resetBall();	  
   }
 }
@@ -403,7 +407,9 @@ function sprite (options) {
 		
 		that.context = options.context;
 		that.width = options.width;
+	        that.w = that.width / numberOfFrames * that.scaleRatio;
 		that.height = options.height;
+	        that.h = that.height * that.scaleRatio;
 		that.x = 0;
 		that.y = 0;
 		that.image = options.image;
@@ -446,6 +452,17 @@ function sprite (options) {
 		that.getFrameWidth = function () {
 			return that.width / numberOfFrames;
 		};
+	        that.move = function (){
+			that.x = Math.random() * (canvas.width - that.getFrameWidth() * that.scaleRatio);
+		        that.y = Math.random() * (canvas.height - that.height * that.scaleRatio);
+		};
+		that.resize = function(){
+			that.scaleRatio = canvas.width/1600*0.5;
+                        that.x = canvas.width/2;
+                        that.y = canvas.height/2;
+			that.w = that.width / numberOfFrames * that.scaleRatio;
+			that.h = that.height * that.scaleRatio;
+		}
 		
 		return that;
 	}	    
@@ -462,8 +479,7 @@ coin = sprite({
 	numberOfFrames: 10,
 	ticksPerFrame: 4,
 });
-coin.x = canvas.width/2;
-coin.y = canvas.height/2;  
+coin.move();
 // Start game	    
 coinImage.addEventListener("load", menu());
 coinImage.src = "images/coin-sprite-animation.png";
