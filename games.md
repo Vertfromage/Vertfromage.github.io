@@ -10,8 +10,8 @@ I'm not feeling like trying to make this pretty. I think I enjoy programming mor
 
 ## List of games:
 
-- **Wall Ball
-[Play the Game!](https://vertfromage.github.io./games/wallball.html)
+- **Wall Ball**
+   [Play the Game!](https://vertfromage.github.io./games/wallball.html)
 
    This is my game submission for [JS13KGAMES](https://js13kgames.com/ "js13kgames.com").  It's also the first HTML5 canvas game I ever made. And the 2nd html/javascript game I ever made. The first game was a straight html/javascript pong game that was only minimally modified from the tutorial. 
   
@@ -21,5 +21,5 @@ I'm not feeling like trying to make this pretty. I think I enjoy programming mor
    
    I still want to make it respond to touch events so it will be a real mobile game, right now it only takes keyboard input. I also want to make it so if you go over a certain score you level up to 2 balls, and so on. There's a bug where you can get the ball lined up in one spot and let it keep going up and down to get a huge score and multiple balls will eliminate that. 
    
-- **End of List
+- **End of List**
    Sorry that's it so far. 
