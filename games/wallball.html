@@ -97,7 +97,7 @@ function makeCircle(x, y, radius, speed, color) {
   };
 }	   
 // Create the wall
-var wallThickness = canvas.height*0.2;
+var wallThickness = canvas.height*0.3;
 var floor = makeRect(wallThickness,wallThickness,canvas.width-(2*wallThickness),canvas.height-wallThickness,0, '#F0F8FF');
 // invisible spot where the ball hits the wall
 var midWall = canvas.height*0.1;
@@ -260,6 +260,7 @@ function endGame() {
   context.fillText('Think you can do better? CLICK TO PLAY AGAIN!',canvas.width/2, (canvas.height/4)*2);
   lives = 1;
   score = 0;
+  coin.move();
   canvas.addEventListener('click', startGame);
 }
 
@@ -462,9 +463,8 @@ function sprite (options) {
 		        // that.y = Math.random() * (canvas.height - that.height * that.scaleRatio);
 		};
 		that.resize = function(){
-			that.scaleRatio = canvas.width/1600*0.5;
-                        that.x = canvas.width/2;
-                        that.y = canvas.height/2;
+			that.scaleRatio = (canvas.width/1200)*0.75;
+                        that.y = canvas.height/4;
 			that.w = that.width / numberOfFrames * that.scaleRatio;
 			that.h = that.height * that.scaleRatio;
 			that.move();
