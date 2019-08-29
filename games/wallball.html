@@ -297,11 +297,11 @@ function endGame() {
   context.textAlign = 'center';
   if (score>highScore){
 	  highScore = score;
-	  context.fillText('You beat your high score!', canvas.width/2, canvas.height/4);
+	  context.fillText('You beat your high score!', canvas.width/2, canvas.height/3.5);
 	  context.font = '24px Arial';
           context.fillText('Your new high score is: '+ highScore+'!', canvas.width/2, canvas.height/2);
   }else{
-      context.fillText('Your highScore is: '+ highScore, canvas.width/2, canvas.height/4);
+      context.fillText('Your highScore is: '+ highScore, canvas.width/2, canvas.height/3.5);
       context.font = '24px Arial';
       context.fillText('Not bad, you scored: '+score, canvas.width/2, canvas.height/2);
   }
@@ -344,9 +344,11 @@ function draw() {
           leftPaddle.x -= leftPaddle.s;
       }
   }
-  // Move the ball
-  ball.x += ball.sX;
-  ball.y += ball.sY;
+  if(!toMoon){	
+  	// Move the ball
+  	ball.x += ball.sX;
+  	ball.y += ball.sY;
+  }
   // calculate where invisible middle of wall is called midWall
   // Bounce the ball off the top/left/right
   if (ball.y < (wallThickness*1.5)-midWall) {
@@ -424,10 +426,11 @@ function draw() {
   }else{
        wiggleBum.update();
        wiggleBum.render();
+       ball.draw();
   }  
   leftPaddle.draw();
   rightPaddle.draw();
-  ball.draw();
+  
   // Draw the scores
   context.fillStyle = '#000000';
   context.font = '24px Arial';
