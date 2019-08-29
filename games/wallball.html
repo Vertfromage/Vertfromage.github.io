@@ -527,6 +527,8 @@ coin = sprite({
 coin.move();
 // sound
 var ctx = new AudioContext();
+var gainNode = ctx.createGain();
+gainNode.connect(ctx.destination);
 	
 // Start game
 coinImage.addEventListener("load", menu());
