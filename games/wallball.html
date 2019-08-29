@@ -451,11 +451,11 @@ function sprite (options) {
 		};
 	        that.move = function (){
 			that.x = Math.random() * (canvas.width - that.getFrameWidth() * that.scaleRatio);
-			if ( that.x < midwall){
-				that.x += midwall;			
+			if ( that.x < midWall){
+				that.x += midWall;			
 			}
-			if (that.x>=canvas.width-minwall){
-				that.x += canvas.width-minwall;			
+			if (that.x>=canvas.width-midWall){
+				that.x += canvas.width-midWall;			
 			}
 			
 		        // that.y = Math.random() * (canvas.height - that.height * that.scaleRatio);
@@ -466,6 +466,7 @@ function sprite (options) {
                         that.y = canvas.height/2;
 			that.w = that.width / numberOfFrames * that.scaleRatio;
 			that.h = that.height * that.scaleRatio;
+			that.move();
 		};
 	        that.isTouching = function(x,y){
 			var dx = (that.x + that.getFrameWidth() / 2 * that.scaleRatio) - x,
