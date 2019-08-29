@@ -231,8 +231,8 @@ function menu() {
   context.fillText('Click to Start', canvas.width / 2, canvas.height / 2);
   context.font = '14px Arial';
   context.textAlign = 'center';
-  context.fillText('Left Hand: A / D keys. Right Hand: LEFT / RIGHT keys', canvas.width/2, (canvas.height / 3) * 2);
-  context.fillText('For simplified controls MOUSE/SWIPE at base.', canvas.width/2, (canvas.height / 3) * 2.2)
+  context.fillText('Left Hand: A / D keys. Right Hand: Left / Right keys', canvas.width/2, (canvas.height / 3) * 2);
+  context.fillText('Or Mouse / Swipe at base.', canvas.width/2, (canvas.height / 3) * 2.2)
   // Start the game on a click
   canvas.addEventListener('click', startGame);
 }
@@ -255,7 +255,7 @@ function endGame() {
   context.fillStyle = '#000000';
   context.font = '24px Arial';
   context.textAlign = 'center';
-  context.fillText('Not bad, '+score+' times!', canvas.width/2, canvas.height/2);
+  context.fillText('Not bad, you scored: '+score, canvas.width/2, canvas.height/2);
   context.fillText('Can you do better? CLICK TO PLAY AGAIN!',canvas.width/2, canvas.height/2+50);
   lives = 1;
   score = 0;
@@ -451,6 +451,13 @@ function sprite (options) {
 		};
 	        that.move = function (){
 			that.x = Math.random() * (canvas.width - that.getFrameWidth() * that.scaleRatio);
+			if ( that.x < midwall){
+				that.x += midwall;			
+			}
+			if (that.x>=canvas.width-minwall){
+				that.x += canvas.width-minwall;			
+			}
+			
 		        // that.y = Math.random() * (canvas.height - that.height * that.scaleRatio);
 		};
 		that.resize = function(){
