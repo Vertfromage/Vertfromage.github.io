@@ -538,7 +538,9 @@ function sprite (options) {
 	}	    
 	    
 // Create sprite sheet
-wiggleBumImage = new Image();	
+wiggleBumImage = new Image();
+blueMoonImage = new Image();
+//coinImage = new Image();
 	
 // Create sprites
 wiggleBum = sprite({
@@ -557,6 +559,16 @@ blueMoon = sprite({
 	numberOfFrames: 12,
 	ticksPerFrame: 4,
 });
+/***
+coin = sprite({
+	context: canvas.getContext("2d"),
+	width: 1000,
+	height: 100,
+	image: coinImage,
+	numberOfFrames: 10,
+	ticksPerFrame: 4,
+});**/	
+	
 // start sprite in random place	
 wiggleBum.move();
 // sound
@@ -567,7 +579,7 @@ gainNode.connect(ctx.destination);
 // Start game
 wiggleBumImage.addEventListener("load", menu());
 blueMoonImage.src ="images/blueMoon.png";
-wiggleBumImage.src = "images/blueWiggle.png";
+//coinImage.src = "images/coin.png";
 
 canvas.focus();
     </script>
