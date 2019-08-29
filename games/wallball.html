@@ -168,8 +168,8 @@ function bounceBall() {
   ball.sY *= -1;
   score +=1;
   //make noise
-  play(ctx.destination, 274.17, ctx.currentTime + 0.0, 0.2);
-  play(ctx.destination, 366.90, ctx.currentTime + 0.6, 0.2);
+  play(ctx.destination, 274.17, ctx.currentTime + 0.0, 0.01);
+  play(ctx.destination, 366.90, ctx.currentTime + 0.6, 0.01);
 }
 //music playing method	
 function play(node, frequency, start, length) {
