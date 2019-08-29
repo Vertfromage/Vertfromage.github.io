@@ -301,7 +301,7 @@ function draw() {
   ball.y += ball.sY;
   // calculate where invisible middle of wall is called midWall
   // Bounce the ball off the top/left/right
-  if (ball.y < midWall+(wallThickness)) {
+  if (ball.y < wallThickness-midwall) {
     ball.sY *= -1;
   }else if(ball.x<midWall || ball.x + ball.r > canvas.width-midWall){
       ball.sX *= -1;
