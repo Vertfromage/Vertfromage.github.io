@@ -120,6 +120,9 @@ function gameLoop () {
   coin.render();
 	
   if(coin.isTouching(mouseX,mouseY)){
+	  var ctx = new AudioContext();
+	  var gainNode = ctx.createGain();
+	  gainNode.connect(ctx.destination);
 	  play(gainNode, 274.17, ctx.currentTime + 0.0, 0.2);
 	  play(gainNode, 308.06, ctx.currentTime + 0.2, 0.2);
 	  play(gainNode, 346.13, ctx.currentTime + 0.4, 0.2);
@@ -179,10 +182,6 @@ coin = sprite({
 });
 	
 // Load sprite sheet
-var ctx = new AudioContext();
-var gainNode = ctx.createGain();
-gainNode.connect(ctx.destination);
-
 coinImage.addEventListener("load", gameLoop);
 coinImage.src = "images/coin-sprite-animation.png";
 
