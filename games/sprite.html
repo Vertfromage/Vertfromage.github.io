@@ -16,6 +16,28 @@
     </body>
     
 <script>
+//Listen for mouse move
+var mouseX = 0;
+var mouseY = 0;
+function mouse(e) {
+    var pos = getMousePos(canvas, e);
+    mouseX = pos.x;
+    mouseY = pos.y;
+}
+function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width,
+        y: (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
+    };
+}
+var quitBoolean =false;
+
+canvas.addEventListener('keydown', function(e) {
+  if (e.keyCode === 81) {
+    quitBoolean = true;
+  }
+});
 
 // makes sprites, this is the important bit
 	function sprite (options) {
@@ -30,6 +52,8 @@
 		that.width = options.width;
 		that.height = options.height;
 		that.image = options.image;
+		that.x =0;
+		that.y=0;
 		
 		that.update = function () {
 
@@ -61,20 +85,75 @@
 		    0,
 		    that.width / numberOfFrames,
 		    that.height,
-		    0,
-		    0,
+		    that.x,
+		    that.y,
 		    that.width / numberOfFrames,
 		    that.height);
 		};
+		that.move = function (){
+			that.x = Math.random() * (canvas.width - that.getFrameWidth() * that.scaleRatio);
+		        that.y = Math.random() * (canvas.height - that.height * that.scaleRatio);
+		};
+		that.isTouching = function(x,y){
+			var dx = (that.x + that.getFrameWidth() / 2 * that.scaleRatio) - x,
+			dy = (that.y + that.getFrameWidth() / 2 * that.scaleRatio) - y;
+			
+		        var dist = Math.sqrt(dx * dx + dy * dy);
+			
+			if (dist < that.getFrameWidth() / 2 * that.scaleRatio) {
+				that.move();
+				// do any other changes reduce ball speed & add points
+				return true;
+			}
+			return false;
+		}
 		
 		return that;
 	}
-function gameLoop () {
+var gainNode = ctx.createGain();
+gainNode.connect(ctx.destination);
 
-  window.requestAnimationFrame(gameLoop);
+function play(node, frequency, start, length) {
+    var o = node.context.createOscillator();
+    o.connect(node);
+    o.frequency.value = frequency;
+
+    // At note=0%, volume should be 0%
+    node.gain.setValueAtTime(0, start);
+
+    // Over the first 10% of the note, ramp up to 100% volume
+    node.gain.linearRampToValueAtTime(1, start + length * 0.1);
+
+    // Keep it at 100% volume up until 90% of the note's length
+    node.gain.setValueAtTime(1, start + length * 0.9);
+
+    // By 99% of the note's length, ramp down to 0% volume
+    node.gain.linearRampToValueAtTime(0, start + length * 0.99);
+
+    o.start(start);
+    o.stop(start + length);
+}
+
+function gameLoop () {
   
   coin.update();
   coin.render();
+	
+  if(isTouching(mouse.x,mouse.y)){
+	  play(gainNode, 274.17, ctx.currentTime + 0.0, 0.2);
+	  play(gainNode, 308.06, ctx.currentTime + 0.2, 0.2);
+	  play(gainNode, 346.13, ctx.currentTime + 0.4, 0.2);
+	  play(gainNode, 366.90, ctx.currentTime + 0.6, 0.2);
+  }
+	
+  if (quit===true) {
+  	context.fillStyle = '#000000';
+  	context.font = '24px Arial';
+  	context.textAlign = 'center';
+  	context.fillText('You Quit.', canvas.width/2, canvas.height/3);
+  } else {
+  	window.requestAnimationFrame(draw);
+  }
 }
 	
 // Get canvas
