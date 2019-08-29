@@ -167,14 +167,28 @@ function bounceBall() {
   }
   ball.sY *= -1;
   score +=1;
+  //make noise
   play(ctx.destination, 274.17, ctx.currentTime + 0.0, 0.2);
+  play(ctx.destination, 366.90, ctx.currentTime + 0.6, 0.2);
 }
+//music playing method	
 function play(node, frequency, start, length) {
-    // Note how we pass in what "audio node" to connect our oscillator to,
-    // that'll be useful shortly!
     var o = node.context.createOscillator();
     o.connect(node);
     o.frequency.value = frequency;
+
+    // At note=0%, volume should be 0%
+    node.gain.setValueAtTime(0, start);
+
+    // Over the first 10% of the note, ramp up to 100% volume
+    node.gain.linearRampToValueAtTime(1, start + length * 0.1);
+
+    // Keep it at 100% volume up until 90% of the note's length
+    node.gain.setValueAtTime(1, start + length * 0.9);
+
+    // By 99% of the note's length, ramp down to 0% volume
+    node.gain.linearRampToValueAtTime(0, start + length * 0.99);
+
     o.start(start);
     o.stop(start + length);
 }
@@ -508,9 +522,14 @@ coin = sprite({
 	numberOfFrames: 17,
 	ticksPerFrame: 4,
 });
+// start sprite in random place	
 coin.move();
-// Start game
+// sound
 var ctx = new AudioContext();
+var gainNode = ctx.createGain();
+gainNode.connect(ctx.destination);
+	
+// Start game
 coinImage.addEventListener("load", menu());
 coinImage.src = "images/blueSprite.png";
 
