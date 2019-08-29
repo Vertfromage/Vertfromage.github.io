@@ -88,8 +88,7 @@
 		
 		return that;
 	}
-var gainNode = ctx.createGain();
-gainNode.connect(ctx.destination);
+
 
 function play(node, frequency, start, length) {
     var o = node.context.createOscillator();
@@ -178,6 +177,9 @@ coin = sprite({
 	
 // Load sprite sheet
 var ctx = new AudioContext();
+var gainNode = ctx.createGain();
+gainNode.connect(ctx.destination);
+
 coinImage.addEventListener("load", gameLoop);
 coinImage.src = "images/coin-sprite-animation.png";
 
