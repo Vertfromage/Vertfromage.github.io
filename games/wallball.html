@@ -168,8 +168,8 @@ function bounceBall() {
   ball.sY *= -1;
   score +=1;
   //make noise
-  play(ctx.destination, 274.17, ctx.currentTime + 0.0, 0.2);
-  play(ctx.destination, 366.90, ctx.currentTime + 0.2, 0.2);
+  ballNoise();
+
 }
 //music playing method	
 function play(node, frequency, start, length) {
@@ -180,6 +180,10 @@ function play(node, frequency, start, length) {
     o.frequency.value = frequency;
     o.start(start);
     o.stop(start + length);
+}
+function ballNoise(){
+    play(ctx.destination, 274.17, ctx.currentTime + 0.0, 0.1);
+    play(ctx.destination, 366.90, ctx.currentTime + 0.1, 0.1);
 }
 
 // Listen for keydown events
@@ -316,8 +320,10 @@ function draw() {
   // Bounce the ball off the top/left/right
   if (ball.y < (wallThickness*1.5)-midWall) {
     ball.sY *= -1;
+    ballNoise();
   }else if(ball.x<midWall || ball.x + ball.r > canvas.width-midWall){
       ball.sX *= -1;
+      ballNoise();
   }
 
   // Dont let the paddles overlap
@@ -366,6 +372,7 @@ function draw() {
   // Check if ball is touching sprite
   if(coin.isTouching(ball.x,ball.y)){
 	  score += 100;
+	  play(ctx.destination, 400, ctx.currentTime + 0.1, 0.1);
 	  resetBall();
   };
 	
