@@ -68,6 +68,9 @@
 		    that.width / numberOfFrames,
 		    that.height);
 		};
+		that.getFrameWidth = function () {
+			return that.width / numberOfFrames;
+		};
 		that.move = function (){
 			that.x = Math.random() * (canvas.width - that.getFrameWidth() * that.scaleRatio);
 		        that.y = Math.random() * (canvas.height - that.height * that.scaleRatio);
