@@ -492,16 +492,16 @@ coinImage = new Image();
 // Create sprite
 coin = sprite({
 	context: canvas.getContext("2d"),
-	width: 1000,
+	width: 1700,
 	height: 100,
 	image: coinImage,
-	numberOfFrames: 10,
+	numberOfFrames: 17,
 	ticksPerFrame: 4,
 });
 coin.move();
 // Start game	    
 coinImage.addEventListener("load", menu());
-coinImage.src = "images/coin-sprite-animation.png";
+coinImage.src = "images/greenSprite.png";
 
 canvas.focus();
     </script>
