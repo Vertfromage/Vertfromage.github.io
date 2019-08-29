@@ -494,11 +494,11 @@ function sprite (options) {
 		};
 	        that.move = function (){
 			that.x = Math.random() * (canvas.width - that.getFrameWidth() * that.scaleRatio);
-			if ( that.x < midWall){
-				that.x += midWall;			
+			if ( that.x < wallthickness){
+				that.x += wallthickness;			
 			}
-			if (that.x>=canvas.width-midWall){
-				that.x += canvas.width-midWall;			
+			if (that.x>=canvas.width-wallthickness){
+				that.x += canvas.width-wallthickness;			
 			}
 			
 		        // that.y = Math.random() * (canvas.height - that.height * that.scaleRatio);
