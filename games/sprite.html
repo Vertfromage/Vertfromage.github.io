@@ -132,7 +132,7 @@ function gameLoop () {
   	context.textAlign = 'center';
   	context.fillText('You Quit.', canvas.width/2, canvas.height/3);
   } else {
-  	window.requestAnimationFrame(draw);
+  	window.requestAnimationFrame(gameLoop);
   }
 }
 	
