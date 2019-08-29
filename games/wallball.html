@@ -298,7 +298,7 @@ function endGame() {
   context.fillText('Think you can do better? CLICK TO PLAY AGAIN!',canvas.width/2, (canvas.height/4)*2);
   lives = 1;
   score = 0;
-  coin.move();
+  wiggleBum.move();
   canvas.addEventListener('click', startGame);
 }
 
@@ -391,7 +391,7 @@ function draw() {
     ball.sY *= -1;
   }
   // Check if ball is touching sprite
-  if(coin.isTouching(ball.x,ball.y)){
+  if(wiggleBum.isTouching(ball.x,ball.y)){
 	  score += 100;
 	  gremlinCurse();
 	  resetBall();
@@ -399,8 +399,8 @@ function draw() {
 	
   // Draw the paddles and ball
   floor.draw();
-  coin.update();
-  coin.render();
+  wiggleBum.update();
+  wiggleBum.render();
   leftPaddle.draw();
   rightPaddle.draw();
   ball.draw();
@@ -435,7 +435,7 @@ function resize() {
     wallThickness = canvas.height*0.2;
     floor = makeRect(wallThickness,wallThickness,canvas.width-(2*wallThickness),canvas.height-wallThickness,0, '#F0F8FF');
     midWall = canvas.height*0.1;
-    coin.resize();
+    wiggleBum.resize();
     resetBall();	  
   }
 }
@@ -528,10 +528,10 @@ function sprite (options) {
 	}	    
 	    
 // Create sprite sheet
-coinImage = new Image();	
+wiggleBumImage = new Image();	
 	
 // Create sprite
-coin = sprite({
+wiggleBum = sprite({
 	context: canvas.getContext("2d"),
 	width: 1700,
 	height: 100,
@@ -540,15 +540,15 @@ coin = sprite({
 	ticksPerFrame: 4,
 });
 // start sprite in random place	
-coin.move();
+wiggleBum.move();
 // sound
 var ctx = new AudioContext();
 var gainNode = ctx.createGain();
 gainNode.connect(ctx.destination);
 	
 // Start game
-coinImage.addEventListener("load", menu());
-coinImage.src = "images/blueSprite.png";
+wiggleBumImage.addEventListener("load", menu());
+wiggleBumImage.src = "images/blueSprite.png";
 
 canvas.focus();
     </script>
