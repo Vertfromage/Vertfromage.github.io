@@ -413,6 +413,8 @@ function draw() {
   floor.draw();
   if(toMoon){
 	  if(mooning>0){
+		  blueMoon.x = wiggleBum.x;
+		  wiggleBum.move();
 		  blueMoon.update();
 		  blueMoon.render();
 		  mooning--;
@@ -539,7 +541,6 @@ function sprite (options) {
 		        var dist = Math.sqrt(dx * dx + dy * dy);
 			
 			if (dist < that.getFrameWidth() / 2 * that.scaleRatio) {
-				that.move();
 				// do any other changes reduce ball speed & add points
 				return true;
 			}
