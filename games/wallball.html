@@ -181,6 +181,27 @@ function gremlinCurse(){
     play(gainNode, 400, ctx.currentTime + 0.1, 0.2);
     play(gainNode, 366.90, ctx.currentTime + 0.3, 0.1);
 }
+function play(node, frequency, start, length) {
+    var o = node.context.createOscillator();
+    o.connect(node);
+    o.frequency.value = frequency;
+
+    // At note=0%, volume should be 0%
+    node.gain.setValueAtTime(0, start);
+
+    // Over the first 10% of the note, ramp up to 100% volume
+    node.gain.linearRampToValueAtTime(1, start + length * 0.1);
+
+    // Keep it at 100% volume up until 90% of the note's length
+    node.gain.setValueAtTime(1, start + length * 0.9);
+
+    // By 99% of the note's length, ramp down to 0% volume
+    node.gain.linearRampToValueAtTime(0, start + length * 0.99);
+
+    o.start(start);
+    o.stop(start + length);
+}
+
 
 // Listen for keydown events
 canvas.addEventListener('keydown', function(e) {
