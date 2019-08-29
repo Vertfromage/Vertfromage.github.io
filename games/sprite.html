@@ -16,28 +16,6 @@
     </body>
     
 <script>
-//Listen for mouse move
-var mouseX = 0;
-var mouseY = 0;
-function mouse(e) {
-    var pos = getMousePos(canvas, e);
-    mouseX = pos.x;
-    mouseY = pos.y;
-}
-function getMousePos(canvas, evt) {
-    var rect = canvas.getBoundingClientRect();
-    return {
-        x: (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width,
-        y: (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
-    };
-}
-var quitBoolean =false;
-
-canvas.addEventListener('keydown', function(e) {
-  if (e.keyCode === 81) {
-    quitBoolean = true;
-  }
-});
 
 // makes sprites, this is the important bit
 	function sprite (options) {
@@ -160,6 +138,30 @@ function gameLoop () {
 canvas = document.getElementById("coinAnimation");
 canvas.width = 100;
 canvas.height = 100;
+	
+	//Listen for mouse move
+var mouseX = 0;
+var mouseY = 0;
+function mouse(e) {
+    var pos = getMousePos(canvas, e);
+    mouseX = pos.x;
+    mouseY = pos.y;
+}
+function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width,
+        y: (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
+    };
+}
+var quitBoolean =false;
+
+canvas.addEventListener('keydown', function(e) {
+  if (e.keyCode === 81) {
+    quitBoolean = true;
+  }
+});
+
 	
 // Create sprite sheet
 coinImage = new Image();	
