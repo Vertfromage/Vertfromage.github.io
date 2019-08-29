@@ -119,7 +119,7 @@ function gameLoop () {
   coin.update();
   coin.render();
 	
-  if(coin.isTouching(mouse.x,mouse.y)){
+  if(coin.isTouching(mouseX,mouseY)){
 	  play(gainNode, 274.17, ctx.currentTime + 0.0, 0.2);
 	  play(gainNode, 308.06, ctx.currentTime + 0.2, 0.2);
 	  play(gainNode, 346.13, ctx.currentTime + 0.4, 0.2);
