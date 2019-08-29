@@ -256,7 +256,8 @@ function endGame() {
   context.font = '24px Arial';
   context.textAlign = 'center';
   context.fillText('Not bad, you scored: '+score, canvas.width/2, canvas.height/2);
-  context.fillText('Can you do better? CLICK TO PLAY AGAIN!',canvas.width/2, canvas.height/2+50);
+  context.fillText('Think you can do better?',canvas.width/2, (canvas.height/3)*2);
+  context.fillText('CLICK TO PLAY AGAIN!',canvas.width/2, (canvas.height/2)*2.2);
   lives = 1;
   score = 0;
   canvas.addEventListener('click', startGame);
