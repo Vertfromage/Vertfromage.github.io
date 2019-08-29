@@ -185,6 +185,12 @@ function ballNoise(){
     play(ctx.destination, 274.17, ctx.currentTime + 0.0, 0.1);
     play(ctx.destination, 366.90, ctx.currentTime + 0.1, 0.1);
 }
+function gremlinCurse(){
+    play(ctx.destination, 274.17, ctx.currentTime + 0.0, 0.1);
+    play(ctx.destination, 400, ctx.currentTime + 0.1, 0.2);
+    play(ctx.destination, 366.90, ctx.currentTime + 0.3, 0.1);
+    play(ctx.destination, 440, ctx.currentTime + 0.5, 0.1);
+}
 
 // Listen for keydown events
 canvas.addEventListener('keydown', function(e) {
@@ -372,7 +378,7 @@ function draw() {
   // Check if ball is touching sprite
   if(coin.isTouching(ball.x,ball.y)){
 	  score += 100;
-	  play(ctx.destination, 400, ctx.currentTime + 0.1, 0.1);
+	  gremlinCurse();
 	  resetBall();
   };
 	
