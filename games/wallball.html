@@ -116,6 +116,7 @@ var armLength = canvas.width*0.2;
 // Keep track of the score
 var lives = 1;
 var score = 0;
+var highScore = 0;
 
 // Create the ball
 var ballLength = 0.008*canvas.width;
@@ -291,10 +292,14 @@ function startGame() {
 // Show the end game screen
 function endGame() {
   erase();
+  if (score>highScore){
+	  highScore = score;
+  }
   context.fillStyle = '#000000';
   context.font = '24px Arial';
   context.textAlign = 'center';
-  context.fillText('Not bad, you scored: '+score, canvas.width/2, canvas.height/3);
+  context.fillText('Not bad, you scored: '+score, canvas.width/2, canvas.height/4);
+  context.fillText('Not bad, your highScore is: '+ highScore, canvas.width/2, canvas.height/3);
   context.fillText('Think you can do better? CLICK TO PLAY AGAIN!',canvas.width/2, (canvas.height/4)*2);
   lives = 1;
   score = 0;
