@@ -407,14 +407,14 @@ function draw() {
 	  resetBall();
 	  toMoon = true;
 	  mooning = MOON_COUNT;
+	  blueMoon.x = wiggleBum.x;
+	  wiggleBum.move();
   };
 	
   // Draw the paddles and ball
   floor.draw();
   if(toMoon){
 	  if(mooning>0){
-		  blueMoon.x = wiggleBum.x;
-		  wiggleBum.move();
 		  blueMoon.update();
 		  blueMoon.render();
 		  mooning--;
