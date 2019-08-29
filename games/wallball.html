@@ -299,13 +299,13 @@ function endGame() {
 	  highScore = score;
 	  context.fillText('You beat your high score!', canvas.width/2, canvas.height/4);
 	  context.font = '24px Arial';
-          context.fillText('Your new high score is: '+ highScore+'!', canvas.width/2, canvas.height/3);
+          context.fillText('Your new high score is: '+ highScore+'!', canvas.width/2, canvas.height/2);
   }else{
       context.fillText('Your highScore is: '+ highScore, canvas.width/2, canvas.height/4);
       context.font = '24px Arial';
-      context.fillText('Not bad, you scored: '+score, canvas.width/2, canvas.height/3);
+      context.fillText('Not bad, you scored: '+score, canvas.width/2, canvas.height/2);
   }
-  context.fillText('Think you can do better? CLICK TO PLAY AGAIN!',canvas.width/2, canvas.height/2);
+  context.fillText('Think you can do better? CLICK TO PLAY AGAIN!',canvas.width/2, (canvas.height / 3) * 2);
   lives = 1;
   score = 0;
   wiggleBum.move();
