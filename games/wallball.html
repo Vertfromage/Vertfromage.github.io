@@ -540,13 +540,21 @@ function sprite (options) {
 // Create sprite sheet
 wiggleBumImage = new Image();	
 	
-// Create sprite
+// Create sprites
 wiggleBum = sprite({
 	context: canvas.getContext("2d"),
 	width: 600,
 	height: 100,
 	image: wiggleBumImage,
 	numberOfFrames: 6,
+	ticksPerFrame: 4,
+});
+wiggleBum = sprite({
+	context: canvas.getContext("2d"),
+	width: 1200,
+	height: 100,
+	image: wiggleBumImage,
+	numberOfFrames: 12,
 	ticksPerFrame: 4,
 });
 // start sprite in random place	
@@ -558,6 +566,7 @@ gainNode.connect(ctx.destination);
 	
 // Start game
 wiggleBumImage.addEventListener("load", menu());
+blueMoonImage.src ="images/blueMoon.png";
 wiggleBumImage.src = "images/blueWiggle.png";
 
 canvas.focus();
