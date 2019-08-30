@@ -343,7 +343,7 @@ function draw() {
     rightPaddle.x += rightPaddle.s;
   }
   // move the paddles with mouse simplified controls
-  if (mouseY>rightPaddle.y-(rightPaddle.w*4)){
+  if (mouseY>rightPaddle.y-(rightPaddle.h*2)){
       if (mouseX>rightPaddle.x){
           rightPaddle.x += rightPaddle.s;
       }
@@ -369,7 +369,7 @@ function draw() {
   // Dont let the paddles overlap
 
   if (Math.abs(leftPaddle.x-rightPaddle.x)<leftPaddle.w){
-      if(keys.D||rightPaddle.x===midWall||(mouseX>rightPaddle.x&&mouseY>rightPaddle.y)){
+      if(keys.D||rightPaddle.x===midWall||(mouseX>rightPaddle.x&&mouseY>rightPaddle.y-(rightPaddle.h*2))){
           rightPaddle.x = leftPaddle.x+leftPaddle.w;
       }else{
           leftPaddle.x = rightPaddle.x-leftPaddle.w;
@@ -443,6 +443,7 @@ function draw() {
   context.font = '24px Arial';
   context.textAlign = 'right';
   context.fillText('Score: ' + score, canvas.width - 20, 24);
+
   // End the game or keep going
   if (lives <= 0) {
   	endGame();
