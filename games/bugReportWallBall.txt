@@ -1,0 +1,9 @@
+List of bugs
+
+- Mooning animation is out of sync 
+- Sprite keeps apearing outside floor area on right side, something wrong with my if question
+- Cell phone swipe feature doesn't work as well as mouse.
+
+Features I'd like:
+- Coins that are dropped after blue gremlin is hit
+- Gremlin dancing on the front page / restart page
