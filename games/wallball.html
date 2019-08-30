@@ -340,7 +340,7 @@ function draw() {
     rightPaddle.x += rightPaddle.s;
   }
   // move the paddles with mouse simplified controls
-  if (mouseY>rightPaddle.y){
+  if (mouseY>rightPaddle.y+rightPaddle.w*2){
       if (mouseX>rightPaddle.x){
           rightPaddle.x += rightPaddle.s;
       }
@@ -555,7 +555,19 @@ function sprite (options) {
 		}
 		
 		return that;
-	}	    
+	}
+/**
+Coins - plan to have a new coin spawn every time you hit the wiggleBum, then disapear when hit by the ball. Worth 25pts.
+***
+var numCoins = 5,
+var coins = [];
+var i;
+
+	
+	
+***
+End of section of coins 
+**/
 // keep track of if you're mooning the player
 var toMoon = false;
 // should be number of frames x ticks per frame
