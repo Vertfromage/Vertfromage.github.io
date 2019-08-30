@@ -376,7 +376,7 @@ function draw() {
           }
   }
   if (Math.abs(leftPaddle.x-rightPaddle.x)>armLength){
-      if(keys.A||(mouseX<leftPaddle.x&&mouseY>rightPaddle.y)){
+      if(keys.A||(mouseX<leftPaddle.x&&mouseY>rightPaddle.y-(rightPaddle.h*2))){
           rightPaddle.x = leftPaddle.x+armLength;
       }else{
           leftPaddle.x = rightPaddle.x-armLength;
