@@ -239,6 +239,9 @@ canvas.addEventListener('keyup', function(e) {
     keys.RIGHT = false;
   }
 });
+/** 
+I want to listen for swipes too... 
+**/	
 	    
 //Listen for mouse move
 var mouseX = 0;
@@ -340,7 +343,7 @@ function draw() {
     rightPaddle.x += rightPaddle.s;
   }
   // move the paddles with mouse simplified controls
-  if (mouseY>rightPaddle.y-rightPaddle.w*2){
+  if (mouseY>rightPaddle.y-(rightPaddle.w*2)){
       if (mouseX>rightPaddle.x){
           rightPaddle.x += rightPaddle.s;
       }
