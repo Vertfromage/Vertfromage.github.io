@@ -555,7 +555,7 @@ function sprite (options) {
 // keep track of if you're mooning the player
 var toMoon = false;
 // should be number of frames x ticks per frame
-const MOON_COUNT = 48;
+const MOON_COUNT = 72;
 var mooning = 0;
 // Create sprite sheet
 wiggleBumImage = new Image();
@@ -577,7 +577,7 @@ blueMoon = sprite({
 	height: 100,
 	image: blueMoonImage,
 	numberOfFrames: 12,
-	ticksPerFrame: 4,
+	ticksPerFrame: 6,
 });
 /***
 coin = sprite({
