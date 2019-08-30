@@ -416,6 +416,8 @@ function draw() {
 	  resetBall();
 	  toMoon = true;
 	  mooning = MOON_COUNT;
+	  blueMoon.frameIndex=0;
+	  blueMoon.tickCount=0;
 	  blueMoon.x = wiggleBum.x;
 	  wiggleBum.move();
   };
@@ -598,7 +600,7 @@ blueMoon = sprite({
 	height: 100,
 	image: blueMoonImage,
 	numberOfFrames: 12,
-	ticksPerFrame: 4,
+	ticksPerFrame: 6,
 });
 /***
 coin = sprite({
