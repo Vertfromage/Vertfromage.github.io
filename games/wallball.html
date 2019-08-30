@@ -342,12 +342,14 @@ function draw() {
   if (keys.RIGHT) {
     rightPaddle.x += rightPaddle.s;
   }
+	
+   /** Good idea to move paddles when > 1/2 paddle **/
   // move the paddles with mouse simplified controls
   if (mouseY>rightPaddle.y-(rightPaddle.h*2)){
-      if (mouseX>rightPaddle.x){
+      if (mouseX>rightPaddle.x+(leftPaddle.w/2)){
           rightPaddle.x += rightPaddle.s;
       }
-      if (mouseX<leftPaddle.x){
+      if (mouseX<leftPaddle.x+(leftPaddle.w/2)){
           leftPaddle.x -= leftPaddle.s;
       }
   }
@@ -369,14 +371,14 @@ function draw() {
   // Dont let the paddles overlap
 
   if (Math.abs(leftPaddle.x-rightPaddle.x)<leftPaddle.w){
-      if(keys.D||rightPaddle.x===midWall||(mouseX>rightPaddle.x&&mouseY>rightPaddle.y-(rightPaddle.h*2))){
+      if(keys.D||rightPaddle.x===midWall||(mouseX>rightPaddle.x+(leftPaddle.w/2)&&mouseY>rightPaddle.y-(rightPaddle.h*2))){
           rightPaddle.x = leftPaddle.x+leftPaddle.w;
       }else{
           leftPaddle.x = rightPaddle.x-leftPaddle.w;
           }
   }
   if (Math.abs(leftPaddle.x-rightPaddle.x)>armLength){
-      if(keys.A||(mouseX<leftPaddle.x&&mouseY>rightPaddle.y-(rightPaddle.h*2))){
+      if(keys.A||(mouseX<leftPaddle.x+(leftPaddle.w/2)&&mouseY>rightPaddle.y-(rightPaddle.h*2))){
           rightPaddle.x = leftPaddle.x+armLength;
       }else{
           leftPaddle.x = rightPaddle.x-armLength;
