@@ -533,8 +533,12 @@ function sprite (options) {
 			if ( that.x < wallThickness){
 				that.x += wallThickness;			
 			}
-			if (that.x>=canvas.width-midWall){
-				that.x += canvas.width-midWall;	
+			//if (that.x>=canvas.width-midWall){
+				//that.x += canvas.width-midWall;	
+			//}
+			if (that.x>=canvas.width-wallThickness){
+				that.x += canvas.width-wallThickness;
+			}
 			
 		        // that.y = Math.random() * (canvas.height - that.height * that.scaleRatio);
 		};
