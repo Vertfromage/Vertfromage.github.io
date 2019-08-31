@@ -6,6 +6,8 @@ List of bugs
 - smart phone only detects tap not swipe
 - screen keeps getting wiggled around when using cell phone. 
 - slight delay with cell phone need to detect swipe.
+- start and restart screens don't resized
+- start and restart screens are plain and boring. 
 
 Features I'd like:
 - Coins that are dropped after blue gremlin is hit
