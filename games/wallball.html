@@ -581,7 +581,7 @@ End of section of coins
 // keep track of if you're mooning the player
 var toMoon = false;
 // should be number of frames x ticks per frame
-const MOON_COUNT = 1300;
+const MOON_COUNT = 72;
 var mooning = 0;
 // Create sprite sheet
 wiggleBumImage = new Image();
@@ -599,11 +599,11 @@ wiggleBum = sprite({
 });
 blueMoon = sprite({
 	context: canvas.getContext("2d"),
-	width: 1300,
+	width: 900,
 	height: 100,
 	image: blueMoonImage,
-	numberOfFrames: 13,
-	ticksPerFrame: 100,
+	numberOfFrames: 9,
+	ticksPerFrame: 8,
 });
 /***
 coin = sprite({
