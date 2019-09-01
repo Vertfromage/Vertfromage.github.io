@@ -426,8 +426,8 @@ function draw() {
   floor.draw();
   if(toMoon){
 	  if(mooning>0){
-		  blueMoon.update();
 		  blueMoon.render();
+		  blueMoon.update();
 		  mooning--;
 	  }else{
 	       toMoon =false;
@@ -581,7 +581,7 @@ End of section of coins
 // keep track of if you're mooning the player
 var toMoon = false;
 // should be number of frames x ticks per frame
-const MOON_COUNT = 52;
+const MOON_COUNT = 1300;
 var mooning = 0;
 // Create sprite sheet
 wiggleBumImage = new Image();
@@ -603,7 +603,7 @@ blueMoon = sprite({
 	height: 100,
 	image: blueMoonImage,
 	numberOfFrames: 13,
-	ticksPerFrame: 4,
+	ticksPerFrame: 100,
 });
 /***
 coin = sprite({
