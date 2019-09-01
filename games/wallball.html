@@ -536,11 +536,11 @@ function sprite (options) {
 		};
 	        that.move = function (){
 			that.x = Math.random() * (canvas.width - that.getFrameWidth() * that.scaleRatio);
-			if ( that.x < wallThickness){
+			if(that.x < wallThickness){
 				that.x += wallThickness;			
 			}
 			//I think there's something wrong with this test
-			if (that.x> canvas.width-wallThickness){
+			if (that.x > canvas.width-wallThickness){
 				that.x = canvas.width-that.w-wallThickness;
 			}
 			
@@ -583,7 +583,7 @@ End of section of coins
 // keep track of if you're mooning the player
 var toMoon = false;
 // should be number of frames x ticks per frame
-const MOON_COUNT = 78;
+const MOON_COUNT = 390;
 var mooning = 0;
 // Create sprite sheet
 wiggleBumImage = new Image();
@@ -605,7 +605,7 @@ blueMoon = sprite({
 	height: 100,
 	image: blueMoonImage,
 	numberOfFrames: 13,
-	ticksPerFrame: 6,
+	ticksPerFrame: 30,
 });
 /***
 coin = sprite({
