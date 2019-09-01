@@ -1,15 +1,17 @@
-List of bugs
-
-- Mooning animation is out of sync 
-- Sprite keeps apearing outside floor area on right side, something wrong with my if question
-- ball gets stuck temporarily and grinds sound when at the very edge of paddle.
-- smart phone only detects tap not swipe
-- screen keeps getting wiggled around when using cell phone. 
-- slight delay with cell phone need to detect swipe.
-- start and restart screens don't resized
-- start and restart screens are plain and boring. 
+List of bugs (sorted by importance)
+1. Sprite keeps apearing outside floor area on right side, something wrong with my if question
+2. smart phone only detects tap not swipe
+3. screen keeps getting wiggled around when using cell phone. 
+4. start and restart screens don't resized
+5. moving paddle should change direction of ball 
+6. start and restart screens are plain and boring.
+7. ball gets stuck temporarily and grinds sound when at the very edge of paddle.
 
 Features I'd like:
-- Coins that are dropped after blue gremlin is hit
-- Gremlin dancing on the front page / restart page
-- Maybe it would be better to simplify keyboard keys to only left/right
+1. Coins that are dropped after blue gremlin is hit
+2. Gremlin dancing on the front page / restart page
+3. Maybe it would be better to simplify keyboard keys to only left/right
+
+Things I fixed, yay me!
+
+- Mooning animation is out of sync - fixed by changing from counter to boolean right in update method
