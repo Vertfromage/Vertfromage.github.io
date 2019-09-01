@@ -417,7 +417,7 @@ function draw() {
 	  gremlinCurse();
 	  resetBall();
 	  toMoon = true;
-	  mooning = MOON_COUNT;
+	  //mooning = MOON_COUNT;
 	  blueMoon.x = wiggleBum.x;
 	  wiggleBum.move();
   };
@@ -425,11 +425,12 @@ function draw() {
   // Draw the paddles and ball
   floor.draw();
   if(toMoon){
-	  if(mooning>0){
+	  if(!blueMoon.completeLoop){
 		  blueMoon.render();
 		  blueMoon.update();
-		  mooning--;
+		  //mooning--;
 	  }else{
+	       blueMoon.completeLoop=false;
 	       toMoon =false;
 	  }
   }else{
@@ -494,6 +495,7 @@ function sprite (options) {
 	        that.scaleRatio = (canvas.width/1000)*0.95;
 	        that.w = that.width / numberOfFrames * that.scaleRatio;
 	        that.h = that.height * that.scaleRatio;
+	        that.completeLoop = false;
 		
 		
 		that.update = function () {
@@ -510,6 +512,7 @@ function sprite (options) {
                     frameIndex += 1;
                 } else {
                     frameIndex = 0;
+		    that.completeLoop = true;
                 }
             }
         };
@@ -581,8 +584,8 @@ End of section of coins
 // keep track of if you're mooning the player
 var toMoon = false;
 // should be number of frames x ticks per frame
-const MOON_COUNT = 9;
-var mooning = 0;
+//const MOON_COUNT = 72;
+//var mooning = 0;
 // Create sprite sheet
 wiggleBumImage = new Image();
 blueMoonImage = new Image();
@@ -603,7 +606,7 @@ blueMoon = sprite({
 	height: 100,
 	image: blueMoonImage,
 	numberOfFrames: 9,
-	ticksPerFrame: 1,
+	ticksPerFrame: 8,
 });
 /***
 coin = sprite({
