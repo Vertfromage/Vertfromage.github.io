@@ -6,6 +6,9 @@ List of bugs (sorted by importance)
 5. moving paddle should change direction of ball 
 6. start and restart screens are plain and boring.
 7. ball gets stuck temporarily and grinds sound when at the very edge of paddle.
+8. Needs a better name something to do with 'back.'
+9. Is blue gremlin the right size?
+
 
 Features I'd like:
 1. Coins that are dropped after blue gremlin is hit
