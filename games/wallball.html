@@ -538,8 +538,8 @@ function sprite (options) {
 				that.x += wallThickness;			
 			}
 			//I think there's something wrong with this test
-			if (that.x > canvas.width-wallThickness){
-				that.x = canvas.width-that.w-wallThickness;
+			if (that.x > (canvas.width-(canvas.height*0.2)-that.w)){
+				that.x = (canvas.width-(canvas.height*0.2)-that.w);
 			}
 			
 		        // that.y = Math.random() * (canvas.height - that.height * that.scaleRatio);
