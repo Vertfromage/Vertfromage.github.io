@@ -342,6 +342,9 @@ function endGame() {
   lives = 1;
   score = 0;
   wiggleBum.move();
+  for (i = 0; i < coins.length; i += 1){
+	  destroyCoin(coins[i]);
+  }
   canvas.addEventListener('click', startGame);
 }
 
@@ -521,7 +524,7 @@ function resize() {
     wiggleBum.resize();
     blueMoon.resize();
     for (var i = 0; i < coins.length; i += 1){
-	   coins[i].scaleRatio = (canvas.width/900)*.25;
+	   coins[i].scaleRatio = (canvas.width/900)*.35;
 	   coins[i].resize();
     }
     resetBall();	  
@@ -645,7 +648,7 @@ function spawnCoin () {
 		coins[coinIndex].x = blueMoon.x;
 		coins[coinIndex].y = blueMoon.y+((blueMoon.height * blueMoon.scaleRatio)/2);
 		
-		coins[coinIndex].scaleRatio = (canvas.width/900)*.25;
+		coins[coinIndex].scaleRatio = (canvas.width/900)*.35;
 		
 		// Load sprite sheet
 		coinImg.src = "images/coin-sprite-animation.png";
@@ -672,7 +675,6 @@ var toMoon = false;
 // Create sprite sheet
 wiggleBumImage = new Image();
 blueMoonImage = new Image();
-//coinImage = new Image();
 	
 // Create sprites
 wiggleBum = sprite({
