@@ -209,7 +209,7 @@ function gremlinCurse(){
    play(gainNode, 366.90, ctx.currentTime + 0.6, 0.2);
 }
 function coinNoise(){
-   play(gainNode, 550, ctx.currentTime + 0.2, 0.2);
+   play(gainNode, 400, ctx.currentTime + 0.0, 0.4);
 }
 function play(node, frequency, start, length) {
     var o = node.context.createOscillator();
@@ -295,7 +295,7 @@ function menu() {
   context.fillStyle = '#FFA62F';
   context.font = '40px Arial';
   context.textAlign = 'center';
-  context.fillText('Backside Ball Blast', canvas.width / 2, canvas.height / 4);
+  context.fillText('Backside Ball', canvas.width / 2, canvas.height / 4);
   context.fillStyle = '#A9A9A9';
   context.font = '18px Arial';
   context.fillText("You can't get me! Na na na!",canvas.width / 2, canvas.height / 3)
@@ -306,7 +306,7 @@ function menu() {
   context.textAlign = 'center';
   context.fillStyle = '#A9A9A9';
   context.fillText('Left Hand: A / D keys. Right Hand: Left / Right keys', canvas.width/2, (canvas.height / 3) * 2);
-  context.fillText('Or Mouse / Swipe at base.', canvas.width/2, (canvas.height / 3) * 2.2)
+  context.fillText('Or Mouse / Tap at base.', canvas.width/2, (canvas.height / 3) * 2.2)
   // Start the game on a click
   canvas.addEventListener('click', startGame);
 }
@@ -610,6 +610,7 @@ function sprite (options) {
 			that.h = that.height * that.scaleRatio;
 			that.move();
 		};
+	        // should overload to allow another sprite to be passed in as argument
 	        that.isTouching = function(x,y){
 			var dx = (that.x + that.getFrameWidth() / 2 * that.scaleRatio) - x,
 			dy = (that.y + that.getFrameWidth() / 2 * that.scaleRatio) - y;
@@ -621,8 +622,7 @@ function sprite (options) {
 				return true;
 			}
 			return false;
-		}
-		
+		}		
 		return that;
 	}
 /**
