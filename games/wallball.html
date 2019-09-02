@@ -520,7 +520,7 @@ function resize() {
     wiggleBum.resize();
     blueMoon.resize();
     for (var i = 0; i < coins.length; i += 1){
-	   coins[i].scaleRatio = (canvas.width/900)*.75;
+	   coins[i].scaleRatio = (canvas.width/900)*.25;
 	   coins[i].resize();
     }
     resetBall();	  
@@ -593,7 +593,7 @@ function sprite (options) {
 				that.x = (canvas.width-(canvas.height*0.2)-that.w);
 			}
 			
-		        // that.y = Math.random() * (canvas.height - that.height * that.scaleRatio);
+		        that.y = Math.random() * that.y;
 		};
 		that.resize = function(){
                         that.y = canvas.height/5;
@@ -644,7 +644,7 @@ function spawnCoin () {
 		coins[coinIndex].x = blueMoon.x;
 		coins[coinIndex].y = blueMoon.y+((blueMoon.height * blueMoon.scaleRatio)/2);
 		
-		coins[coinIndex].scaleRatio = (canvas.width/900)*.75;
+		coins[coinIndex].scaleRatio = (canvas.width/900)*.25;
 		
 		// Load sprite sheet
 		coinImg.src = "images/coin-sprite-animation.png";
