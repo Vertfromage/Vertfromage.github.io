@@ -640,9 +640,9 @@ function spawnCoin () {
 		});
 		
 		coins[coinIndex].x = blueMoon.x;
-		coins[coinIndex].y = blueMoon.y;
+		coins[coinIndex].y = blueMoon.y+((that.height * that.scaleRatio)/2);
 		
-		coins[coinIndex].scaleRatio = Math.random() * 0.5 + 0.5;
+		coins[coinIndex].scaleRatio = (canvas.width/900)*0.95;
 		
 		// Load sprite sheet
 		coinImg.src = "images/coin-sprite-animation.png";
