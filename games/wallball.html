@@ -476,9 +476,11 @@ function draw() {
   for (i = 0; i < coins.length; i += 1){
 		  if(coins[i].isTouching(ball.x,ball.y)){
 		  	destroyCoin(coins[i]);
+			coinNoise();
 			score += 50;
 		  }else if(wiggleBum.isTouching(coins[i].x,coins[i].y)){
 		  	destroyCoin(coins[i]);
+			coinNoise();
 			score-=25;
 		  }else{
 		  	// If the ball didn't hit it and the gremlin didn't pick it back up.
