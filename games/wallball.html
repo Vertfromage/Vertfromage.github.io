@@ -470,7 +470,7 @@ function draw() {
 		  if(coins[i].isTouching(ball.x,ball.y)){
 		  	destroyCoin(coins[i]);
 			score += 50;
-		  }else if(coins[i].istouching(wiggleBum.x,wiggleBum.y)){
+		  }else if(coins[i].isTouching(wiggleBum.x,wiggleBum.y)){
 		  	destroyCoin(coins[i]);
 			score-=25;
 		  }else{
