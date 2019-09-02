@@ -466,11 +466,11 @@ function draw() {
   }
   /** Add stuff to show coins here**/
   var i;
-  for (i = 0; i < coins.length; i += 1) {
-		  if (coins[i].isTouching(ball.x,ball.y){
+  for (i = 0; i < coins.length; i += 1){
+		  if(coins[i].isTouching(ball.x,ball.y)){
 		  	destroyCoin(coins[i]);
 			score += 50;
-		  }else if(coins[i].istouching(wiggleBum.x,wiggleBum.y){
+		  }else if(coins[i].istouching(wiggleBum.x,wiggleBum.y)){
 		  	destroyCoin(coins[i]);
 			score-=25;
 		  }else{
@@ -478,7 +478,7 @@ function draw() {
 		  	coins[i].update();
 		  	coins[i].render();
 		  }
-	  } 
+  } 
 	  
   leftPaddle.draw();
   rightPaddle.draw();
