@@ -384,7 +384,7 @@ function draw() {
   	ball.x += ball.sX;
   	ball.y += ball.sY;
   }
-  // calculate where invisible middle of wall is called midWall
+ 
   // Bounce the ball off the top/left/right
   if (ball.y < (wallThickness*1.5)-midWall) {
     ball.sY *= -1;
@@ -456,14 +456,15 @@ function draw() {
 	  }else{
 	       blueMoon.completeLoop=false;
 	       toMoon =false;
-	       //spawnCoin();
+	       // gremlin drops a coin
+	       spawnCoin();
 	  }
   }else{
        wiggleBum.update();
        wiggleBum.render();
        ball.draw();
   }
-  /** Add stuff to show coins here
+  /** Add stuff to show coins here**/
   var i;
   for (i = 0; i < coins.length; i += 1) {
 		  if (coins[i].isTouching(ball.x,ball.y){
@@ -479,7 +480,6 @@ function draw() {
 		  }
 	  } 
 	  
-  **/
   leftPaddle.draw();
   rightPaddle.draw();
   
@@ -656,13 +656,11 @@ function destroyCoin (coin) {
 			break;
 		}
 	}
-}
-
-	
-	
+}	
 /**
 End of section of coins 
 **/
+	
 // keep track of if you're mooning the player
 var toMoon = false;
 // Create sprite sheet
