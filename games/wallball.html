@@ -456,12 +456,30 @@ function draw() {
 	  }else{
 	       blueMoon.completeLoop=false;
 	       toMoon =false;
+	       //spawnCoin();
 	  }
   }else{
        wiggleBum.update();
        wiggleBum.render();
        ball.draw();
-  }  
+  }
+  /** Add stuff to show coins here
+  var i;
+  for (i = 0; i < coins.length; i += 1) {
+		  if (coins[i].isTouching(ball.x,ball.y){
+		  	destroyCoin(coins[i]);
+			score += 50;
+		  }else if(coins[i].istouching(wiggleBum.x,wiggleBum.y){
+		  	destroyCoin(coins[i]);
+			score-=25;
+		  }else{
+		  	// If the ball didn't hit it and the gremlin didn't pick it back up.
+		  	coins[i].update();
+		  	coins[i].render();
+		  }
+	  } 
+	  
+  **/
   leftPaddle.draw();
   rightPaddle.draw();
   
@@ -594,15 +612,55 @@ function sprite (options) {
 		return that;
 	}
 /**
-Coins - plan to have a new coin spawn every time you hit the wiggleBum, then disapear when hit by the ball. Worth 25pts.
-***
-var numCoins = 5,
+Coins - plan to have a new coin spawn every time you hit the wiggleBum, then disapear when hit by the ball. Worth 50pts.
+**/
 var coins = [];
 var i;
+function spawnCoin () {
+	
+		var coinIndex,
+		coinImg;
+	
+		// Create sprite sheet
+		coinImg = new Image();	
+	
+		coinIndex = coins.length;
+		
+		// Create sprite
+		coins[coinIndex] = sprite({
+			context: canvas.getContext("2d"),
+			width: 1000,
+			height: 100,
+			image: coinImg,
+			numberOfFrames: 10,
+			ticksPerFrame: i
+		});
+		
+		coins[coinIndex].x = blueMoon.x;
+		coins[coinIndex].y = blueMoon.y;
+		
+		coins[coinIndex].scaleRatio = Math.random() * 0.5 + 0.5;
+		
+		// Load sprite sheet
+		coinImg.src = "images/coin-sprite-animation.png";
+	}
+
+function destroyCoin (coin) {
+	
+	var i;
+		
+	for (i = 0; i < coins.length; i += 1) {
+		if (coins[i] === coin) {
+			coins[i] = null;
+			coins.splice(i, 1);
+			break;
+		}
+	}
+}
 
 	
 	
-***
+/**
 End of section of coins 
 **/
 // keep track of if you're mooning the player
@@ -629,15 +687,6 @@ blueMoon = sprite({
 	numberOfFrames: 9,
 	ticksPerFrame: 8,
 });
-/***
-coin = sprite({
-	context: canvas.getContext("2d"),
-	width: 1000,
-	height: 100,
-	image: coinImage,
-	numberOfFrames: 10,
-	ticksPerFrame: 4,
-});**/	
 	
 // start sprite in random place	
 wiggleBum.move();
@@ -651,7 +700,6 @@ wiggleBumImage.addEventListener("load", menu());
 
 blueMoonImage.src ="images/blueMoon.png";
 wiggleBumImage.src ="images/blueWiggle.png";	
-//coinImage.src = "images/coin-sprite-animation.png";
 
 canvas.focus();
     </script>
