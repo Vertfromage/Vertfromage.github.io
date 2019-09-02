@@ -517,6 +517,9 @@ function resize() {
     midWall = canvas.height*0.1;
     wiggleBum.resize();
     blueMoon.resize();
+    for (var i = 0; i < coins.length; i += 1){
+	   coins[i].resize();
+    }
     resetBall();	  
   }
 }
@@ -633,7 +636,7 @@ function spawnCoin () {
 			height: 100,
 			image: coinImg,
 			numberOfFrames: 10,
-			ticksPerFrame: i
+			ticksPerFrame: 4
 		});
 		
 		coins[coinIndex].x = blueMoon.x;
