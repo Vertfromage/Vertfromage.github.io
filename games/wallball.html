@@ -149,8 +149,8 @@ var ballSpeed = 3;
 var ball = makeCircle(0, 0, ballLength, ballSpeed, '#FFA62F');
 
 // Modify the ball object to have two speed properties, one for X and one for Y
-ball.sX = ballSpeed;
-ball.sY = ballSpeed / 2;
+ball.sX = ballSpeed/2;
+ball.sY = ballSpeed;
 
 // Randomize initial direction
 if (Math.random() > 0.5) {
@@ -167,8 +167,8 @@ if (Math.random() > 0.5) {
 function resetBall() {
   ball.x = canvas.width / 2 - ball.r / 2;
   ball.y = canvas.height / 2 - ball.r / 2;
-  ball.sX = ballSpeed;
-  ball.sY = ballSpeed / 2;
+  ball.sY = ballSpeed;
+  ball.sX = ballSpeed / 2;
 }
 fuction slowBall(){
 	if (ball.sY > 0){
