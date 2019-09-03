@@ -196,9 +196,9 @@ function bounceBall() {
   	ball.sY -= 1;
     // Add some "spin"
     if (keys.LEFT||mouseMovingLeft||keys.A) {
-      ball.sX -= 1;
+      ball.sX -= 2;
     } else if (keys.RIGHT||mouseMovingRight||keys.D) {
-      ball.sX += 1
+      ball.sX += 2;
     }
   }
   score +=1;
