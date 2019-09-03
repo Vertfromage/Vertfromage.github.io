@@ -357,12 +357,15 @@ function endGame() {
   lives = 1;
   score = 0;
   wiggleBum.move();
-  for (i = 0; i < coins.length; i += 1){
-	  destroyCoin(coins[i]);
-  }
+  setTimeout(emptyCoins, 25);
+  
   canvas.addEventListener('click', startGame);
 }
-
+function emptyCoins(){
+	for (i = 0; i < coins.length; i += 1){
+		destroyCoin(coins[i]);
+  	}
+}
 // Clear the canvas
 function erase() {
   context.fillStyle = '#FFFFFF';
