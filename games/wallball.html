@@ -219,7 +219,8 @@ function gremlinCurse(){
    play(gainNode, 366.90, ctx.currentTime + 0.6, 0.2);
 }
 function coinNoise(){
-   play(gainNode, 346.13, ctx.currentTime + 0.0, 0.4);
+      play(gainNode, 346.13, ctx.currentTime + 0.0, 0.2);
+      play(gainNode, 366.90, ctx.currentTime + 0.2, 0.2);
 }
 function play(node, frequency, start, length) {
     var o = node.context.createOscillator();
