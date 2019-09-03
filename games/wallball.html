@@ -149,8 +149,8 @@ var ballSpeed = 4;
 var ball = makeCircle(0, 0, ballLength, ballSpeed, '#FFA62F');
 
 // Modify the ball object to have two speed properties, one for X and one for Y
-ball.sX = ballSpeed/2;
-ball.sY = ballSpeed;
+ball.sX = ballSpeed;
+ball.sY = ballSpeed/2;
 
 // Randomize initial direction
 if (Math.random() > 0.5) {
