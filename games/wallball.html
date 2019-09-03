@@ -480,6 +480,11 @@ function draw() {
 	  blueMoon.x = wiggleBum.x;
 	  blueMoon.y = wiggleBum.y;
 	  wiggleBum.move();
+	  if(ball.sY> 0){
+		  ball.y += wiggleBum.h;
+	  }else{
+		  ball.y -= wiggleBum.h;
+	  }
   };
 	
   // Draw the paddles and ball
