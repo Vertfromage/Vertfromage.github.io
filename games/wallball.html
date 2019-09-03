@@ -171,10 +171,12 @@ function resetBall() {
   ball.sX = ballSpeed / 2;
 }
 function slowBall(){
-	if (ball.sY > 0){
-		ball.sY -=2;
-	}else{
-		ball.sY +=2;
+	if (ball.sY >ballSpeed||ball.sY< -ballSpeed){
+		if (ball.sY > 0){
+			ball.sY -=2;
+		}else{
+			ball.sY +=2;
+		}
 	}
 }
 
