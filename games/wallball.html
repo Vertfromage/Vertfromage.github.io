@@ -299,40 +299,43 @@ function getMousePos(canvas, evt) {
 var mouseMovingRight = false;
 var mouseMovingLeft = false;	
 var gameOn = false;
-// Show the menu
-function menu() {
-  // Start the game on a click
-  gameOn = false;
-  canvas.addEventListener('click', function(e) {
+
+function showMenu(){
+  	gameOn = false;
+  	// Start the game on a click
+  	canvas.addEventListener('click', function(e) {
 	  if(gameOn){
-            startGame();
+	    	gameOn = true;
+            	startGame();
 	  }
-  });
-  while(!gameOn){
-  	context.fillStyle = '#F0F8FF';
-  	context.fillRect(0, 0, canvas.width, canvas.height);
-  	context.fillStyle = '#FFA62F';
-  	context.font = '40px Arial';
-  	context.textAlign = 'center';
-  	context.fillText('Backside Ball', canvas.width / 2, canvas.height / 4);
-  	context.fillStyle = '#A9A9A9';
-  	context.font = '18px Arial';
-  	context.fillText("Make the gremlin drop his coins! Hit coins to slow ball.",canvas.width / 2, canvas.height / 3)
-  	context.font = '40px Arial';
-  	context.fillStyle = '#FFA62F';
-  	context.fillText('Click to Start', canvas.width / 2, canvas.height / 2);
-  	context.font = '14px Arial';
-  	context.textAlign = 'center';
-  	context.fillStyle = '#A9A9A9';
-  	context.fillText('Left Hand: A / D keys. Right Hand: Left / Right keys', canvas.width/2, (canvas.height / 3) * 2);
-  	context.fillText('Or Mouse / Tap at base.', canvas.width/2, (canvas.height / 3) * 2.2)
-	wiggleBum.x = canvas.width/2;
-  	wiggleBum.y = canvas.height/2;
-	wiggleBum.update();
-       	wiggleBum.render();
-	
-	
-      
+  	});
+  	menu();
+}
+function menu() {
+   context.fillStyle = '#F0F8FF';
+   context.fillRect(0, 0, canvas.width, canvas.height);
+   context.fillStyle = '#FFA62F';
+   context.font = '40px Arial';
+   context.textAlign = 'center';
+   context.fillText('Backside Ball', canvas.width / 2, canvas.height / 4);
+   context.fillStyle = '#A9A9A9';
+   context.font = '18px Arial';
+   context.fillText("Make the gremlin drop his coins! Hit coins to slow ball.",canvas.width / 2, canvas.height / 3)
+   context.font = '40px Arial';
+   context.fillStyle = '#FFA62F';
+   context.fillText('Click to Start', canvas.width / 2, canvas.height / 2);
+   context.font = '14px Arial';
+   context.textAlign = 'center';
+   context.fillStyle = '#A9A9A9';
+   context.fillText('Left Hand: A / D keys. Right Hand: Left / Right keys', canvas.width/2, (canvas.height / 3) * 2);
+   context.fillText('Or Mouse / Tap at base.', canvas.width/2, (canvas.height / 3) * 2.2)
+   wiggleBum.x = canvas.width/2;
+   wiggleBum.y = canvas.height/2;
+   wiggleBum.update();
+   wiggleBum.render();
+	if (!gameOn){
+		window.requestAnimationFrame(menu);
+	}
   }
   
 }
