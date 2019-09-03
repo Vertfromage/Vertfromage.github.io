@@ -341,17 +341,19 @@ function startGame() {
 // Show the end game screen
 function endGame() {
   erase();
-  context.fillStyle = '#000000';
+  context.fillStyle = '#F0F8FF';
+  context.fillRect(0, 0, canvas.width, canvas.height);
   context.font = '40px Arial';
   context.textAlign = 'center';
   if (score>highScore){
 	  highScore = score;
-	  context.fillStyle = '##FFA62F';
+	  context.fillStyle = '#FFA62F';
 	  context.fillText('You beat your high score!', canvas.width/2, canvas.height/3.5);
-	  context.fillStyle = '#000000';
+	  context.fillStyle = '#A9A9A9';
 	  context.font = '24px Arial';
           context.fillText('Your new high score is: '+ highScore+'!', canvas.width/2, canvas.height/2);
   }else{
+      context.fillStyle = '#A9A9A9';
       context.fillText('Your highScore is: '+ highScore, canvas.width/2, canvas.height/3.5);
       context.font = '24px Arial';
       context.fillText('Not bad, you scored: '+score, canvas.width/2, canvas.height/2);
