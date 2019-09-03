@@ -145,7 +145,7 @@ var highScore = 0;
 
 // Create the ball
 var ballLength = 0.008*canvas.width;
-var ballSpeed = 3;
+var ballSpeed = 4;
 var ball = makeCircle(0, 0, ballLength, ballSpeed, '#FFA62F');
 
 // Modify the ball object to have two speed properties, one for X and one for Y
@@ -172,19 +172,10 @@ function resetBall() {
 }
 function slowBall(){
 	if (ball.sY >ballSpeed||ball.sY< -ballSpeed){
-		if (ball.sY > 0){
-			ball.sY -=2;
-		}else{
-			ball.sY +=2;
-		}
-		if (ball.sX> ballSpeed/2){
-			if (ball.sX > 0){
-				ball.sX -=2;
-			}else{
-				ball.sX +=2;
-			}
-		}
 		
+		ball.sY = ball.sY/2;
+		
+		ball.sX = ball.sX/2;
 	}
 }
 
