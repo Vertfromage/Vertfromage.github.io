@@ -182,9 +182,14 @@ function bounceBall() {
     } else if (keys.RIGHT||mouseMovingRight||keys.D) {
       ball.sX += 1;
     }
-  }else{
-       resetBall();
-  }
+  }else {
+  	ball.sY -= 1;
+    // Add some "spin"
+    if (keys.LEFT||mouseMovingLeft||keys.A) {
+      ball.sX -= 1;
+    } else if (keys.RIGHT||mouseMovingRight||keys.D) {
+      ball.sX += 1
+    }
   ball.sY *= -1;
   score +=1;
   //make noise
