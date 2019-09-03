@@ -417,8 +417,7 @@ function draw() {
   if (ball.y < (wallThickness*1.5)-midWall) {
     ball.sY *= -1;
     ballNoise();
-  }
-  if(ball.x<midWall || ball.x + ball.r > canvas.width-midWall){
+  }else if(ball.x < midWall || ball.x + ball.r > canvas.width-midWall){
       ball.sX *= -1;
       ballNoise();
   }
