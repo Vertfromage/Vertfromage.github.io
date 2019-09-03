@@ -170,6 +170,13 @@ function resetBall() {
   ball.sX = ballSpeed;
   ball.sY = ballSpeed / 2;
 }
+fuction slowBall(){
+	if (ball.sY > 0){
+		ball.sY -=2;
+	}else{
+		ball.sY +=2;
+	}
+}
 
 // Bounce the ball off of a paddle
 function bounceBall() {
