@@ -480,11 +480,6 @@ function draw() {
 	  blueMoon.x = wiggleBum.x;
 	  blueMoon.y = wiggleBum.y;
 	  wiggleBum.move();
-	  if(ball.sY> 0){
-		  ball.y += wiggleBum.h;
-	  }else{
-		  ball.y -= wiggleBum.h;
-	  }
   };
 	
   // Draw the paddles and ball
@@ -636,7 +631,7 @@ function sprite (options) {
 				that.x = (canvas.width-(canvas.height*0.2)-that.w);
 			}
 			
-		        that.y = (canvas.height/5) + Math.random()*(canvas.height/3) ;
+		        that.y = (canvas.height/5) + Math.random()*(canvas.height/2) ;
 		};
 		that.resize = function(){
                         that.y = canvas.height/5;
