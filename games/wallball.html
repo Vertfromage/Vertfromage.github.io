@@ -167,8 +167,8 @@ if (Math.random() > 0.5) {
 function resetBall() {
   ball.x = canvas.width / 2 - ball.r / 2;
   ball.y = canvas.height / 2 - ball.r / 2;
-  ball.sY = ballSpeed;
-  ball.sX = ballSpeed / 2;
+  ball.sY = ballSpeed/2;
+  ball.sX = ballSpeed;
 }
 function slowBall(){
 	if (ball.sY >ballSpeed||ball.sY< -ballSpeed){
