@@ -177,6 +177,14 @@ function slowBall(){
 		}else{
 			ball.sY +=2;
 		}
+		if (ball.sX> ballSpeed/2){
+			if (ball.sX > 0){
+				ball.sX -=2;
+			}else{
+				ball.sX +=2;
+			}
+		}
+		
 	}
 }
 
