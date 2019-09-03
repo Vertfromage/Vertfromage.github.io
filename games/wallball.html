@@ -174,8 +174,10 @@ function slowBall(){
 	if (ball.sY >ballSpeed||ball.sY< -ballSpeed){
 		
 		ball.sY = ball.sY*.65;
+		if (ball.sX >ballSpeed||ball.sX< -ballSpeed){
+			ball.sX = ball.sX*.65;
+		}
 		
-		ball.sX = ball.sX*.65;
 	}
 }
 
@@ -195,9 +197,9 @@ function bounceBall() {
   	ball.sY -= 1;
     // Add some "spin"
     if (keys.LEFT||mouseMovingLeft||keys.A) {
-      ball.sX -= 1;
+      ball.sX -= 2;
     } else if (keys.RIGHT||mouseMovingRight||keys.D) {
-      ball.sX += 1;
+      ball.sX += 2;
     }
   }
   score +=1;
