@@ -174,22 +174,16 @@ function resetBall() {
 // Bounce the ball off of a paddle
 function bounceBall() {
 	// Increase and reverse the Y speed
-	if (ball.sY > 0) {
+    if (ball.sY > 0) {
   	ball.sY += 1;
     // Add some "spin"
-    if (keys.LEFT) {
+    if (keys.LEFT||mouseMovingLeft||keys.A) {
       ball.sX -= 1;
-    } else if (keys.RIGHT) {
+    } else if (keys.RIGHT||mouseMovingRight||keys.D) {
       ball.sX += 1;
     }
-  } else {
-  	ball.sY -= 1;
-    // Add some "spin"
-    if (keys.A) {
-      ball.sX -= 1;
-    } else if (keys.D) {
-      ball.sX += 1
-    }
+  }else{
+       resetBall();
   }
   ball.sY *= -1;
   score +=1;
@@ -285,6 +279,8 @@ function getMousePos(canvas, evt) {
         y: (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
     };
 }
+var mouseMovingRight = false;
+var mouseMovingLeft = false;	
 	    
 // Show the menu
 function menu() {
@@ -380,10 +376,20 @@ function draw() {
   if (mouseY>rightPaddle.y-(rightPaddle.h*2)){
       if (mouseX>rightPaddle.x+(leftPaddle.w/2)){
           rightPaddle.x += rightPaddle.s;
+	  mouseMovingRight = true;    
+      }
+      else{
+	  mouseMovingRight = false;
       }
       if (mouseX<leftPaddle.x+(leftPaddle.w/2)){
           leftPaddle.x -= leftPaddle.s;
+	  mouseMovingLeft = true;
+      }else{
+	  mouseMovingLeft = false;
       }
+  }else{
+	  mouseMovingRight = false;
+	  mouseMovingLeft = false;
   }
   if(!toMoon){	
   	// Move the ball
@@ -403,14 +409,14 @@ function draw() {
   // Dont let the paddles overlap
 
   if (Math.abs(leftPaddle.x-rightPaddle.x)<leftPaddle.w){
-      if(keys.D||rightPaddle.x===midWall||(mouseX>rightPaddle.x+(leftPaddle.w/2)&&mouseY>rightPaddle.y-(rightPaddle.h*2))){
+      if(keys.D||rightPaddle.x===midWall||mouseMovingRight){
           rightPaddle.x = leftPaddle.x+leftPaddle.w;
       }else{
           leftPaddle.x = rightPaddle.x-leftPaddle.w;
           }
   }
   if (Math.abs(leftPaddle.x-rightPaddle.x)>armLength){
-      if(keys.A||(mouseX<leftPaddle.x+(leftPaddle.w/2)&&mouseY>rightPaddle.y-(rightPaddle.h*2))){
+      if(keys.A||mouseMovingLeft){
           rightPaddle.x = leftPaddle.x+armLength;
       }else{
           leftPaddle.x = rightPaddle.x-armLength;
