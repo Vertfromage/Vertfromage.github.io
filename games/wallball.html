@@ -173,9 +173,9 @@ function resetBall() {
 function slowBall(){
 	if (ball.sY >ballSpeed||ball.sY< -ballSpeed){
 		
-		ball.sY = ball.sY*.75;
+		ball.sY = ball.sY*.65;
 		
-		ball.sX = ball.sX*.75;
+		ball.sX = ball.sX*.65;
 	}
 }
 
@@ -417,7 +417,8 @@ function draw() {
   if (ball.y < (wallThickness*1.5)-midWall) {
     ball.sY *= -1;
     ballNoise();
-  }else if(ball.x<midWall || ball.x + ball.r > canvas.width-midWall){
+  }
+  if(ball.x<midWall || ball.x + ball.r > canvas.width-midWall){
       ball.sX *= -1;
       ballNoise();
   }
@@ -485,8 +486,8 @@ function draw() {
 	  }else{
 	       blueMoon.completeLoop=false;
 	       toMoon =false;
-	       // gremlin drops a coin
-	       setTimeout(spawnCoin, 500);
+	       // gremlin drops a coin after restarting ball.
+	       setTimeout(spawnCoin, 200);
 	  }
   }else{
        wiggleBum.update();
