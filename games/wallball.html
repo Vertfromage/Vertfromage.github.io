@@ -359,7 +359,7 @@ function endGame() {
   lives = 1;
   score = 0;
   wiggleBum.move();
-  setTimeout(emptyCoins, 100);
+  emptyCoins();
   
   canvas.addEventListener('click', startGame);
 }
@@ -491,7 +491,7 @@ function draw() {
 	       blueMoon.completeLoop=false;
 	       toMoon =false;
 	       // gremlin drops a coin after restarting ball.
-	       setTimeout(spawnCoin, 50);
+	       spawnCoin();
 	  }
   }else{
        wiggleBum.update();
