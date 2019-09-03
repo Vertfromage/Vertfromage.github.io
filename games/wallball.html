@@ -170,7 +170,7 @@ function resetBall() {
   ball.sY = ballSpeed;
   ball.sX = ballSpeed / 2;
 }
-fuction slowBall(){
+function slowBall(){
 	if (ball.sY > 0){
 		ball.sY -=2;
 	}else{
@@ -496,6 +496,7 @@ function draw() {
 		  if(coins[i].isTouching(ball.x,ball.y)){
 		  	destroyCoin(coins[i]);
 			coinNoise();
+			slowBall()
 			score += 50;
 		  }else if(wiggleBum.isTouching(coins[i].x,coins[i].y)){
 		  	destroyCoin(coins[i]);
