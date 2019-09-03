@@ -173,9 +173,9 @@ function resetBall() {
 function slowBall(){
 	if (ball.sY >ballSpeed||ball.sY< -ballSpeed){
 		
-		ball.sY = ball.sY/2;
+		ball.sY = ball.sY*.75;
 		
-		ball.sX = ball.sX/2;
+		ball.sX = ball.sX*.75;
 	}
 }
 
