@@ -333,11 +333,9 @@ function menu() {
    wiggleBum.y = canvas.height/2;
    wiggleBum.update();
    wiggleBum.render();
-	if (!gameOn){
-		window.requestAnimationFrame(menu);
-	}
-  }
-  
+   if (!gameOn){
+	window.requestAnimationFrame(menu);
+   }  
 }
 
 // Start the game
