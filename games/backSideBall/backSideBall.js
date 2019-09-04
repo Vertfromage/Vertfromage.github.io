@@ -287,6 +287,8 @@ function startGame() {
   canvas.removeEventListener('click', startGame);
     //Add mouse listener
   window.addEventListener('mousemove', mouse, false);
+  lives = 1;
+  score = 0;
   // Put the ball in place	
   resetBall();
   // Kick off the game loop
@@ -297,8 +299,6 @@ function endGame() {
   gameOn = false;
   wiggleBum.x = canvas.width/2 - wiggleBum.w/2;
   wiggleBum.y = canvas.height/2 - wiggleBum.h*3/4;
-  lives = 1;
-  score = 0;
   emptyCoins();
   canvas.addEventListener('click', startGame);
   restartMenu();
