@@ -345,6 +345,8 @@ function startGame() {
   window.addEventListener('mousemove', mouse, false);
   // Put the ball in place
   resetBall();
+  // put wiggleBum in random spot
+  wiggleBum.move();	
   // Kick off the game loop
   draw();
 }
@@ -748,9 +750,6 @@ blueMoon = sprite({
 	numberOfFrames: 9,
 	ticksPerFrame: 4,
 });
-	
-// start sprite in random place	
-wiggleBum.move();
 // sound
 var ctx = new AudioContext();
 var gainNode = ctx.createGain();
