@@ -429,12 +429,16 @@ function draw() {
 	  mouseMovingRight = false;
 	  mouseMovingLeft = false;
   }
+  /** Code for only updating ball when not mooning.
   if(!toMoon){	
   	// Move the ball
   	ball.x += ball.sX;
   	ball.y += ball.sY;
   }
- 
+  **/ 
+  // Move the ball
+  ball.x += ball.sX;
+  ball.y += ball.sY;
   // Bounce the ball off the top/left/right
   if (ball.y < (wallThickness*1.5)-midWall) {
     ball.sY *= -1;
@@ -514,6 +518,7 @@ function draw() {
        wiggleBum.update();
        wiggleBum.render();
   }
+  // If we want to pause ball while mooning put inside else clause	
   ball.draw();
   /** Add stuff to show coins here**/
   var i;
