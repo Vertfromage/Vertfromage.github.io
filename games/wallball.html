@@ -564,10 +564,6 @@ function resize() {
       canvas.height != height) {
      canvas.width = width;
      canvas.height = height;
-     if(!gameOn){
-     	wiggleBum.x = canvas.width/2 - wiggleBum.w/2;
-        wiggleBum.y = canvas.height/2 - wiggleBum.h*3/4;
-     }
      // Re-create the ball and paddles
     ballLength = 0.008*canvas.width;
     ball = makeCircle(0, 0, ballLength, ballSpeed, '#FFA62F');
@@ -581,7 +577,12 @@ function resize() {
     midWall = canvas.height*0.1;
     wiggleBum.scaleRatio = (canvas.width/900)*.95;
     blueMoon.scaleRatio = (canvas.width/900)*.95;
-    wiggleBum.resize();
+    if(!gameOn){
+     	wiggleBum.x = canvas.width/2 - wiggleBum.w/2;
+        wiggleBum.y = canvas.height/2 - wiggleBum.h*3/4;
+     }else{
+	wiggleBum.resize();
+     }
     blueMoon.resize();
     for (var i = 0; i < coins.length; i += 1){
 	   coins[i].scaleRatio = (canvas.width/900)*.35;
