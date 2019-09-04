@@ -333,10 +333,6 @@ function menu() {
 	window.requestAnimationFrame(menu);
    }
 }
-function menuResize(){
-   wiggleBum.x = canvas.width/2 - wiggleBum.w/2;
-   wiggleBum.y = canvas.height/2 - wiggleBum.h*3/4;
-}
 
 // Start the game
 function startGame() {	
@@ -354,7 +350,17 @@ function startGame() {
 
 // Show the end game screen
 function endGame() {
-  erase();
+  gameOn = false;
+  wiggleBum.x = canvas.width/2 - wiggleBum.w/2;
+  wiggleBum.y = canvas.height/2 - wiggleBum.h*3/4;
+  lives = 1;
+  score = 0;
+  emptyCoins();
+  canvas.addEventListener('click', startGame);
+  restartMenu();
+}
+function restartMenu(){
+  resize();
   context.fillStyle = '#F0F8FF';
   context.fillRect(0, 0, canvas.width, canvas.height);
   context.textAlign = 'center';
@@ -374,14 +380,14 @@ function endGame() {
       context.font = '24px Arial';
       context.fillText('Not bad, you scored: '+score, canvas.width/2, canvas.height/2);
   }
+  wiggleBum.update();
+  wiggleBum.render();
   context.fillStyle = '#FFA62F';
   context.fillText('Think you can do better? CLICK TO PLAY AGAIN!',canvas.width/2, (canvas.height / 3) * 2);
-  lives = 1;
-  score = 0;
-  wiggleBum.move();
-  emptyCoins();
-  
-  canvas.addEventListener('click', startGame);
+   
+   if (!gameOn){
+	window.requestAnimationFrame(restartMenu);
+   }
 }
 function emptyCoins(){
 	for (i = 0; i < coins.length; i += 1){
