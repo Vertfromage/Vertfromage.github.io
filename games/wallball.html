@@ -394,16 +394,16 @@ function erase() {
 function draw() {
   resize();
   erase();
-  if (keys.LEFT) {
+  if (keys.A) {
     leftPaddle.x -= leftPaddle.s;
   }
-  /**if (keys.D) {
+  if (keys.D) {
     leftPaddle.x += leftPaddle.s;
   }
   // Moving the paddles. 
   if (keys.LEFT) {
     rightPaddle.x -= rightPaddle.s;
-  }**/
+  }
   if (keys.RIGHT) {
     rightPaddle.x += rightPaddle.s;
   }
