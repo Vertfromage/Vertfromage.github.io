@@ -577,11 +577,10 @@ function resize() {
     midWall = canvas.height*0.1;
     wiggleBum.scaleRatio = (canvas.width/900)*.95;
     blueMoon.scaleRatio = (canvas.width/900)*.95;
+    wiggleBum.resize();
     if(!gameOn){
      	wiggleBum.x = canvas.width/2 - wiggleBum.w/2;
         wiggleBum.y = canvas.height/2 - wiggleBum.h*3/4;
-     }else{
-	wiggleBum.resize();
      }
     blueMoon.resize();
     for (var i = 0; i < coins.length; i += 1){
