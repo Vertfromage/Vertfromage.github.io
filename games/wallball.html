@@ -323,7 +323,7 @@ function menu() {
    wiggleBum.y = canvas.height/2 - wiggleBum.h*3/4;
    wiggleBum.update();
    wiggleBum.render();
-   context.fillText('Click to Start', canvas.width / 2, canvas.height / 2);
+   context.fillText('Click to Start', canvas.width / 2, canvas.height / 2+ wiggleBum.w/2);
    context.font = '14px Arial';
    context.textAlign = 'center';
    context.fillStyle = '#A9A9A9';
