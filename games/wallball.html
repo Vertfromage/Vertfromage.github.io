@@ -343,10 +343,10 @@ function startGame() {
   canvas.removeEventListener('click', startGame);
     //Add mouse listener
   window.addEventListener('mousemove', mouse, false);
-  // Put the ball in place
-  resetBall();
   // put wiggleBum in random spot
   wiggleBum.move();	
+  // Put the ball in place
+  resetBall();
   // Kick off the game loop
   draw();
 }
