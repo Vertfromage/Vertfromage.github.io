@@ -443,7 +443,7 @@ function draw() {
       ballNoise();
   }
 
-  // Dont let the paddles overlap
+  // Dont let the paddles overlap - If I want to only use left and right only this needs to be changed.
 
   if (Math.abs(leftPaddle.x-rightPaddle.x)<leftPaddle.w){
       if(keys.D||rightPaddle.x===midWall||mouseMovingRight){
