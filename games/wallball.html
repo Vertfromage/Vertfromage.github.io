@@ -321,17 +321,17 @@ function menu() {
    context.font = '18px Arial';
    context.fillText("Make the gremlin drop his coins! Hit coins to slow ball.",canvas.width / 2, canvas.height / 3)
    context.font = '40px Arial';
-   context.fillStyle = '#FFA62F';
+   context.fillStyle = '#FFA62F';   
+   wiggleBum.x = canvas.width/2 - wiggleBum.w/2;
+   wiggleBum.y = canvas.height/2 - wiggleBum.h/2;
+   wiggleBum.update();
+   wiggleBum.render();
    context.fillText('Click to Start', canvas.width / 2, canvas.height / 2);
    context.font = '14px Arial';
    context.textAlign = 'center';
    context.fillStyle = '#A9A9A9';
    context.fillText('Left Hand: A / D keys. Right Hand: Left / Right keys', canvas.width/2, (canvas.height / 3) * 2);
    context.fillText('Or Mouse / Tap at base.', canvas.width/2, (canvas.height / 3) * 2.2)
-   wiggleBum.x = canvas.width/2;
-   wiggleBum.y = canvas.height/2;
-   wiggleBum.update();
-   wiggleBum.render();
    if (!gameOn){
 	window.requestAnimationFrame(menu);
    }  
