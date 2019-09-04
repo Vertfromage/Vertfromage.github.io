@@ -331,19 +331,18 @@ function menu() {
    context.fillText('Or Mouse / Tap at base.', canvas.width/2, (canvas.height / 3) * 2.2)
    if (!gameOn){
 	window.requestAnimationFrame(menu);
-   }else{
-      wiggleBum.move();
-   }  
+   }
 }
 
 // Start the game
-function startGame() {
-   gameOn = true;
-// Don't accept any more clicks
+function startGame() {	
+  gameOn = true;
+  wiggleBum.move();
+  // Don't accept any more clicks
   canvas.removeEventListener('click', startGame);
     //Add mouse listener
-  window.addEventListener('mousemove', mouse, false);	
-  // Put the ball in place
+  window.addEventListener('mousemove', mouse, false);
+  // Put the ball in place	
   resetBall();
   // Kick off the game loop
   draw();
