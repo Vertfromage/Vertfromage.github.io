@@ -303,12 +303,7 @@ var gameOn = false;
 function showMenu(){
   	gameOn = false;
   	// Start the game on a click
-  	canvas.addEventListener('click', function(e) {
-		// put wiggleBum in random spot
-  		wiggleBum.move();
-	      	gameOn = true;
-            	startGame();
-	});
+  	canvas.addEventListener('click', startGame);
   	menu();
 }
 function menu() {
@@ -341,6 +336,8 @@ function menu() {
 
 // Start the game
 function startGame() {
+   wiggleBum.move();
+   gameOn = true;
 // Don't accept any more clicks
   canvas.removeEventListener('click', startGame);
     //Add mouse listener
