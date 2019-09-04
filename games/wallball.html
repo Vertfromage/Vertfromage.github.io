@@ -302,6 +302,8 @@ var gameOn = false;
 
 function showMenu(){
   	gameOn = false;
+	wiggleBum.x = canvas.width/2 - wiggleBum.w/2;
+        wiggleBum.y = canvas.height/2 - wiggleBum.h*3/4;
   	// Start the game on a click
   	canvas.addEventListener('click', startGame);
   	menu();
@@ -319,8 +321,6 @@ function menu() {
    context.fillText("Make the gremlin drop his coins! Hit coins to slow ball.",canvas.width / 2, canvas.height / 3)
    context.font = '40px Arial';
    context.fillStyle = '#FFA62F';   
-   wiggleBum.x = canvas.width/2 - wiggleBum.w/2;
-   wiggleBum.y = canvas.height/2 - wiggleBum.h*3/4;
    wiggleBum.update();
    wiggleBum.render();
    context.fillText('Click to Start', canvas.width / 2, canvas.height / 2+ wiggleBum.w/2);
@@ -332,6 +332,10 @@ function menu() {
    if (!gameOn){
 	window.requestAnimationFrame(menu);
    }
+}
+function menuResize(){
+   wiggleBum.x = canvas.width/2 - wiggleBum.w/2;
+   wiggleBum.y = canvas.height/2 - wiggleBum.h*3/4;
 }
 
 // Start the game
@@ -560,6 +564,10 @@ function resize() {
       canvas.height != height) {
      canvas.width = width;
      canvas.height = height;
+     if(!gameOn){
+     	wiggleBum.x = canvas.width/2 - wiggleBum.w/2;
+        wiggleBum.y = canvas.height/2 - wiggleBum.h*3/4;
+     }
      // Re-create the ball and paddles
     ballLength = 0.008*canvas.width;
     ball = makeCircle(0, 0, ballLength, ballSpeed, '#FFA62F');
