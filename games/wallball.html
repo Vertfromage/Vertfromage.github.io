@@ -304,6 +304,8 @@ function showMenu(){
   	gameOn = false;
   	// Start the game on a click
   	canvas.addEventListener('click', function(e) {
+		// put wiggleBum in random spot
+  		wiggleBum.move();
 	      	gameOn = true;
             	startGame();
 	});
@@ -342,9 +344,7 @@ function startGame() {
 // Don't accept any more clicks
   canvas.removeEventListener('click', startGame);
     //Add mouse listener
-  window.addEventListener('mousemove', mouse, false);
-  // put wiggleBum in random spot
-  wiggleBum.move();	
+  window.addEventListener('mousemove', mouse, false);	
   // Put the ball in place
   resetBall();
   // Kick off the game loop
