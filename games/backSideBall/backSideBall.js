@@ -260,7 +260,7 @@ function menu() {
    context.fillRect(0, 0, canvas.width, canvas.height);
    context.font = '40px Arial';
    context.textAlign = 'center';
-   if(coilMember===true){
+   if(testCoilMember===true){
 	context.fillStyle = '#A9A9A9';
         context.fillText('We love coil members!', canvas.width / 2, canvas.height / 6);
    }
@@ -710,6 +710,7 @@ var coilMember = false;
 if(document.monetization && document.monetization.state === 'started') {
    coilMember = true;	
 }
+var testCoilMember = false;
 // Start game
 wiggleBumImage.addEventListener("load", showMenu());
 blueMoonImage.src ="images/blueMoon.png";
