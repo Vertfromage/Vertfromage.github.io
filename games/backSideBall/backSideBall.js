@@ -368,7 +368,6 @@ function draw() {
   if (keys.RIGHT) {
     rightPaddle.x += rightPaddle.s;
   }  
-  }
 	
    /** Good idea to move paddles when > 1/2 paddle **/
   // move the paddles with mouse simplified controls
