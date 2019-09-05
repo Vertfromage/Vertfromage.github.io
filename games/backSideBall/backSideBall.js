@@ -509,7 +509,6 @@ function draw() {
   } else {
   	window.requestAnimationFrame(draw);
   }
-}
 function resize() {
   var width = document.documentElement.clientWidth;
   var height = document.documentElement.clientHeight;
