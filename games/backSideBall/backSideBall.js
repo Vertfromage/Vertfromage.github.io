@@ -378,7 +378,7 @@ function draw() {
   }
   if(keys.X){
      // Add control to speed up ball
-     if(ball.sY<0)){
+     if(ball.sY<0){
      	ball.sY-=1;
      }else{
      	ball+=1
