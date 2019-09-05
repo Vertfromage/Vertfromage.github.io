@@ -25,6 +25,7 @@ var context = canvas.getContext('2d');
 // Key Codes
 var A = 65;
 var D = 68;
+var X = 88;
 var LEFT = 37;
 var RIGHT = 39;
 // Keep track of gameOver for restart
@@ -33,6 +34,7 @@ var gameOver = false;
 var keys = {
   A: false,
   D: false,
+  X: false,
   LEFT: false,
   RIGHT: false,
 };
@@ -207,6 +209,9 @@ canvas.addEventListener('keydown', function(e) {
   if (e.keyCode === RIGHT) {
     keys.RIGHT = true;
   }
+  if (e.keyCode === X) {
+    keys.X = true;
+  }
 });
 // Listen for keyup events
 canvas.addEventListener('keyup', function(e) {
@@ -221,6 +226,9 @@ canvas.addEventListener('keyup', function(e) {
   }
   if (e.keyCode === RIGHT) {
     keys.RIGHT = false;
+  }
+  if (e.keyCode === X) {
+    keys.X = false;
   }
 });
 	
@@ -262,7 +270,7 @@ function menu() {
    context.textAlign = 'center';
    if(coilMember===true){
 	context.fillStyle = '#A9A9A9';
-        context.fillText('Welcome coil members!', canvas.width / 2, canvas.height / 6);
+        context.fillText('We love coil members!', canvas.width / 2, canvas.height / 6);
    }
    context.fillStyle = '#FFA62F';
    context.fillText('Backside Ball', canvas.width / 2, canvas.height / 4);
@@ -312,6 +320,10 @@ function restartMenu(){
   context.fillStyle = '#F0F8FF';
   context.fillRect(0, 0, canvas.width, canvas.height);
   context.textAlign = 'center';
+  if(coilMember===true){
+	context.fillStyle = '#A9A9A9';
+        context.fillText('Coil Members: Press X to speed up!', canvas.width / 2, canvas.height / 6);
+  }
   if (score>highScore){
 	  highScore = score;
 	  context.font = '40px Arial';
@@ -363,6 +375,15 @@ function draw() {
   }
   if (keys.RIGHT) {
     rightPaddle.x += rightPaddle.s;
+  }
+  if(keys.X){
+     // Add control to speed up ball
+     if(ball.sY<0)){
+     	ball.sY-=1;
+     }else{
+     	ball+=1
+     }
+	  
   }
 	
    /** Good idea to move paddles when > 1/2 paddle **/
@@ -701,7 +722,7 @@ var ctx = new AudioContext();
 var gainNode = ctx.createGain();
 gainNode.connect(ctx.destination);
 
-var coilMember = true;
+var coilMember = false;
 if(document.monetization && document.monetization.state === 'started') {
    coilMember = true;	
 }
