@@ -715,3 +715,4 @@ wiggleBumImage.addEventListener("load", showMenu());
 blueMoonImage.src ="images/blueMoon.png";
 wiggleBumImage.src ="images/blueWiggle.png";	
 canvas.focus();
+
