@@ -258,10 +258,13 @@ function menu() {
    resize();
    context.fillStyle = '#F0F8FF';
    context.fillRect(0, 0, canvas.width, canvas.height);
-   context.fillStyle = '#FFA62F';
    context.font = '40px Arial';
    context.textAlign = 'center';
-   context.fillText('We love coil members!', canvas.width / 2, canvas.height / 5);
+   if(testCoilMember===true){
+	context.fillStyle = '#A9A9A9';
+        context.fillText('Welcome coil members!', canvas.width / 2, canvas.height / 6);
+   }
+   context.fillStyle = '#FFA62F';
    context.fillText('Backside Ball', canvas.width / 2, canvas.height / 4);
    context.fillStyle = '#A9A9A9';
    context.font = '18px Arial';
@@ -702,7 +705,7 @@ var coilMember = false;
 if(document.monetization && document.monetization.state === 'started') {
    coilMember = true;	
 }
-var testCoilMember = true;
+var testCoilMember = false;
 // Start game
 wiggleBumImage.addEventListener("load", showMenu());
 blueMoonImage.src ="images/blueMoon.png";
