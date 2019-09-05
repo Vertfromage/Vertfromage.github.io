@@ -16,7 +16,7 @@ https://www.html5rocks.com/en/tutorials/casestudies/gopherwoord-studios-resizing
 https://webglfundamentals.org/webgl/lessons/webgl-anti-patterns.html#toc
 (Note: I know I'm not using webgl, but this article got me thinking about ways to approach resizing my canvas)
 Making my sprite sheet: www.piskelapp.com
-***/	
+***/
 var canvas = document.querySelector("#canvas");
 canvas.width = document.documentElement.clientWidth;
 canvas.height = document.documentElement.clientHeight;
@@ -251,6 +251,7 @@ function showMenu(){
 	wiggleBum.x = canvas.width/2 - wiggleBum.w/2;
         wiggleBum.y = canvas.height/2 - wiggleBum.h*3/4;
   	// Start the game on a click
+	var username = prompt("What is your name?");
   	canvas.addEventListener('click', startGame);
   	menu();
 }
@@ -261,6 +262,7 @@ function menu() {
    context.fillStyle = '#FFA62F';
    context.font = '40px Arial';
    context.textAlign = 'center';
+   context.fillText('Welcome '+username, canvas.width / 2, canvas.height / 5);
    context.fillText('Backside Ball', canvas.width / 2, canvas.height / 4);
    context.fillStyle = '#A9A9A9';
    context.font = '18px Arial';
@@ -696,7 +698,11 @@ blueMoon = sprite({
 var ctx = new AudioContext();
 var gainNode = ctx.createGain();
 gainNode.connect(ctx.destination);
-	
+
+var coilMember = false;
+if(document.monetization && document.monetization.state === 'started') {
+   coilMember = true;	
+}
 // Start game
 wiggleBumImage.addEventListener("load", showMenu());
 blueMoonImage.src ="images/blueMoon.png";
