@@ -251,7 +251,6 @@ function showMenu(){
 	wiggleBum.x = canvas.width/2 - wiggleBum.w/2;
         wiggleBum.y = canvas.height/2 - wiggleBum.h*3/4;
   	// Start the game on a click
-	var username = prompt("What is your name?");
   	canvas.addEventListener('click', startGame);
   	menu();
 }
@@ -703,6 +702,7 @@ var coilMember = false;
 if(document.monetization && document.monetization.state === 'started') {
    coilMember = true;	
 }
+var username = prompt("What is your name?");
 // Start game
 wiggleBumImage.addEventListener("load", showMenu());
 blueMoonImage.src ="images/blueMoon.png";
