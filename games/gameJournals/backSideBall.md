@@ -5,7 +5,7 @@ permalink: /games/gameJournals/backSideBall/
 ---
 [Play BackSide Ball](https://vertfromage.github.io./games/backSideBall/index.html) 
 
-##First Thoughts - August 27th 20119
+##First Thoughts - August 27th 20119##
 
    This is my game submission for [JS13KGAMES](https://js13kgames.com/ "js13kgames.com").  It's also the first HTML5 canvas game I ever made. And the 2nd html/javascript game I ever made. The first game was a straight html/javascript pong game that was only minimally modified from the tutorial.
 
@@ -15,13 +15,12 @@ permalink: /games/gameJournals/backSideBall/
    
    I still want to make it respond to touch events so it will be a real mobile game, right now it only takes keyboard input. I also want to make it so if you go over a certain score you level up to 2 balls, and so on. There's a bug where you can get the ball lined up in one spot and let it keep going up and down to get a huge score and multiple balls will eliminate that.
    
-##Update - Sept 4 2019
+##Update - Sept 4 2019##
 
   I've changed the name to backside ball to illustrate through the name that my game fits the *back* theme of the contest... as though the wiggling bum gremlin wouldn't be obvious on it's own... and it's a more fun name. In addition to the sprite I added sound, links to the tutorials I followed are at the top of the js file if anyone is reading this. (Assuming I've moved the javascript out of the html file, I still need to do that before I submit my game. 
   
   I'm divided about whether to remove the delay when the gremlin moons you, Mike says having the gremlin hold the ball interupts the game... I just think it's good from an artistic composition perspective drawing the eye to the focal point of the composition... in other words I don't want people to miss my joke while tracking the ball. Mike could be right, but I tried it his way and put it back because I like it my way... maybe I will consult Sarah. 
 
   Also I've gotten tired of trying to fix all the *issues* with the game mechanics... it's gotten to the point where I try to fix one thing I break something else.  I'm ready to just make it pretty and submit it to the contest, I'm just making it for fun anyways so if it's not as fun anymore maybe I should go back to learning java and take a break from javascript for a bit. 
-  
   
    
