@@ -1,5 +1,6 @@
 layout: post
-title: Thoughts on BackSide Ball 
+title: Thoughts on BackSide Ball
+permalink: /games/gameJournals/backSideBall/
 ---
 [Play BackSide Ball](https://vertfromage.github.io./games/backSideBall/index.html) 
 
