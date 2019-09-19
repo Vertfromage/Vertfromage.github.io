@@ -1,3 +1,4 @@
+---
 layout: post
 title: Thoughts on BackSide Ball
 permalink: /games/gameJournals/backSideBall/
