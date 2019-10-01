@@ -28,15 +28,15 @@ Before I get back into the story of the development of my game I want to give yo
 
 So I had to start over with HTML5 Canvas, fine I needed a new tutorial. Google: “How to make pong with HTML5 Canvas?”  
 
-Tutorial:  http://bencentra.com/2017-07-11-basic-html5-canvas-games.html
+Tutorial:  <http://bencentra.com/2017-07-11-basic-html5-canvas-games.html>
 
 Enter a super basic tutorial from a summer camp, perfect!  Read through code googling anything that I don't understand, discover jsFiddle along the way, change code in jsFiddle to figure out how they work. 
 Next Problem: I need to resize the canvas so my game doesn't end up with a scroll bar, so it can be used on mobile. Google: “How to resize HTML5 canvas”
 
 Tutorials:
-https://www.kirupa.com/html5/resizing_html_canvas_element.html
-https://www.html5rocks.com/en/tutorials/casestudies/gopherwoord-studios-resizing-html5-games/
-https://webglfundamentals.org/webgl/lessons/webgl-anti-patterns.html#toc
+<https://www.kirupa.com/html5/resizing_html_canvas_element.html>
+<https://www.html5rocks.com/en/tutorials/casestudies/gopherwoord-studios-resizing-html5-games/>
+<https://webglfundamentals.org/webgl/lessons/webgl-anti-patterns.html#toc>
 
 For me this problem was a bit of a doozie to understand, but I considered it a non starter if I couldn't resize for different screen. (I imagine I could have done one small size that would have fit any screen, but that didn't appeal to me.) I read quite a few articles and tutorials before I felt I understood how to solve this issue, and while I was figuring it out I tested everything in the jsFiddle from the previous tutorial. 
 
@@ -48,17 +48,17 @@ At this point I had a working game that I had personalized... and I looked at it
 
 So I googled, “How do you animate a character in HTML5 canvas?” At that point I didn't know they were called sprites.    
 
-Tutorial: http://www.williammalone.com/articles/create-html5-canvas-javascript-sprite-animation/
+Tutorial: <http://www.williammalone.com/articles/create-html5-canvas-javascript-sprite-animation/>
 
 Great I thought, I'll make it work with a coin animation then I can go back and make my own sprite strip! So I did... spend time reading and re-reading the code to figure out how and why it works, try it by itself to see if I understand how it works, then use code in my project, change stuff I need to change to make it work with my game. Write some methods inside the sprite function using that dot notation. 
 
-So once I got that working I had to make my sprite, enter www.piskelapp.com which I found most helpfully on the JS13KGAMES resources page. At first I had it as one long continuous animation where the elf wiggled then mooned you... but it wasn't exactly what I envisioned so I had to break it up into two sprite sheets and write the logic to control when the sprite would moon you and what would happen to the ball while you were being mooned.
+So once I got that working I had to make my sprite, enter <www.piskelapp.com> which I found most helpfully on the JS13KGAMES resources page. At first I had it as one long continuous animation where the elf wiggled then mooned you... but it wasn't exactly what I envisioned so I had to break it up into two sprite sheets and write the logic to control when the sprite would moon you and what would happen to the ball while you were being mooned.
 
 So I had done it I had an elf that mooned you and jumped around the page! But I asked myself what would make this better? Well I understood sprites now... what if he dropped a coin every time he jumped.  The only hard part about implementing that was storing the coins in an array... it was covered in the extended part of the coin tutorial... but it seemed hard... so I hemmed and hawed over whether I wanted to maybe break what was already working to add such an extra bit... but I did anyways... it didn't turn out to be as difficult as I imagined. 
 
 So had a somewhat involved game (from my beginner perspective) at that point, so I could have stopped there, but I asked myself again what could be better? Sound. 
 
-I found a tutorial on the resource page: https://7tonshark.com/2018-09-16-web-audio-part-1/#
+I found a tutorial on the resource page: <https://7tonshark.com/2018-09-16-web-audio-part-1/#>
 
 I really only did a teeny bit of what he was suggesting, just enough to make different noises for the ball, the elf and the coins.
 
