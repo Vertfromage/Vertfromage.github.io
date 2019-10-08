@@ -6,7 +6,7 @@ categories: Update
 ---
 [Play BackSide Ball](https://vertfromage.github.io./games/backSideBall/index.html) 
 
-##First Thoughts - August 27th 2019##
+#First Thoughts - August 27th 2019
 
    This is my game submission for [JS13KGAMES](https://js13kgames.com/ "js13kgames.com").  It's also the first HTML5 canvas game I ever made. And the 2nd html/javascript game I ever made. The first game was a straight html/javascript pong game that was only minimally modified from the tutorial.
 
