@@ -4,7 +4,7 @@ title: Games
 permalink: /games/
 ---
 
-# Welcome to my games page. 
+### Welcome to my games page. 
 
 I'm not feeling like trying to make this pretty. I think I enjoy programming more than decorating. Oh, dear I'm becoming more self-aware time to move on...
 
