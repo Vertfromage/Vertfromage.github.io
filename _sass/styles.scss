@@ -3,17 +3,15 @@
 
 @import "";
 
-$brand-color:      ##471387;
-
 /**
  * Links
  */
 a {
-  color: $brand-color;
+  color: ##471387;
   text-decoration: none;
 
   &:visited {
-    color: darken($brand-color, 15%);
+    color: darken(##471387, 15%);
   }
 
   &:hover {
