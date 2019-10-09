@@ -4,6 +4,7 @@ title: About
 permalink: /about/
 ---
 *Crystal Parker*
+
 ![Profile](https://avatars3.githubusercontent.com/u/29644308?s=400&v=4 "Profile")
 
 
