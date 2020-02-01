@@ -16,7 +16,9 @@ layout: home
 * August 2019 Secret Javascript Pong game hidden on Dad's church website [Play Here](https://www.riversidealbertchurch.com/pong), followed [tutorial]( https://medium.com/@hershybateea/how-to-make-pong-with-javascript-1a6bd6226ea1) lots of fun.
 * September 2019 Made a pong spin-off game for js13KGAMES - [Contest Page](https://js13kgames.com/entries/backside-ball) or [Play Here](https://vertfromage.github.io./games/backSideBall/index.html).  Not expecting to win, it would be nice to get a t-shirt, but with 242 enteries and only 100 t-shirts, a total newb like me hasn't got a chance. (Update: Didn't even make it into top 200! Haha, so I bought one!) I'm going to vote for my favorites. Wrote a [postmortem](https://vertfromage.github.io./update/2019/09/19/entering-JS13KGames-2019-beginner.html).
 * HacktoberFest 2019 - Opened up my text based java game for hacktoberfest contributions, lots of fun, 19 total contributors. 
+* Jan 31st 2020 Made a website about the coronavirus (www.thecoronavirus.ca) using Mezzanine CMS
 * Currently working on learning Java from Tim Buchalka on Udemy(34% completed), cocurrently working on his android app course(35% completed), and his Android LibGDX Game Development(45% completed).
+
 
 
 **Goals**
