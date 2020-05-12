@@ -35,7 +35,7 @@ function menu() {
    context.font = '40px Arial';
    context.textAlign = 'center';
    context.fillText('Math Dungeons', canvas.width / 2, canvas.height / 6);
-   context.fillText('Coming soon!, canvas.width / 2, canvas.height / 4);
+   context.fillText('Coming soon!', canvas.width / 2, canvas.height / 4);
     window.requestAnimationFrame(menu);
 }
 function resize() {
