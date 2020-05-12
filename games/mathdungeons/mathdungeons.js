@@ -46,8 +46,7 @@ function resize() {
      canvas.width = width;
      canvas.height = height;
 }
-
-
+}
 
 canvas.focus();
 menu()
