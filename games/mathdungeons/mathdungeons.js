@@ -48,4 +48,4 @@ function resize() {
 }
 
 canvas.focus();
-menu()
+menu();
