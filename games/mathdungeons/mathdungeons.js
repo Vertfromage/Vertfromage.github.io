@@ -4,6 +4,23 @@ canvas.height = document.documentElement.clientHeight;
 var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
 
+// Create a rectangle object - for paddles, ball, etc
+function makeRect(x, y, width, height, speed, color) {
+  if (!color) color = '#000000';
+  return {
+    x: x,
+    y: y,
+    w: width,
+    h: height,
+    s: speed,
+    c: color,
+    draw: function() {
+      context.fillStyle = this.c;
+      context.fillRect(this.x, this.y, this.w, this.h);
+    }
+  };
+}
+
 // Clear the canvas
 function erase() {
   context.fillStyle = '#FFFFFF';
@@ -31,5 +48,6 @@ function resize() {
 }
 
 
-menu()
+
 canvas.focus();
+menu()
