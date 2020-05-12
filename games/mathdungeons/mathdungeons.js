@@ -29,13 +29,16 @@ function erase() {
 
 function menu() {
   resize();
-  context.fillStyle = '#F0F8FF';
+  context.fillStyle = '#312120';
    context.fillRect(0, 0, canvas.width, canvas.height);
    context.font = '40px Arial';
+   context.fillStyle = '#e3dab0';
    context.textAlign = 'center';
    context.fillText('Math Dungeons', canvas.width / 2, canvas.height / 6);
+   context.fillStyle = '#7b5019';
+   context.font = '18px Arial';
    context.fillText('Coming soon!', canvas.width / 2, canvas.height / 4);
-    window.requestAnimationFrame(menu);
+   window.requestAnimationFrame(menu);
 }
 function resize() {
   var width = document.documentElement.clientWidth;
@@ -46,6 +49,5 @@ function resize() {
      canvas.height = height;
 }
 }
-
-canvas.focus();
 menu();
+canvas.focus();
