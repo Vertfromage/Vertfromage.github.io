@@ -29,7 +29,6 @@ function erase() {
 
 function menu() {
   resize();
-  erase();
   context.fillStyle = '#F0F8FF';
    context.fillRect(0, 0, canvas.width, canvas.height);
    context.font = '40px Arial';
