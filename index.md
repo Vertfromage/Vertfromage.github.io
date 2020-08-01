@@ -19,10 +19,13 @@ layout: home
 * Jan 31st 2020 Made a website about the [coronavirus](https://www.thecoronavirus.ca) using Mezzanine CMS
 * Febuary 2020 Made a website for [Captains Inn](https://www.captainsinnalma.ca/) in Alma NB for a 2 night stay on my anniversary... unfortunately put on hold due to covid19. Boo hoo.
 * May 2020 participated in [Shiftkey Labs](https://shiftkeylabs.ca/) Virtual Covid19 Hackathon. Put together a prototype for a hospital locating [mobile web app](https://pranav16.pythonanywhere.com/). Alot of fun, I was one of 80 participants chosen out of 255 applicants, our team didn't win a prize, but one of the judges mentioned our project in his closing statements, one of our team members was from bangladesh and our project was meant to solve the problem of patients going to the wrong hospitals.
+* June 2020 volunteered to set up a not for profit website [cos-dev.org](https://www.cos-dev.org/)
+* August 2020 Running a kickstarter for my game Math Dungeons, Info on site: [www.mathdungeons.com](https://www.mathdungeons.com) 
 
 **Currently Working on**
 * Learning Java from Tim Buchalka on Udemy(34% completed), cocurrently working on his android app course(35% completed), and his Android LibGDX Game Development(45% completed). 
-* Taking a break from Java to do a short course on HTML5 game engine phaser, might be a shortcut to implementing some of my cool kids educational game ideas. 
+* Decided to make my app in Phaser using HTML5 javascript, the learning curve wasn't as steep and I like the idea of hybrid mobile apps.
+* Running a kickstarter for my app Math Dungeons, links on the website [www.mathdungeons.com](https://www.mathdungeons.com) 
 
 **Goals**
 - Publish an educational game app to the Android app store.
