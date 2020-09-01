@@ -347,10 +347,16 @@ function inside() {
                 if (k[89] && i != 4) {
                     data[i] = choices[R][i];
                     endG[i] = R;
-                } else if (k[78]) {
+                    choose="Data Entered!";
+                } else if (k[78]&& i!=4) {
                     data[i] = "404";
-                } else if (i == 4 && k[78]) {
+                    choose="404 data corrupted!"
+                } else if (i == 4 && k[78]||k[89]) {
                     data[2] = "404";
+                    choose="404 data corrupted!"
+                }
+                if(k[89]||k[78]){
+                    story = 'Mission: Enter ' + data[0] + ' as ' + data[1] + ' use ' + data[2] + ' to ' + data[3];
                 }
             } if (game == 2 && !mob[i] && dead[R][i] == 0 && !(R == 4)) {
                 {
