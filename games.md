@@ -9,8 +9,11 @@ permalink: /games/
 I'm not feeling like trying to make this pretty. I think I enjoy programming more than decorating. Oh, dear I'm becoming more self-aware, time to move on...
 
 ## List of games:
+- **Robot Mission 404**
+[Play here](https://vertfromage.github.io./games/RobotMission404/game.html)
+This is my entry for js13k games 2020, the theme is 404. A choose your own adventure game featuring an amnesiac robot. Controls include arrow keys, y/n, and space, theres also a level editor available to coil members, so they can customize their experience. I made the music with [ZzFXM](https://keithclark.github.io/ZzFXM/) by just basically fiddling around until I found something that sounded okayish... I'm not musical, so don't blame me if it's very basic. 
 
-- **Wall Ball**
+- **Backside Ball**
    [Play the Game!](https://vertfromage.github.io./games/backSideBall/index.html)
 
    This is my game submission for [JS13KGAMES](https://js13kgames.com/ "js13kgames.com").  It's also the first HTML5 canvas game I ever made. And the 2nd html/javascript game I ever made. This is my [postmortem](https://vertfromage.github.io./update/2019/09/19/entering-JS13KGames-2019-beginner.html).
@@ -19,7 +22,7 @@ I'm not feeling like trying to make this pretty. I think I enjoy programming mor
     Secret Javascript Pong game hidden on Dad's church website [Play Here](https://www.riversidealbertchurch.com/pong), followed [tutorial]( https://medium.com/@hershybateea/how-to-make-pong-with-javascript-1a6bd6226ea1) this was my first try at making a javascript game, it gave me the confidence to try something harder.
 
 - **Math Dungeons**
-   [Current](mathdungeons.com)[Super early Prototype](https://vertfromage.github.io./games/mathdungeons/mathdungeons.html)
+   [Current](mathdungeons.com) ,and  [Super early Prototype](https://vertfromage.github.io./games/mathdungeons/mathdungeons.html)
    This is going to be a place to keep a half-assed idea of what this game will be. What I really want to make is a dungeon type math flashcard game. Complete with a customizable player and storyline. Ran a kickstarter, it isn't over for 4 days yet, but I'm faily sure it's not going to be successful, 39% funded. 
 
 There's going to be a map where you can go to different dungeons, then each dungeon will cover a set of math facts. The style is a static (1-point perspective) hallway where it appears monsters are pouring down the hallway towards you. (speed adjustable), each monster has a chain with a math question on it around it's neck. The player is carrying a shield with numbered knives on it that can be thrown at the monster by clicking (or swiping the knife towards the monster) (Possibly give option to target specific monster but default to closest one).
