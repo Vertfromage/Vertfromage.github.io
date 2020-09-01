@@ -25,7 +25,7 @@ var tool,
     pL = c.width / levelCols,
     gameOver = false,
     testing = false,
-    p = makeSprite(c, 420, 70, "robot.png", 6, 30, c.w / 4, c.h / 2, 1, pS),
+    p = makeSprite(c, 420, 70, "robot.png", 6, 30, c.w / 4, c.h / 2, 1.2, pS),
     toX, toY = 0,
     onOff = -1, numnpcs = 5,
     npcs = [],
@@ -812,7 +812,7 @@ function makeSprite(c, w, h, img, f, t, x, y, r, s) {
 
 function spawnnpc() {
     let i = npcs.length;
-    npcs[i] = makeSprite(c, 168, 22, "man3.png", 6, 5, 0, 0, 1.5, 2);
+    npcs[i] = makeSprite(c, 168, 22, "man3.png", 6, 5, 0, 0, 1.8, 2);
     npcs[i].dead = false;
 }
 function spawnb() {
