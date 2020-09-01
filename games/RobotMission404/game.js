@@ -803,7 +803,7 @@ function makeSprite(c, w, h, img, f, t, x, y, r, s) {
 
 function spawnnpc() {
     let i = npcs.length;
-    npcs[i] = makeSprite(c, 168, 22, "man3.png", 6, 5, 0, 0, 1.5, 2);
+    npcs[i] = makeSprite(c, 168, 22, "man3.png", 6, 5, 0, 0, 1.8, 2);
     npcs[i].dead = false;
 }
 function spawnb() {
