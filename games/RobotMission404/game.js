@@ -436,6 +436,7 @@ function inside() {
         p.seq = [1, 0];
         p.update();
         p.seq = [];
+        p.y += p.s;
     }
     if(mobile){key.render();}
     
