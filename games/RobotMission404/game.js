@@ -400,6 +400,7 @@ function inside() {
     if (!t) {
         story = 'Mission: Enter ' + data[0] + ' as ' + data[1] + ' use ' + data[2] + ' to ' + data[3];
         choose = "";
+        if(mobile){choose="Hint: Click past where you want to go."}
         if (complete() && game == 1) {
             choose = "Memory restored. Start mission? Y ? N"
             if (k[89]||toolTap) {
@@ -443,8 +444,8 @@ function inside() {
 
     bump(p);
 
-    tx(story, a.width / 2, c.h * .06, 1.7, "#FFDC21");
-    tx(choose, a.width / 2, c.h * .11, 1.5, '#f5e2b4');
+    tx(story, a.width / 2, c.h * .05, 1.7, "#FFDC21");
+    tx(choose, a.width / 2, c.h * .09, 1.5, '#f5e2b4');
     let tile = a.width / levelCols
     if (p.y > tile * 12 && p.x < tile * 1 + tile / 4) {
         s = 3;
