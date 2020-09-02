@@ -25,7 +25,9 @@ var tool,
     pL = c.width / levelCols,
     gameOver = false,
     testing = false,
-    p = makeSprite(c, 420, 70, "robot.png", 6, 30, c.w/7, c.h/3, 1.2, pS),
+    lorR = -1,
+    p = makeSprite(c, 420, 70, "robot.png", 6, 30, c.w/7, c.h/3, 1, pS),
+    key = makeSprite(c, 6, 6, "key.png", 1, 0, c.w-tileSize*2+tileSize/2, tileSize+tileSize/2, 6, 0),
     toX, toY = 0,
     onOff = -1, numnpcs = 5,
     npcs = [],
@@ -40,10 +42,11 @@ for (let i = 0; i < numnpcs; i += 1) {
     bd[i].seq = [0];
 }
 
+
 // Adventure text
 var story,
     choose,
-    speak = ["This is a ", "Ahh! You're an ", "You have a ", "You're here to ", ""],
+    speak = ["This is a ", "Ahh! You're a ", "You have a ", "You're here to ", ""],
     choices = [["Peaceful Town", "Alien", "Warp Tunnel", "Destroy all life!", "Ahhh! What are you?!"], ["Mob's Hideout", "Robo Cop", "Laser Gun", "Fight the Mob!", "Can I pay you off?"], ["Government Facility", "Escaped Experiment", "Self Destruct", "Destroy the Evidence.", "I'm going to be in so much trouble!"], ["Delightful Bakery", "Bad Trip", "Cool Jet Pack", "Try the Brownies?", "Yikes!"], ["Comic Convention", "Cosplayer", "Loot Bag", "Collect Prizes", "The costumes are amazing this year!"]],
     data,
     endG = [0, 0, 0, 0],
@@ -52,7 +55,8 @@ var story,
     mob,
     health,
     dead,
-    bdBoom;
+    done =true,
+    bdBoom= toolTap = mobile = false;
 //sound Not sure if it's worth the space it takes. Mutated Depp sample
 const songData = [[[.9, 0, 143, , , .35, 3]], [[[0, -1, 1, 8, 6, 4, 1.5, 2.75, 4, , 5, , 6, 4, , 5, , 6, -1, 0, 0, 0], [0, 1, 1, 8, 6, 4, 1.5, 2.75, 4, , 5, , 6, 4, , 5, , 6, -1, 0, 0, 0]], [[0, -1, 20, , 21, 18, , 18, 20, , 21, 18, , 18, , 18, , 18, 20, , 21, , 20, , 21, 18, , 12, 0, 0, 0, -1, 3.5, 12, 12, 5, , 10, , 10, 5, , 8, , 0, 0, 0, 3.5, 12, , , -1], [0, 1, 20, , 21, 18, , 18, 20, , 21, 18, , 18, , 18, , 18, 20, , 21, , 20, , 21, 18, , 12, 0, 0, 0, -1, 3.5, 12, 12, 5, , 10, , 10, 5, , 8, , 0, 0, 0, 3.5, 12, , , -1]]], [1, 1, 0, 0, 1, 0], 60, { title: "baBoot", author: "Vertfromage" }];
 localStorage['OS13kMusic, Robot Mission 404 Song'] = JSON.stringify(songData)
@@ -63,7 +67,7 @@ var level = [[      // L1
     [1, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 1],
     [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 2, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1],
@@ -80,10 +84,10 @@ var level = [[      // L1
 [
     [1, 1, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 1, 1],
     [1, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 1],
-    [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-    [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1],
-    [1, 1, 2, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1],
-    [1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1],
+    [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+    [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1],
+    [1, 1, 2, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1],
+    [1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1],
     [1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 2, 0, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1],
@@ -106,7 +110,7 @@ var level = [[      // L1
     [1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 2, 0, 0, 1],
     [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1],
     [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-    [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
+    [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
     [1, 1, 1, 1, 0, 1, 0, 0, 2, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
     [4, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1],
     [4, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
@@ -142,12 +146,12 @@ var level = [[      // L1
     [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 1, 0, 0, 1],
     [1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1],
+    [1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
     [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 1],
     [1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1],
-    [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
@@ -184,15 +188,22 @@ setInterval(e => {
 onclick = e => {
     x = e.pageX; y = e.pageY;
     switch (s) {
-        case 0: if (!music) { const node = zzfxP(...buffer); node.loop = true; music = true; }
-            p.x = c.w / 4; p.y = c.h / 2; p.switch(0); s = 1;
+        case 0: if(x>a.width/2){mobile=true;} if (!music) { const node = zzfxP(...buffer); node.loop = true; music = true; }
+            toX = p.x = c.w / 4; toY = p.y = c.h / 2; p.switch(0); s = 1;
             break;
-        case 1: toX = x; toY = y; ct = 600;
+        case 1: if(mobile){toX = x; toY = y;done=false;}
             break;
-        case 2: toX = x; toY = y; ct = 600;
+        case 2: if(mobile){
+            if(key.isClose(x,y,1)){toolTap=true;}else{
+                toX = x; toY = y;
+                done=false;
+                if(tool==3||tool==5){
+                    setTimeout(() => {toolTap=false;}, 1000);}else{toolTap=false;}
+        }}
             break;
         case 3: // react to clicks on screen 3
             break;
+        case 4: p.x= c.w/7; p.y= c.h/3; s=0;
         case 5: toX = x; toY = y; tapped(x, y, false); break;
     }
 }
@@ -208,7 +219,7 @@ function title() {
     choose = "";
     game = 1;
     nLoot = nDead = loot = 0;
-    bdBoom = false;
+    bdBoom = toolTap= mobile = false;
     //ToDo switch mob to 0 or 1 and have for each room;
     mob = [false, false, false, false, false];
     dead = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]];
@@ -227,8 +238,10 @@ function title() {
     tx(story, c.w / 2, c.h * .45, 7, '#FFDC21');
     tx("You're an amnesiac robot with corrupted mission data.", c.w / 2, c.h * .55, 2, '#dc21ff');
     tx("Fly around, talk to the town's people to fill in the blanks, and then carry out your mission.", c.w / 2, c.h * .62, 1.7, '#dc21ff');
-    tx('Click to Start Mission!', c.w / 2, c.h * .75, 3, '#f5e2b4');
-    tx('controls: arrows / awsd, space, y, n', c.w / 2, c.h * .85, 1.5, '#f5e2b4');
+    tx('Start Mission! Desktop', c.w/3, c.h * .75, 3, '#f5e2b4');
+    tx('Start Mission! Mobile', c.w/3*2, c.h * .75, 3, '#f5e2b4');
+    tx('arrows or awsd, space, y, n', c.w / 3, c.h * .85, 1.5, '#f5e2b4');
+    tx('landscape, tap to move, button to interact.', c.w / 3*2, c.h * .85, 1.5, '#f5e2b4');
 
 
     keyMove();
@@ -246,7 +259,7 @@ function endScreen() {
     c.fillRect(0, 0, c.w, c.h);
     tx(story, a.width / 2, a.height / 2, 6, "#FFDC21");
     tx(choose, a.width / 2, a.height * .65, 4, '#f5e2b4');
-    tx("Press enter to restart.", a.width / 2, a.height * .75, 3, '#f5e2b4');
+    tx("Click to restart.", a.width / 2, a.height * .75, 3, '#f5e2b4');
     localStorage['OS13kTrophy,👾,Robot Mission 404, Mission Complete']
     if (health == 100) { localStorage["OS13kTrophy,💖,Robot Mission 404, Perfect Health"] }
     if (nDead = 0) { localStorage['OS13kTrophy,🕊,Robot Mission 404, Angel of Peace'] }
@@ -254,7 +267,6 @@ function endScreen() {
     if (nDead == 25 && nLoot == 30 && health < 100) { localStorage['OS13kTrophy,🥈,Robot Mission 404, Loot & Pillage'] = "Now try for 100% health." }
     if (nDead == 25 && health > 99 && nLoot == 30) { localStorage['OS13kTrophy,🏆,Robot Mission 404, Max Combo'] }
     if (document.monetization && document.monetization.state === 'started') { localStorage['OS13kTrophy,👑,Robot Mission 404, Coil Subscriber'] }
-    if (k[13]) { p.x= c.h/7;p.y=c.w/3; s = 0; }
 }
 
 function street() {
@@ -299,7 +311,11 @@ function street() {
     story = 'Mission: Enter ' + data[0] + ' as ' + data[1] + ' use ' + data[2] + ' to ' + data[3];
     tx(story, c.w / 2, c.h * .75, 2, "#f5e2b4");
     if (!bdBoom) {
-        keyMove();
+        if(!mobile){
+        keyMove();}else if(!done){touchMove(toX,toY);}else{
+            p.seq = [1, 0];
+            p.update();
+            p.seq = [];}
     } else {
         setTimeout(() => {
             story = "Self Destruct Complete!";
@@ -351,18 +367,18 @@ function inside() {
                 story = speak[i] + choices[R][i] + "!";
                 choose = "Incoporate into memory file? Y or N";
                 t = true;
-                if (k[89] && i != 4) {
+                if ((k[89]||toolTap) && i != 4) {
                     data[i] = choices[R][i];
                     endG[i] = R;
                     choose = "Data Entered!";
                 } else if (k[78] && i != 4) {
                     data[i] = "404";
                     choose = "404 data corrupted!"
-                } else if (i == 4 && k[78] || k[89]) {
+                } else if (i == 4 && k[78] || (k[89]||toolTap)) {
                     data[2] = "404";
                     choose = "404 data corrupted!"
                 }
-                if (k[89] || k[78]) {
+                if ((k[89]||toolTap) || k[78]) {
                     story = 'Mission: Enter ' + data[0] + ' as ' + data[1] + ' use ' + data[2] + ' to ' + data[3];
                 }
             } if (game == 2 && !mob[i] && dead[R][i] == 0 && !(R == 4)) {
@@ -386,7 +402,7 @@ function inside() {
         choose = "";
         if (complete() && game == 1) {
             choose = "Memory restored. Start mission? Y ? N"
-            if (k[89]) {
+            if (k[89]||toolTap) {
                 makeTool();
                 game = 2;
             }
@@ -399,7 +415,7 @@ function inside() {
     }
     if (game == 2) {
         win();
-        if (k[32]) {
+        if (k[32]||toolTap) {
             useTool();
             if (tool == 5 || tool == 3) {
                 tS.update();
@@ -414,9 +430,15 @@ function inside() {
         }
     }
     p.render();
-
-    keyMove();
-    p.y += p.s;
+    
+    if(!mobile){
+    keyMove();p.y += p.s;}else if(!done){touchMove(toX,toY);}else{
+        p.seq = [1, 0];
+        p.update();
+        p.seq = [];
+    }
+    if(mobile){key.render();}
+    
 
     bump(p);
 
@@ -428,14 +450,18 @@ function inside() {
     }
     // if game==2 check for mission complete, if complete story = mission complete s=4
     if (health < 0) { story = "Damage Sustained,"; choose = "Failure"; s = 4 };
+    
 }
 function drawR() {
     c.fillStyle = "#99A5FE";
     c.fillRect(0, 0, a.width, a.height);
     tileSize = a.width / levelCols;
+
     // converting X player position from tiles to pixels
     c.width = tileSize * levelCols;   // canvas width. Won't work without it even if you style it from CSS
     c.height = tileSize * levelRows; // canvas height. Same as before
+
+    
 
     var nI = 0;
 
@@ -450,7 +476,7 @@ function drawR() {
                 case 5: c.fillStyle = "#000000"; c.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
                     break;
                 case 6: if (game == 1) { level[R][i][j] = 0 } else { if (endG[3] == 3) { c.fillStyle = "#7B4835" } else { c.fillStyle = "#ffdc21" }; c.fillRect(j * tileSize, i * tileSize + tileSize / 2, tileSize / 2, tileSize / 2); }
-                    if (p.isClose(j * tileSize, i * tileSize, 1) && k[32]) { level[R][i][j] = 0; loot++; }
+                    if (p.isClose(j * tileSize, i * tileSize, 1) && (k[32]||toolTap)) { level[R][i][j] = 0; loot++; }
             }
             if (box == 2 && nI < numnpcs && dead[R][nI] == 0) {
                 if (game == 2 && mob[nI]) {
@@ -471,7 +497,6 @@ function drawR() {
             }
         }
     }
-
 }
 function questTrophy(){
     for (i in data) {
@@ -559,14 +584,15 @@ function useTool() {
         case 1:
             tS.x = p.x;
             tS.y = p.y;
+            toolTap=false;
             break;
         case 2:
             tS.x = p.x + a.width / levelCols / 2;
             tS.y = p.y;
             let rA;
-            if (l) {
+            if (l||(toolTap&&lorR>0)) {
                 tS.newSeq([0]); rA = -8;
-            } if (r) { rA = 8; tS.newSeq([1]); }
+            } if (r||(toolTap&&lorR<0)) { rA = 8; tS.newSeq([1]); }
             let timerId2 = setInterval(() => {
                 tS.x += rA;
             },
@@ -575,6 +601,8 @@ function useTool() {
                 clearInterval(timerId2); tS.x = 0;
                 tS.y = 0;
             }, 400);
+            toolTap=false;
+            lorR*=-1;
             break;
         case 3:
             tS.x = p.x;
@@ -583,6 +611,7 @@ function useTool() {
         case 4:
             bdTNT(R);
             s = 1;
+            toolTap=false;
             break;
         case 5: tS.x = p.x - tileSize / 2;
             tS.y = p.y;
@@ -828,7 +857,7 @@ function makeSprite(c, w, h, img, f, t, x, y, r, s) {
 
 function spawnnpc() {
     let i = npcs.length;
-    npcs[i] = makeSprite(c, 168, 22, "man3.png", 6, 5, 0, 0, 1.8, 2);
+    npcs[i] = makeSprite(c, 168, 22, "man3.png", 6, 5, 0, 0, 1.5, 2);
     npcs[i].dead = false;
 }
 function spawnb() {
@@ -855,6 +884,25 @@ function keyMove() {
         p.seq = [];
     };
 }
+function touchMove(x,y){
+    if(p.x<x-p.s){
+        p.x+=p.s;
+        p.switch(3);
+    }
+    if(p.x>x+p.s){
+        p.x-=p.s;
+        p.switch(2); 
+    }if(p.y<y-p.s){
+        p.y+=p.s;
+        p.switch(4);
+    }
+    if(p.y>y+p.s){
+        p.y-=p.s;
+        if(p.x<x-p.s){p.switch(1);}else{p.switch(0);}
+    }
+    if(p.isClose(x,y,.1)){done=true;}
+}
+
 function shadow() {
     c.shadowOffsetX = -3;
     c.shadowOffsetY = -3;
