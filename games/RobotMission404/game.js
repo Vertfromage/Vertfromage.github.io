@@ -310,6 +310,8 @@ function street() {
     tx('Robot Mission 404', c.w / 2, c.h * .65, 5, "#FFDC21");
     story = 'Mission: Enter ' + data[0] + ' as ' + data[1] + ' use ' + data[2] + ' to ' + data[3];
     tx(story, c.w / 2, c.h * .75, 2, "#f5e2b4");
+    if(mobile){let dir = 'landscape, tap to move, button to interact.'}else{let dir='arrows or awsd, space, y, n'}
+    tx(dir, c.w /2, c.h * .8, 1.5, '#f5e2b4');
     if (!bdBoom) {
         if(!mobile){
         keyMove();}else if(!done){touchMove(toX,toY);}else{
@@ -358,7 +360,7 @@ function inside() {
     c.h = a.height;
     drawR();
     questTrophy();
-    if(mobile){key.x=c.w-tileSize*2+tileSize/2; key.y=tileSize+tileSize/2}
+    if(mobile&&game==1){key.x=c.w-tileSize*2+tileSize/2; key.y=tileSize+tileSize/2}
     //npc
     let t = false;
     for (i = 0; i < npcs.length; i++) {
