@@ -21,11 +21,12 @@ var tool,
     pCol = 2, // player starting column
     pRow = 12, // player starting row
     ct2 = 0,
-    pS = 5,
+    pS = 3,
     pL = c.width / levelCols,
     gameOver = false,
     testing = false,
     lorR = -1,
+    time=true,
     p = makeSprite(c, 420, 70, "robot.png", 6, 30, c.w/7, c.h/3, 1.2, pS),
     key = makeSprite(c, 6, 6, "key.png", 1, 0, 0, 0, 6, 0),
     toX, toY = 0,
@@ -188,7 +189,7 @@ setInterval(e => {
 onclick = e => {
     x = e.pageX; y = e.pageY;
     switch (s) {
-        case 0: if(x>a.width/2){mobile=true;p.s=8;} if (!music) { const node = zzfxP(...buffer); node.loop = true; music = true; }
+        case 0: if(x>a.width/2){mobile=true;p.s=5;} if (!music) { const node = zzfxP(...buffer); node.loop = true; music = true; }
             toX = p.x = c.w / 4; toY = p.y = c.h / 2; p.switch(0); s = 1;
             break;
         case 1: if(mobile){toX = x; toY = y;done=false;}
@@ -240,7 +241,7 @@ function title() {
     tx("Fly around, talk to the town's people to fill in the blanks, and then carry out your mission.", c.w / 2, c.h * .62, 1.7, '#dc21ff');
     tx('Start Mission! Desktop', c.w/3, c.h * .75, 3, '#f5e2b4');
     tx('Start Mission! Mobile', c.w/3*2, c.h * .75, 3, '#f5e2b4');
-    tx('arrows or awsd, space, y, n', c.w / 3, c.h * .85, 1.5, '#f5e2b4');
+    tx('arrows or awsd, space, y, n, +/- speed.', c.w / 3, c.h * .85, 1.5, '#f5e2b4');
     tx('landscape, tap to move, button to interact.', c.w / 3*2, c.h * .85, 1.5, '#f5e2b4');
 
 
@@ -311,7 +312,7 @@ function street() {
     story = 'Mission: Enter ' + data[0] + ' as ' + data[1] + ' use ' + data[2] + ' to ' + data[3];
     tx(story, c.w / 2, c.h * .75, 2, "#f5e2b4");
     let dir;
-    if(mobile){dir = 'landscape, tap to move, button to interact.';}else{dir='arrows or awsd, space, y, n';}
+    if(mobile){dir = 'landscape, tap to move, button to interact.';}else{dir='arrows or awsd, space, y, n, +/- speed.';}
     tx("Controls: "+dir, c.w /2, c.h * .8, 1.5, '#f5e2b4');
     if (!bdBoom) {
         if(!mobile){
@@ -329,6 +330,7 @@ function street() {
         bdTNT();
     }
     p.render();
+    if(!mobile){speed();}
 }
 
 function building() {
@@ -416,6 +418,7 @@ function inside() {
             if (loot > 0) { if (endG[3] == 3) { choose += " Brownies: " + loot; } else { choose += " Loot: " + loot; } }
             if (nDead > 0) { choose += " Dead: " + nDead }
         }
+        
     }
     if (game == 2) {
         win();
@@ -449,13 +452,18 @@ function inside() {
 
     tx(story, a.width / 2, c.h * .05, 1.7, "#FFDC21");
     tx(choose, a.width / 2, c.h * .09, 1.5, '#f5e2b4');
+
     let tile = a.width / levelCols
     if (p.y > tile * 12 && p.x < tile * 1 + tile / 4) {
         s = 3;
     }
     // if game==2 check for mission complete, if complete story = mission complete s=4
     if (health < 0) { story = "Damage Sustained,"; choose = "Failure"; s = 4 };
-    
+    if(!mobile){speed();}
+}
+function speed(){
+    if((k[187]||k[61])&&p.s<5&&time){time=false;p.s++; setTimeout(() => {time=true;}, 500);}
+    if((k[189]||k[173])&&p.s>1&&time){time=false;p.s--;setTimeout(() => {time=true;}, 500);}
 }
 function drawR() {
     c.fillStyle = "#99A5FE";
@@ -519,12 +527,7 @@ function questTrophy(){
 // Writen by workshopcraft https://github.com/dazsim/js13k2020
 function drawWall(c, x, y, s, primary, secondary) {
     c.fillStyle = secondary
-    c.shadowOffsetY = -4;
-    c.shadowColor = "black";
-    c.shadowBlur = 6;
     c.fillRect(x, y, s, s)
-    c.shadowOffsetY = 0;
-    c.shadowBlur = 0;
 
     c.strokeStyle = primary
     c.lineWidth = 4
@@ -805,8 +808,8 @@ function sprite(options) {
     };
 
     that.render = function () {
-        that.context.shadowOffsetX = -6;
-        that.context.shadowOffsetY = -3;
+        that.context.shadowOffsetX = -3;
+        that.context.shadowOffsetY = -1;
         that.context.shadowColor = "black";
         that.context.shadowBlur = 3;
 
@@ -862,7 +865,7 @@ function makeSprite(c, w, h, img, f, t, x, y, r, s) {
 
 function spawnnpc() {
     let i = npcs.length;
-    npcs[i] = makeSprite(c, 168, 22, "man3.png", 6, 5, 0, 0, 1.8, 2);
+    npcs[i] = makeSprite(c, 168, 22, "man3.png", 6, 10, 0, 0, 1.8, 2);
     npcs[i].dead = false;
 }
 function spawnb() {
