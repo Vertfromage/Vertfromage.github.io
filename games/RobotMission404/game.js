@@ -466,11 +466,17 @@ function speed(){
     if((k[189]||k[173])&&p.s>1&&time){time=false;p.s--;setTimeout(() => {time=true;}, 500);}
 }
 function drawR() {
+    tileSize = a.width / levelCols;
+    
+   // Background
     c.fillStyle = "#99A5FE";
     c.fillRect(0, 0, a.width, a.height);
-    tileSize = a.width / levelCols;
+    for (i = 0; i < levelRows/4; i++) {
+        for (j = 0; j < levelCols/4; j++) {
+            drawWall(c, j * tileSize*4+tileSize/2, i * tileSize*4+tileSize/2, tileSize*4,"#c6cdff", "#99A5FE");
+        }}
 
-    // converting X player position from tiles to pixels
+    // converting from tiles to pixels
     c.width = tileSize * levelCols;   // canvas width. Won't work without it even if you style it from CSS
     c.height = tileSize * levelRows; // canvas height. Same as before
 
