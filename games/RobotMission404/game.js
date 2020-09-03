@@ -27,7 +27,7 @@ var tool,
     testing = false,
     lorR = -1,
     time=true,
-    p = makeSprite(c, 420, 70, "robot.png", 6, 30, c.w/7, c.h/3, 1.2, pS),
+    p = makeSprite(c, 420, 70, "robot.png", 6, 30, c.w/7, c.h/3, tileSize/70*2, pS),
     key = makeSprite(c, 6, 6, "key.png", 1, 0, 0, 0, 6, 0),
     toX, toY = 0,
     onOff = -1, numnpcs = 5,
@@ -865,7 +865,7 @@ function makeSprite(c, w, h, img, f, t, x, y, r, s) {
 
 function spawnnpc() {
     let i = npcs.length;
-    npcs[i] = makeSprite(c, 168, 22, "man3.png", 6, 10, 0, 0, 1.8, 2);
+    npcs[i] = makeSprite(c, 168, 22, "man3.png", 6, 10, 0, 0, tileSize/22, 2);
     npcs[i].dead = false;
 }
 function spawnb() {
