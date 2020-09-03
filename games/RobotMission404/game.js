@@ -27,7 +27,7 @@ var tool,
     testing = false,
     lorR = -1,
     p = makeSprite(c, 420, 70, "robot.png", 6, 30, c.w/7, c.h/3, 1.2, pS),
-    key = makeSprite(c, 6, 6, "key.png", 1, 0, c.w-tileSize*2+tileSize/2, tileSize+tileSize/2, 6, 0),
+    key = makeSprite(c, 6, 6, "key.png", 1, 0, 0, 0, 6, 0),
     toX, toY = 0,
     onOff = -1, numnpcs = 5,
     npcs = [],
@@ -358,12 +358,14 @@ function inside() {
     c.h = a.height;
     drawR();
     questTrophy();
+    if(mobile){key.x=c.w-tileSize*2+tileSize/2; key.y=tileSize+tileSize/2}
     //npc
     let t = false;
     for (i = 0; i < npcs.length; i++) {
         if (p.isClose(npcs[i].x, npcs[i].y, 1)) {
             // check for game state... adventure vs endgame.
             if (game == 1) {
+                if(mobile){key.x=tileSize*21;key.y=tileSize/2}
                 story = speak[i] + choices[R][i] + "!";
                 choose = "Incoporate into memory file? Y or N";
                 t = true;
@@ -377,9 +379,6 @@ function inside() {
                 } else if (i == 4 && k[78] || (k[89]||toolTap)) {
                     data[2] = "404";
                     choose = "404 data corrupted!"
-                }
-                if ((k[89]||toolTap) || k[78]) {
-                    story = 'Mission: Enter ' + data[0] + ' as ' + data[1] + ' use ' + data[2] + ' to ' + data[3];
                 }
             } if (game == 2 && !mob[i] && dead[R][i] == 0 && !(R == 4)) {
                 {
@@ -403,6 +402,7 @@ function inside() {
         if(mobile){choose="Hint: Click past where you want to go."}
         if (complete() && game == 1) {
             choose = "Memory restored. Start mission? Y ? N"
+            if(mobile){key.x=tileSize*27;key.y=tileSize/2}
             if (k[89]||toolTap) {
                 makeTool();
                 game = 2;
