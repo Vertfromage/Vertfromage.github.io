@@ -310,8 +310,9 @@ function street() {
     tx('Robot Mission 404', c.w / 2, c.h * .65, 5, "#FFDC21");
     story = 'Mission: Enter ' + data[0] + ' as ' + data[1] + ' use ' + data[2] + ' to ' + data[3];
     tx(story, c.w / 2, c.h * .75, 2, "#f5e2b4");
-    if(mobile){let dir = 'landscape, tap to move, button to interact.'}else{let dir='arrows or awsd, space, y, n'}
-    tx(dir, c.w /2, c.h * .8, 1.5, '#f5e2b4');
+    let dir;
+    if(mobile){dir = 'landscape, tap to move, button to interact.';}else{dir='arrows or awsd, space, y, n';}
+    tx("Controls: "+dir, c.w /2, c.h * .8, 1.5, '#f5e2b4');
     if (!bdBoom) {
         if(!mobile){
         keyMove();}else if(!done){touchMove(toX,toY);}else{
