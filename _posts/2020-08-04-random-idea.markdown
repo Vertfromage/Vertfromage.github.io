@@ -1,3 +1,10 @@
+---
+layout: post
+title:  "Random idea**
+date:   2020-08-04
+categories: Random
+---
+
 **Random Idea**
 
 I can't find my journal so I'm recording my random idea here for later. 
