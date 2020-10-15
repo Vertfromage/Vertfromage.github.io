@@ -6,9 +6,9 @@ Mission: Make a website
 
   
   
-Hey, want to make a website?
+👩🏻‍💻 Hey, want to make a website?
 
-Is it hard?
+👦🏻 👧🏻 Is it hard?
 
 It can be, some of it can be hard like a big 1000 piece puzzle\! 
 
