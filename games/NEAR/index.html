@@ -1,0 +1,297 @@
+<!doctype html>
+<html>
+		<head><meta charset="utf-8" />
+            <script src="https://cdn.jsdelivr.net/npm/near-api-js/dist/near-api-js.min.js"></script>
+            </script>
+            <style>
+              body{
+                background: #a29bfe;
+              }
+              canvas{
+                background: #ff7675;
+              }
+              .after-sign-in{
+                text-align: center;
+              }
+              #response{
+                visibility: hidden;
+              }
+              h1,h2{
+                color: #dfe6e9;
+              }
+            </style>
+      </head> 
+		<body style="margin:0;overflow: hidden;">
+            <div class="container">
+                <div class="sign-in" style="display: none;">
+                  <h1>Welcome!</h1>
+                  <h2>Sign in with NEAR to say hello!</h2>
+                  <button class="sign-in btn" style="background-color: #0072CE;">Sign In</button>
+                </div>
+            
+                <div class="after-sign-in" style="display: none;">
+                  <h1>Fill in your name for a little suprise greeting!</h1>
+                  <textarea id="text" placeholder="Name"></textarea><br>
+                  <button id="send-greeting">Send Greeting</button>
+                  <button class="sign-out btn" style="background-color: #0072CE;">Sign Out</button>
+                  <h2 id="response">Loading response...</h2>
+                  <canvas id=canvas>   
+                  </canvas>
+                </div>
+              </div>
+	</body>
+</html>
+<script>
+var CONTRACT_NAME='nearvember.testnet';
+
+async function connect() {
+    let near = await nearApi.connect({
+    nodeUrl: "https://rpc.testnet.near.org",
+    walletUrl: "https://wallet.testnet.near.org",
+    helperUrl: "https://helper.testnet.near.org",
+    explorerUrl: "https://explorer.testnet.near.org",
+    networkId: 'testnet',
+    keyStore: new window.nearApi.keyStores.BrowserLocalStorageKeyStore(window.localStorage, 'crystal')
+    });
+
+    window.walletConnection = new nearApi.WalletConnection(near);
+    let account;
+    if (window.walletConnection.isSignedIn()) {
+        // Logged in account, can write as user signed up through wallet
+        account = walletConnection.account();
+        // connect to a NEAR smart contract
+        window.contract = new nearApi.Contract(account, CONTRACT_NAME, {
+          viewMethods: [],
+          changeMethods: ['set_name']
+        });
+    } else {
+        // Contract account, normally only gonna work in read only mode
+        account = new nearApi.Account(near.connection, CONTRACT_NAME);
+        //console.log(account);
+    }
+}
+
+// Log in user using NEAR Wallet on "Sign In" button click
+document.querySelector('.sign-in').addEventListener('click', () => {
+  window.walletConnection.requestSignIn(CONTRACT_NAME, 'Nearvember');
+});
+
+
+// async function to call contract
+async function callHello(){
+    // call the contract
+    let contract = await window.contract.set_name({
+          args: { name: document.getElementById('text').value }
+        })
+    // //testing code
+    // let contract = "test";
+
+    // clear the form
+    document.getElementById('text'),innerHTML="";
+    // Output from contract
+    document.getElementById('response').innerHTML=contract;
+    return contract;
+}
+
+// switch between logged in/out
+function updateUI() {
+  // console.log("Update UI");
+    if (!window.walletConnection.getAccountId()) {
+    Array.from(document.querySelectorAll('.sign-in')).map(it => it.style = 'display: block;margin-left: 10%;margin-top: 10%;');
+  }else {
+    Array.from(document.querySelectorAll('.after-sign-in')).map(it => it.style = 'display: block;');
+    var userName = window.walletConnection.getAccountId();
+    userName = userName.slice(0,userName.lastIndexOf('.'));
+    ifLoggedIn();
+  }
+}
+
+nearApi.nearInitPromise = connect()
+  .then(updateUI)
+  .catch(console.error);
+ 
+	// Things I want to do if logged in
+	function ifLoggedIn(){
+      var userName = window.walletConnection.getAccountId();
+      userName = userName.slice(0,userName.lastIndexOf('.'));
+      console.log("logged In!!")
+
+      document.getElementById('send-greeting').addEventListener('click', () => {
+      if (window.walletConnection.isSignedIn()) {
+        callHello();
+        start();
+      }
+    });
+
+    //Logout
+    document.querySelector('.sign-out').addEventListener('click', () => {
+      if (window.walletConnection.isSignedIn()) {
+        window.walletConnection.signOut();
+        updateUI();
+      }
+    });
+    
+    
+
+    // initialize 2D a (c)
+	// initialize game state (s)
+	// initialize keys states (u,r,d,l for directions, k for all the keyboard)
+	var c = canvas.getContext`2d`, k = [u = r = d = l = s = 0];
+	canvas.width = innerWidth;
+	canvas.height = innerHeight/2;
+// (initialize your global variables here)
+c.w = innerWidth;
+c.h = innerHeight;
+// update u,l,d,r globals when an arrow key/wasd/zqsd is pressed or released
+
+// DRAW LOOP
+let reqAnimationId;
+function smoothAnimation(e) {
+    // animtion
+	  canvas.width = innerWidth, canvas.height = innerHeight/2;
+	  c.w=canvas.width, c.h = canvas.height;
+    blue.x= c.w/2-(blue.w / 18 * 2)/2;
+    blue.y = c.h*.05;
+    animate();
+    reqAnimationId = requestAnimationFrame(smoothAnimation)
+}
+// to start
+function start() {
+    reqAnimationId = requestAnimationFrame(smoothAnimation)
+}
+
+function animate(){
+  tx(document.getElementById('response').innerHTML, c.w/2,c.h*.9,3, '#636e72');
+  blue.update();
+  blue.render();
+}
+
+function stop(){
+  cancelAnimationFrame(reqAnimationId);
+}
+
+function tx(t, w, h, f, s) {
+    c.textAlign = 'center';
+    c.fillStyle = s;
+    c.font = f + 'vw Consolas';
+    c.fillText(t, w, h);
+}
+
+blue = makeSprite(c,1800,100,"blue.png",18,10,c.w/2,c.h*.1,2,0);
+
+function makeSprite(c, w, h, img, f, t, x, y, r, s) {
+let i = new Image();
+let sp = sprite({
+	context: c,
+	width: w,
+	height: h,
+	image: i,
+	numberOfFrames: f,
+	ticksPerFrame: t,
+	s: s
+});
+sp.x = x;
+sp.y = y;
+sp.scaleRatio = r;
+i.src = img;
+return sp;
+}
+
+function sprite(options) {
+
+var that = {},
+	frameIndex = 0,
+	tickCount = 0,
+	spot = 0,
+	ticksPerFrame = options.ticksPerFrame || 0,
+	numberOfFrames = options.numberOfFrames || 1;
+
+that.context = options.context;
+that.w = options.width;
+that.h = options.height;
+that.x = options.x;
+that.y = options.y;
+that.image = options.image;
+that.scaleRatio = 1;
+that.s = options.s;
+that.seq = [];
+that.dead = false;
+that.outOfBounds= false;
+
+that.newSeq = function (seq) {
+	spot = 0;
+	frameIndex = 0;
+	that.seq = seq;
+};
+
+that.switch = function (x) {
+	frameIndex = x;
+};
+
+that.update = function () {
+
+	tickCount += 1;
+
+	if (tickCount > ticksPerFrame) {
+
+		tickCount = 0;
+
+		// If the current frame index is in range
+		if (frameIndex < numberOfFrames - 1) {
+			// Go to the next frame
+			frameIndex += 1;
+			if (that.seq.length > 0) {
+				frameIndex = that.seq[spot];
+				spot += 1;
+			}
+		} else if (that.seq.length < 1) {
+			frameIndex = 0;
+		}
+		if (spot > that.seq.length - 1) {
+			spot = 0;
+		}
+	}
+};
+that.render = function () {
+	// Draw the animation
+	that.context.drawImage(
+		that.image,
+		frameIndex * that.w / numberOfFrames,
+		0,
+		that.w / numberOfFrames,
+		that.h,
+		that.x,
+		that.y,
+		that.w / numberOfFrames * that.scaleRatio,
+		that.h * that.scaleRatio,
+	);
+};
+that.getFrameWidth = function () {
+	return that.w / numberOfFrames;
+};
+that.isClose = function (x, y, t) {
+	var dx = (that.x + that.getFrameWidth() / 2 * that.scaleRatio) - (x + that.getFrameWidth() / 2),
+		dy = (that.y + that.getFrameWidth() / 2 * that.scaleRatio) - (y + that.getFrameWidth() / 2);
+
+	var dist = Math.sqrt(dx * dx + dy * dy);
+
+	if (dist < that.getFrameWidth() * that.scaleRatio * t) {
+		return true;
+	} else {
+		return false;
+	}
+};
+that.move = function(){
+	that.x+= that.s.x;
+	that.y+= that.s.y;
+	if(that.x>c.w || that.y>c.h || that.x<0 ||that.y<-100){
+		that.outOfBounds = true;
+	}
+};
+return that;
+}
+
+}
+
+
+</script>
