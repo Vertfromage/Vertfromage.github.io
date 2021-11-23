@@ -1,0 +1,167 @@
+<!doctype html>
+<html>
+		<head><meta charset="utf-8" />
+            <script src="https://cdn.jsdelivr.net/npm/near-api-js/dist/near-api-js.min.js"></script>
+            </script>
+            <style>
+              body{
+                background: #a29bfe;
+              }
+              canvas{
+                background: #ff7675;
+              }
+              .after-sign-in{
+                text-align: center;
+              }
+              #response{
+                visibility: hidden;
+              }
+              h1,h2{
+                color: #dfe6e9;
+              }
+            </style>
+      </head> 
+		<body style="margin:0;overflow: hidden;">
+            <div class="container">
+                <div class="sign-in" style="display: none;">
+                  <h1>Welcome!</h1>
+                  <h2>Sign in with NEAR to say hello!</h2>
+                  <img width="100px" src="https://bafkreieteiihgeefr6de4llad5vmtxoo5yc52pu36dk4kdng7v6bmqvp3i.ipfs.dweb.link/">
+                  <button class="sign-in btn" style="background-color: #0072CE;">Sign In</button>
+                </div>
+            
+                <div class="after-sign-in" style="display: none;">
+                  <h1>Let's mint an nft!</h1>
+                  <img height="60%" src="https://bafkreieteiihgeefr6de4llad5vmtxoo5yc52pu36dk4kdng7v6bmqvp3i.ipfs.dweb.link/">
+                  <p id="welcome"></p>
+                  <!-- <a href="https://nft.storage/files/" target="_blank">Upload Image here!</a><br>
+                  <a href="https://docs.near.org/docs/tutorials/contracts/nfts/minting-nfts#uploading-the-image" target="_blank">Confused, here's a tutorial</a><br>
+                  <label for="cid">CID</label><input id="cid" value = "bafkreieteiihgeefr6de4llad5vmtxoo5yc52pu36dk4kdng7v6bmqvp3i"></input><br> -->
+                  <!-- <input id="nft-name" placeholder="nft name"></input><br>
+                  <textarea id="nft-desc" placeholder="nft description"></textarea><br> -->
+                  <button id="make-nft">Mint NFT</button>
+                  <button class="sign-out btn" style="background-color: #0072CE;">Sign Out</button>
+                  
+                </div>
+                <div class="after-nft-minted" style="display: none;">
+                  <h1 id="nft-header"></h1>
+                  <button class="sign-out btn" style="background-color: #0072CE;">Sign Out</button>
+                </div>
+              </div>
+	</body>
+</html>
+<script>
+var CONTRACT_NAME='nft.vertfromage2.testnet';
+
+async function connect() {
+    let near = await nearApi.connect({
+    nodeUrl: "https://rpc.testnet.near.org",
+    walletUrl: "https://wallet.testnet.near.org",
+    helperUrl: "https://helper.testnet.near.org",
+    explorerUrl: "https://explorer.testnet.near.org",
+    networkId: 'testnet',
+    keyStore: new window.nearApi.keyStores.BrowserLocalStorageKeyStore(window.localStorage, 'vertfromage2')
+    });
+
+    window.walletConnection = new nearApi.WalletConnection(near);
+    let account;
+    if (window.walletConnection.isSignedIn()) {
+        // Logged in account, can write as user signed up through wallet
+        account = window.walletConnection.account();
+        // connect to a NEAR smart contract
+        window.contract = new nearApi.Contract(account, CONTRACT_NAME, {
+          changeMethods: ['nft_mint'],
+          sender: account // account object to initialize and sign transactions.
+        }
+        );
+    } else {
+        // Contract account, normally only gonna work in read only mode
+        account = new nearApi.Account(near.connection, CONTRACT_NAME);
+        //console.log(account);
+    }
+}
+
+// Log in user using NEAR Wallet on "Sign In" button click
+document.querySelector('.sign-in').addEventListener('click', () => {
+  window.walletConnection.requestSignIn(CONTRACT_NAME, 'nft.vertfromage2');
+});
+
+//Status of NFT
+isNFTMinted = false;
+// async function to call contract
+async function mintNFT(){
+    let tokenNum = Math.random()*1000;
+  
+          let contract = await window.contract.nft_mint({
+            token_id: "token-id-"+tokenNum,
+            receiver_id:window.walletConnection.getAccountId(),
+            metadata: {spec: "nft-1.0.0",
+               name: "vertfromage NFT",
+              symbol: "VERTFROMAGE",
+               title: "dance",
+              description:"awesome squiggle",
+               media: "https://bafkreieteiihgeefr6de4llad5vmtxoo5yc52pu36dk4kdng7v6bmqvp3i.ipfs.dweb.link/"
+              }
+          },
+          '100000000000000',
+          '10000000000000000000000'
+        );
+    console.log({
+          'args': { 
+            'token_id': '6', 
+            'receiver_id': window.walletConnection.getAccountId(), 
+            'metadata': { 
+              'spec': 'nft-1.0.0',
+              'name': 'vertfromage NFT',
+              'symbol': 'VERTFROMAGE',
+              'title': document.getElementById('nft-name').value, 
+              'description': document.getElementById('nft-desc').value, 
+              'media': 'https://'+document.getElementById('cid').value+'.ipfs.dweb.link/'
+              }
+            }
+        },
+        100000000000000,
+        10000000000000000000000 );
+
+    return;
+}
+
+// switch between logged in/out
+function updateUI() {
+  // console.log("Update UI");
+    if (!window.walletConnection.getAccountId()) {
+    Array.from(document.querySelectorAll('.sign-in')).map(it => it.style = 'display: block;margin-left: 10%;margin-top: 10%;');
+  }else {
+    Array.from(document.querySelectorAll('.after-sign-in')).map(it => it.style = 'display: block;');
+    ifLoggedIn();
+    }
+}
+
+nearApi.nearInitPromise = connect()
+  .then(updateUI)
+  .catch(console.error);
+ 
+	// Things I want to do if logged in
+	function ifLoggedIn(){
+      var userName = window.walletConnection.getAccountId();
+      userName = userName.slice(0,userName.lastIndexOf('.'));
+      document.getElementById('welcome').innerHTML = userName;
+
+      document.getElementById('make-nft').addEventListener('click', () => {
+      if (window.walletConnection.isSignedIn()) {
+        mintNFT();
+        //start();
+      }
+    });
+
+    //Logout
+    document.querySelector('.sign-out').addEventListener('click', () => {
+      if (window.walletConnection.isSignedIn()) {
+        window.walletConnection.signOut();
+      }
+      updateUI();
+    });
+
+  }
+
+</script>
