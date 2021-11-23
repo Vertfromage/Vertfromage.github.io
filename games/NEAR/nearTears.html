@@ -1,0 +1,195 @@
+<!doctype html>
+<html>
+		<head><meta charset="utf-8" />
+            <script src="https://cdn.jsdelivr.net/npm/near-api-js/dist/near-api-js.min.js"></script>
+            </script>
+            <style>
+              body{
+                background: #a29bfe;
+              }
+              canvas{
+                background: #ff7675;
+              }
+              .after-sign-in{
+                text-align: center;
+              }
+              #response{
+                visibility: hidden;
+              }
+              h1,h2{
+                color: #dfe6e9;
+              }
+            </style>
+      </head> 
+		<body style="margin:0;">
+            <div class="container">
+                <div class="sign-in" style="display: none;">
+                  <h1>Welcome!</h1>
+                  <h2>Sign in with NEAR to get fresh nearTears!</h2>
+                  <h3>Freshly minted from the suffering of junior developers learning NEAR protocol</h3>
+                  <button class="sign-in btn" style="background-color: #0072CE;">Sign In</button>
+                </div>
+            
+                <div class="after-sign-in" style="display: none;">
+                  <button class="sign-out btn" style="background-color: #0072CE; float:right; margin:10px;">Sign Out</button><br>
+                  <h1>nearTears</h1>
+                  <h2>Freshly minted from the suffering of junior developers learning NEAR protocol</h2>
+                  <div style="margin-left:30%;"><div class="tenor-gif-embed" data-postid="6077907" data-share-method="host" data-aspect-ratio="1.58" data-width="50%"><a href="https://tenor.com/view/kein-stress-bitte-work-stressing-gif-6077907">Kein Stress GIF</a>from <a href="https://tenor.com/search/kein-gifs">Kein GIFs</a></div></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+                  <p id="welcome"></p>
+                  <p id="balance"></p>
+                  <div id=send>
+                  <label for="amount">Send nearTears:</label>
+                  <input id="amount" placeholder="3" style="width:20px"></input>
+                  <input id="to" placeholder="yourfriend.testnet"  style="width:150px"></input>
+                  <button id="send-tears">Send nearTears</button><br>
+                  <p id="doing" style="font-size: x-small;">If your friend has no account, first call will create account, try again to send tokens.</p>
+                  <button id="set-up">Get a nearTears wallet</button></div><br>
+
+                </div>
+              </div>
+	</body>
+</html>
+<script>
+var CONTRACT_NAME='ft.vertfromage2.testnet';
+
+async function connect() {
+    let near = await nearApi.connect({
+    nodeUrl: "https://rpc.testnet.near.org",
+    walletUrl: "https://wallet.testnet.near.org",
+    helperUrl: "https://helper.testnet.near.org",
+    explorerUrl: "https://explorer.testnet.near.org",
+    networkId: 'testnet',
+    keyStore: new window.nearApi.keyStores.BrowserLocalStorageKeyStore(window.localStorage, 'vertfromage2')
+    });
+
+    window.walletConnection = new nearApi.WalletConnection(near);
+    let account;
+    if (window.walletConnection.isSignedIn()) {
+        // Logged in account, can write as user signed up through wallet
+        account = window.walletConnection.account();
+        // connect to a NEAR smart contract
+        window.contract = new nearApi.Contract(account, CONTRACT_NAME, {
+          viewMethods: ['ft_balance_of','storage_balance_of'],
+          changeMethods: ['ft_transfer','storage_deposit'],
+          sender: account // account object to initialize and sign transactions.
+        }
+        );
+    } else {
+        // Contract account, normally only gonna work in read only mode
+        account = new nearApi.Account(near.connection, CONTRACT_NAME);
+        //console.log(account);
+    }
+}
+
+// Log in user using NEAR Wallet on "Sign In" button click
+document.querySelector('.sign-in').addEventListener('click', () => {
+  window.walletConnection.requestSignIn(CONTRACT_NAME, 'ft.vertfromage2');
+});
+
+//Status of NFT
+isNFTMinted = false;
+// async function to call contract
+async function accountBalance(){
+  // check to see if there is storage for nearTears
+  let hasAccount = await window.contract.storage_balance_of(
+    {account_id: window.walletConnection.getAccountId()});
+    userBalance="";
+  
+   // if no storage, set up account button is visible 
+  if(hasAccount==null){
+    userBalance = "NO ACCOUNT";
+    // event listener for set up account
+    document.getElementById('set-up').addEventListener('click', () => {
+      if (window.walletConnection.isSignedIn()) {
+        makeAccount();
+        console.log("Set up account");
+        document.getElementById('send').style ='display: none;';
+      }
+    });
+  }else{
+    // if there is storage display amount of nearTears and div to send
+    userBalance = await window.contract.ft_balance_of(
+    {account_id: window.walletConnection.getAccountId()}
+    );
+    document.getElementById('set-up').style ='display: none;';
+    document.getElementById('send').style ='display: block;';
+    document.getElementById('send-tears').addEventListener('click', () => {
+      sendTears();
+    });
+  }
+  document.getElementById('balance').innerHTML = "Your balance is "+userBalance+" nearTears";
+  return;
+}
+
+async function makeAccount(){
+  let success = await window.contract.storage_deposit(
+    {account_id: window.walletConnection.getAccountId()},
+    '200000000000000',
+  '1250000000000000000000');
+  // not sure if I need to recall after I send tears?
+  accountBalance();
+}
+
+async function sendAmount(num, friend){
+  let sent = await window.contract.ft_transfer({
+    receiver_id: friend, amount: num
+  },
+  '200000000000000',
+  '1'
+  );
+  return sent;
+}
+
+async function sendTears(){
+  let num = document.getElementById("amount").value;
+  let friend = document.getElementById("to").value;
+  document.getElementById("doing").innerHTML = "Sending "+num+" nearTears to "+friend+"...";
+  // check if has account
+  let hasAccount = await window.contract.storage_balance_of({account_id: friend});
+  if(hasAccount==null){
+      document.getElementById("doing").innerHTML = friend+" has no account... setting up account...";
+      let success = await window.contract.storage_deposit(
+        {account_id: friend},
+          '200000000000000',
+          '1250000000000000000000');
+  }else{
+    result = sendAmount(num,friend);
+    document.getElementById("doing").innerHTML = "Sending..."+result;
+  }
+
+}
+
+// switch between logged in/out
+function updateUI() {
+  // console.log("Update UI");
+    if (!window.walletConnection.getAccountId()) {
+    Array.from(document.querySelectorAll('.sign-in')).map(it => it.style = 'display: block;margin-left: 10%;margin-top: 10%;');
+    Array.from(document.querySelectorAll('.after-sign-in')).map(it => it.style = 'display: none;');
+  }else {
+    Array.from(document.querySelectorAll('.after-sign-in')).map(it => it.style = 'display: block;');
+    ifLoggedIn();
+    }
+}
+
+nearApi.nearInitPromise = connect()
+  .then(updateUI)
+  .catch(console.error);
+ 
+	// Things I want to do if logged in
+	function ifLoggedIn(){
+      var userName = window.walletConnection.getAccountId();
+      userName = userName.slice(0,userName.lastIndexOf('.'));
+      document.getElementById('welcome').innerHTML = "Hello, "+userName;
+      accountBalance();
+
+    //Logout
+    document.querySelector('.sign-out').addEventListener('click', () => {
+      if (window.walletConnection.isSignedIn()) {
+        window.walletConnection.signOut();
+      }
+      updateUI();
+    });
+
+  }
+
+</script>
