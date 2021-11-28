@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+		<head><meta charset="utf-8" />
+            <script src="https://cdn.jsdelivr.net/npm/near-api-js/dist/near-api-js.min.js"></script>
+            </script>
+            <style>
+              body{
+                background: #a29bfe;
+              }
+              canvas{
+                background: #ff7675;
+              }
+              .after-sign-in{
+                text-align: center;
+              }
+              #response{
+                visibility: hidden;
+              }
+              h1,h2{
+                color: #dfe6e9;
+              }
+            </style>
+      </head> 
+		<body style="margin:0;overflow: hidden;">
+            <div class="container">
+                <div class="sign-in" style="display: none;">
+                  <h1>Welcome!</h1>
+                  <h2>Sign in with NEAR to vote!</h2>
+                  <h3>Voting game made while learning NEAR protocol</h3>
+                  <button class="sign-in btn" style="background-color: #0072CE;">Sign In</button>
+                </div>
+            
+                <div class="after-sign-in" style="display: none;">
+                
+                <h1 id="result">Vote for a candidate!</h1>
+                <button id="vote" style="margin-top: 100px;">Vote</button>
+                <h2>After you sign contract, close this tab and return to game. Or sign out.</h2>
+                <button class="sign-out btn" style="background-color: #0072CE;">Sign Out</button>
+                </div>
+              </div>
+	</body>
+
+    <script>
+    var CONTRACT_NAME='vote2.vertfromage2.testnet';
+
+async function connect() {
+    let near = await nearApi.connect({
+    nodeUrl: "https://rpc.testnet.near.org",
+    walletUrl: "https://wallet.testnet.near.org",
+    helperUrl: "https://helper.testnet.near.org",
+    explorerUrl: "https://explorer.testnet.near.org",
+    networkId: 'testnet',
+    keyStore: new window.nearApi.keyStores.BrowserLocalStorageKeyStore(window.localStorage, 'vertfromage2 vote')
+    });
+
+    window.walletConnection = new nearApi.WalletConnection(near);
+    let account;
+    if (window.walletConnection.isSignedIn()) {
+        // Logged in account, can write as user signed up through wallet
+        account = window.walletConnection.account();
+        // connect to a NEAR smart contract
+        window.contract = new nearApi.Contract(account, CONTRACT_NAME, {
+          viewMethods: ['getCandidates', 'getCandidateVotes'],
+          changeMethods: ['addCandidate','vote'],
+          sender: account // account object to initialize and sign transactions.
+        }
+        );
+    } else {
+        // Contract account, normally only gonna work in read only mode
+        account = new nearApi.Account(near.connection, CONTRACT_NAME);
+        //console.log(account);
+    }
+}
+
+// Log in user using NEAR Wallet on "Sign In" button click
+document.querySelector('.sign-in').addEventListener('click', () => {
+  window.walletConnection.requestSignIn(CONTRACT_NAME, 'vertfromage2 vote');
+});
+
+// switch between logged in/out
+function updateUI() {
+  // console.log("Update UI");
+    if (!window.walletConnection.getAccountId()) {
+    Array.from(document.querySelectorAll('.sign-in')).map(it => it.style = 'display: block;margin-left: 10%;margin-top: 10%;');
+    Array.from(document.querySelectorAll('.after-sign-in')).map(it => it.style = 'display: none;');
+  }else {
+    Array.from(document.querySelectorAll('.after-sign-in')).map(it => it.style = 'display: block;');
+    document.getElementById('vote').innerHTML+= " "+n;
+    ifLoggedIn();
+    }
+}
+
+nearApi.nearInitPromise = connect()
+  .then(updateUI)
+  .catch(console.error);
+
+function ifLoggedIn(){
+    document.getElementById('vote').addEventListener('click', () => {
+      if (window.walletConnection.isSignedIn()) {
+        document.getElementById('vote').style = 'display:none';
+        let response = vote(n);
+      }
+    });
+
+        //Logout
+    document.querySelector('.sign-out').addEventListener('click', () => {
+      if (window.walletConnection.isSignedIn()) {
+        window.walletConnection.signOut();
+      }
+      updateUI();
+    });
+}
+
+// async function to call contract
+async function vote(cName){
+    let result = await window.contract.vote({
+        candidate: cName},
+    '100000000000000');
+    voteResults=vote;
+    getCandidates();
+  return;
+}
+
+    // https://html-online.com/articles/get-url-parameters-javascript/
+    //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURI
+    function getUrlVars() {
+            var vars = {};
+            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+        return vars;
+    }
+    var n= decodeURI(getUrlVars()["name"]);
+    console.log(n);
+
+    </script>
+</html>
