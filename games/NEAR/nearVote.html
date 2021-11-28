@@ -301,7 +301,7 @@ function displayLeaderBoard(){
   let x = c.w/2;
   let y = c.h*.2;
   tx("Leaderboard", x,c.h*.1,3, hColor);
-  tx("Click to restart", x,c.h*.2,1, textColor);
+  tx("Click to restart", x,c.h*.15,1, textColor);
   for(i in candidates){
     tx(candidates[i].name+", "+candidates[i].platform+" votes: "+candidates[i].votes, x,(y+35*i),2, textColor);
   }
