@@ -1,0 +1,15 @@
+body{
+    margin:10%;
+}
+pre,h5 {
+    color: darkblue;
+}
+h1,h2,h3{
+    margin-bottom: 20px;
+}
+h2{
+    text-align: center;
+}
+h5{
+    font-size: small;
+}
