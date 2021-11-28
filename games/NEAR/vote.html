@@ -116,7 +116,7 @@ async function vote(cName){
     let result = await window.contract.vote({
         candidate: cName},
     '100000000000000');
-    voteResults=vote;
+    voteResults=result;
 	document.getElementById('result').innerHTML=voteResults;
     getCandidates();
   return;
