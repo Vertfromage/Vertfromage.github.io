@@ -1,0 +1,544 @@
+<!doctype html>
+<html>
+		<head><meta charset="utf-8" />
+            <script src="https://cdn.jsdelivr.net/npm/near-api-js/dist/near-api-js.min.js"></script>
+            </script>
+            <style>
+              body{
+                background: #a29bfe;
+              }
+              canvas{
+                background: #ff7675;
+              }
+              .after-sign-in{
+                text-align: center;
+              }
+              #response{
+                visibility: hidden;
+              }
+              h1,h2{
+                color: #dfe6e9;
+              }
+            </style>
+      </head> 
+		<body style="margin:0;overflow: hidden;">
+            <div class="container">
+                <div class="sign-in" style="display: none;">
+                  <h1>Welcome!</h1>
+                  <h2>Sign in with NEAR to vote!</h2>
+                  <h3>Voting game made while learning NEAR protocol</h3>
+                  <button class="sign-in btn" style="background-color: #0072CE;">Sign In</button>
+                </div>
+            
+                <div class="after-sign-in" style="display: none;">
+                  <canvas id=canvas style="background: linear-gradient(to bottom right,#a29bfe,#ff7675,#ff7675,#a29bfe);">
+                       
+                </canvas>
+                </div>
+              </div>
+	</body>
+</html>
+<script>
+var CONTRACT_NAME='vote2.vertfromage2.testnet';
+var hColor  = "#020628";
+var textColor = "#401f3e";
+
+async function connect() {
+    let near = await nearApi.connect({
+    nodeUrl: "https://rpc.testnet.near.org",
+    walletUrl: "https://wallet.testnet.near.org",
+    helperUrl: "https://helper.testnet.near.org",
+    explorerUrl: "https://explorer.testnet.near.org",
+    networkId: 'testnet',
+    keyStore: new window.nearApi.keyStores.BrowserLocalStorageKeyStore(window.localStorage, 'vertfromage2 vote')
+    });
+
+    window.walletConnection = new nearApi.WalletConnection(near);
+    let account;
+    if (window.walletConnection.isSignedIn()) {
+        // Logged in account, can write as user signed up through wallet
+        account = window.walletConnection.account();
+        // connect to a NEAR smart contract
+        window.contract = new nearApi.Contract(account, CONTRACT_NAME, {
+          viewMethods: ['getCandidates', 'getCandidateVotes'],
+          changeMethods: ['addCandidate','vote'],
+          sender: account // account object to initialize and sign transactions.
+        }
+        );
+    } else {
+        // Contract account, normally only gonna work in read only mode
+        account = new nearApi.Account(near.connection, CONTRACT_NAME);
+        //console.log(account);
+    }
+}
+
+// Log in user using NEAR Wallet on "Sign In" button click
+document.querySelector('.sign-in').addEventListener('click', () => {
+  window.walletConnection.requestSignIn(CONTRACT_NAME, 'vertfromage2 vote');
+});
+
+var result="Pending...";
+var candidates="Pending...";
+var voteResults = "Pending...";
+var nCandidates=0;
+
+// async function to call contract
+async function getCandidates(){
+  let c = await window.contract.getCandidates({});
+  candidates = c;
+  return;
+}
+
+// async function to call contract
+async function getCandidateVotes(name){
+  let candidateVotes = await window.contract.getCandidateVotes({
+      candidate: name});
+      result = candidateVotes;
+  return;
+}
+
+// switch between logged in/out
+function updateUI() {
+  // console.log("Update UI");
+    if (!window.walletConnection.getAccountId()) {
+    Array.from(document.querySelectorAll('.sign-in')).map(it => it.style = 'display: block;margin-left: 10%;margin-top: 10%;');
+    Array.from(document.querySelectorAll('.after-sign-in')).map(it => it.style = 'display: none;');
+  }else {
+    Array.from(document.querySelectorAll('.after-sign-in')).map(it => it.style = 'display: block;');
+    ifLoggedIn();
+    }
+}
+
+nearApi.nearInitPromise = connect()
+  .then(updateUI)
+  .catch(console.error);
+ 
+	// Things I want to do if logged in
+	function ifLoggedIn(){
+      var userName = window.walletConnection.getAccountId();
+      userName = userName.slice(0,userName.lastIndexOf('.'));
+      //document.getElementById('welcome').innerHTML = "Hello, "+userName;
+      getCandidates();
+      //getCandidateVotes("Elmo");
+
+      if(candidates){
+          console.log("loaded!");
+          console.log(candidates.length);
+      }
+
+    // ##################################################################
+    //    Beginning of canvas code
+    // ##################################################################
+
+// initialize 2D a (c)
+// initialize game state (s)
+// initialize keys states (u,r,d,l for directions, k for all the keyboard)
+var c = canvas.getContext`2d`, k = [u = r = d = l = s = 0];
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+// (initialize your global variables here)
+c.w = innerWidth;
+c.h = innerHeight;
+// update u,l,d,r globals when an arrow key/wasd/zqsd is pressed or released
+// update k[keyCode] if any other key is pressed/released
+onkeydown = onkeyup = e => k[e.which] = self['lld*rlurdu'[e.which % 32 % 17]] = e.type[5]
+// keep track of userInput
+var userInput = "";
+// DRAW LOOP
+let reqAnimationId;
+var currSpeaker;
+
+function smoothAnimation(e) {
+    // animtion
+	canvas.width = innerWidth, canvas.height = innerHeight;
+	c.w=canvas.width, c.h = canvas.height;
+    switch (s) {
+        case 0: title();
+        //debates();
+            break;
+        case 1: pickACandidateToAdd();
+            break;
+        case 2: writeASlogan();
+            break;
+        case 3: 
+            let link = "add.html?name="+addCName+"&text="+formated(userInput);
+            //https://www.w3schools.com/jsref/met_win_open.asp
+            window.open(link);
+            currSpeaker = candidates[0];
+            while(currSpeaker==undefined){
+              console.log("waiting");
+            }
+            console.log(currSpeaker.name);
+            s++;
+            break;
+        case 4: debates();
+            break;
+        case 5: vote();
+            break;
+        case 6: 
+        let newlink = "vote.html?name="+addCName;
+        //https://www.w3schools.com/jsref/met_win_open.asp
+        window.open(newlink);
+                s++;
+        break;
+        case 7: displayLeaderBoard();
+        break;
+    }
+    reqAnimationId = requestAnimationFrame(smoothAnimation)
+}
+
+document.addEventListener('keyup', function(event) {
+            keyType();
+      })
+
+// handle click/touch events
+// globals x and y contain the pointer's coordinates
+// in each screen, you can make a click update the game state
+// ex: "game over if we click on the bottom half of the screen" => `if(y>h/2)s=3;`
+onclick = e => {
+    let x = e.pageX, y = e.pageY;
+    switch (s) {
+        case 0: 
+        s=1;
+        break;
+        case 1: spriteClicked(x,y);
+        console.log(npc[0].x+" "+npc[0].y);
+        console.log("Num candidates: "+nCandidates);
+        break;
+        case 2: break;
+        case 3: break;
+        case 4: if(count<nCandidates-1){
+                  count++;
+                }else{count=0;}
+                currSpeaker = candidates[count];
+                while(currSpeaker==undefined){
+                 console.log("waiting");
+                }
+                console.log(currSpeaker.name);
+        break;
+        case 5: spriteClicked(x,y);
+        break;
+        case 7: s=0;
+        break;
+    }
+}
+// to start
+function start() {
+    reqAnimationId = requestAnimationFrame(smoothAnimation)
+}
+start();
+
+function title(){
+  tx("Welcome to voting simulation!", c.w/2,c.h*.2,3, hColor);
+  tx("Click to start!", c.w/2,c.h*.3,2, textColor);
+  let x = c.w/2;
+  let y = c.h/2;
+  tx("Leaderboard", x,c.h/2-35,3, textColor);
+  nCandidates=0;
+  for(i in candidates){
+    tx(candidates[i].name+", "+candidates[i].platform+" votes: "+candidates[i].votes, x,(y+35*i),2, textColor);
+    nCandidates++;
+  }
+}
+
+function pickACandidateToAdd(){
+  tx("Welcome to voting simulation!", c.w/2,c.h/3,2, textColor);
+  tx("Pick a candidate to add!", c.w/2,c.h/2,2, hColor);
+  tx("Warning some candidates may be already added. Choose carefully.", c.w/2,c.h*.8,1,textColor);
+  animateSprites();
+}
+var addCName;
+var addCSprite;
+
+function spriteClicked(x,y){
+  npc.forEach(sprite => {
+    if(sprite.isClose(x,y,1)){
+      console.log("touched! "+sprite.name);
+      addCName = sprite.name;
+      addCSprite = sprite;
+      sprite.x = c.w/2;
+      sprite.y = c.h*.1;
+      s++;
+    }
+  });
+}
+
+function writeASlogan(){
+  addCSprite.update();
+  addCSprite.render();
+  userTyping();
+  if(k[13]){
+    s=3;
+    resetSprites();
+  }
+}
+count =0;
+function debates(){
+  tx("Leadership debates", c.w/2,c.h*.1,3, hColor);
+  tx("Click for next candidate! Space to go vote.", c.w/2,c.h*.2,2,textColor);
+  if(currSpeaker!=undefined){
+    tx('My platform is, "'+currSpeaker.platform+'"', c.w/2,c.h*.4,3, textColor);
+    tx("Introducing "+currSpeaker.name+"!", c.w/2,c.h*.7,3, textColor);
+    let currSprite = findSprite(currSpeaker.name);
+    currSprite.x = c.w/2;
+    currSprite.y = c.h/2;
+    currSprite.update();
+    currSprite.render();
+  }
+  if(k[32]){
+    s++;
+    resetSprites();
+  }
+}
+
+function vote(){
+  tx("Time to vote!", c.w/2,c.h/3,2, hColor);
+  tx("Pick a candidate to vote for!", c.w/2,c.h/2,2, textColor);
+  animateSprites();
+}
+
+function displayLeaderBoard(){
+  let x = c.w/2;
+  let y = c.h*.2;
+  tx("Leaderboard", x,c.h*.1,3, hColor);
+  tx("Click to restart", x,c.h*.2,1, textColor);
+  for(i in candidates){
+    tx(candidates[i].name+", "+candidates[i].platform+" votes: "+candidates[i].votes, x,(y+35*i),2, textColor);
+  }
+}
+
+function userTyping(){
+  toFormat = formated(userInput);
+  tx("You picked "+addCName+"!", c.w/2,c.h/3,2, hColor);
+  tx("Can you write a slogan for "+addCName+"? Enter when done!", c.w/2,c.h/3+50,2, textColor);
+  tx("Slogan: "+toFormat, c.w/2,c.h/2,2, textColor);
+}
+
+function animateSprites(){
+  npc.forEach(sprite => {
+    sprite.update();
+    sprite.render();
+  });
+}
+
+function stop(){
+  cancelAnimationFrame(reqAnimationId);
+}
+
+function tx(t, w, h, f, s) {
+    c.textAlign = 'center';
+    c.fillStyle = s;
+    c.font = f + 'vw Consolas';
+    c.fillText(t, w, h);
+}
+
+function formated(input){
+  // https://attacomsian.com/blog/string-capitalize-javascript
+  let format = input.replace(/^\w/, c => c.toUpperCase());
+  // https://www.w3schools.com/jsref/jsref_replace.asp
+  format = format.replace(/ i /g, " I ");
+  return format;
+}
+
+const npc = [];
+
+//https://opengameart.org/content/tiny-characters-set
+function makenpcs(){
+  let s1 = makeSprite(c,102,17,"Characters/M_01",6,20,0,0,3.5,0,"Lucy");
+  let s2 = makeSprite(c,102,17,"Characters/M_07",6,20,0,0,3.5,0,"Doug");
+  let s3 = makeSprite(c,102,17,"Characters/M_02",6,20,0,0,3.5,0,"Elmo");
+  let s4 = makeSprite(c,102,17,"Characters/M_03",6,20,0,0,3.5,0,"Big Bird");
+  let s5= makeSprite(c,102,17,"Characters/M_04",6,20,0,0,3.5,0,"George");
+  let s9 = makeSprite(c,102,17,"Characters/M_05",6,20,0,0,3.5,0,"Stacey");
+  let s6 = makeSprite(c,102,17,"Characters/M_06",6,20,0,0,3.5,0,"Theo");
+  let s7 = makeSprite(c,102,17,"Characters/M_08",6,20,0,0,3.5,0,"Buga");
+  let s8 = makeSprite(c,102,17,"Characters/M_09",6,20,0,0,3.5,0,"Cookie Monster");
+  npc.push(s1);
+  npc.push(s2);
+  npc.push(s3);
+  npc.push(s4);
+  npc.push(s5);
+  npc.push(s6);
+  npc.push(s7);
+  npc.push(s8);
+  npc.push(s9);
+  
+  resetSprites();
+}
+makenpcs();
+
+function findSprite(name){
+  for(let i=0;i<npc.length;i++){
+    if(name===npc[i].name){
+      return npc[i];
+      break;
+    }
+  }
+  }
+
+
+function resetSprites(){
+  xF = 0;
+  npc.forEach(sprite => {
+    xF+=c.w*.1;
+    sprite.x = xF;
+	  sprite.y = c.h*.6;
+    sprite.newSeq([0,1,2,0]);
+  });
+}
+
+function makeSprite(c, w, h, img, f, t, x, y, r, s, name) {
+let i = new Image();
+let sp = sprite({
+	context: c,
+	width: w,
+	height: h,
+	image: i,
+	numberOfFrames: f,
+	ticksPerFrame: t,
+	s: s,
+  name:name
+});
+sp.x = x;
+sp.y = y;
+sp.scaleRatio = r;
+i.src = img;
+return sp;
+}
+
+function sprite(options) {
+
+var that = {},
+	frameIndex = 0,
+	tickCount = 0,
+	spot = 0,
+	ticksPerFrame = options.ticksPerFrame || 0,
+	numberOfFrames = options.numberOfFrames || 1;
+
+that.context = options.context;
+that.w = options.width;
+that.h = options.height;
+that.x = options.x;
+that.y = options.y;
+that.image = options.image;
+that.scaleRatio = 1;
+that.s = options.s;
+that.seq = [];
+that.dead = false;
+that.outOfBounds= false;
+that.name = options.name;
+
+that.newSeq = function (seq) {
+	spot = 0;
+	frameIndex = 0;
+	that.seq = seq;
+};
+
+that.switch = function (x) {
+	frameIndex = x;
+};
+
+that.update = function () {
+
+	tickCount += 1;
+
+	if (tickCount > ticksPerFrame) {
+
+		tickCount = 0;
+
+		// If the current frame index is in range
+		if (frameIndex < numberOfFrames - 1) {
+			// Go to the next frame
+			frameIndex += 1;
+			if (that.seq.length > 0) {
+				frameIndex = that.seq[spot];
+				spot += 1;
+			}
+		} else if (that.seq.length < 1) {
+			frameIndex = 0;
+		}
+		if (spot > that.seq.length - 1) {
+			spot = 0;
+		}
+	}
+};
+that.render = function () {
+	// Draw the animation
+	that.context.drawImage(
+		that.image,
+		frameIndex * that.w / numberOfFrames,
+		0,
+		that.w / numberOfFrames,
+		that.h,
+		that.x,
+		that.y,
+		that.w / numberOfFrames * that.scaleRatio,
+		that.h * that.scaleRatio,
+	);
+  // NameTag
+  tx(that.name, that.x,that.y,1, textColor);
+};
+that.getFrameWidth = function () {
+	return that.w / numberOfFrames;
+};
+that.isClose = function (x, y, t) {
+	var dx = (that.x + that.getFrameWidth() / 2 * that.scaleRatio) - (x + that.getFrameWidth() / 2),
+		dy = (that.y + that.getFrameWidth() / 2 * that.scaleRatio) - (y + that.getFrameWidth() / 2);
+
+	var dist = Math.sqrt(dx * dx + dy * dy);
+
+	if (dist < that.getFrameWidth() * that.scaleRatio * t) {
+		return true;
+	} else {
+		return false;
+	}
+};
+that.move = function(){
+	that.x+= that.s.x;
+	that.y+= that.s.y;
+	if(that.x>c.w || that.y>c.h || that.x<0 ||that.y<-100){
+		that.outOfBounds = true;
+	}
+};
+return that;
+}
+
+function keyTouch() {
+    if (u) {};
+    if (d) {};
+    if (r) {};
+    if (l) {};
+}
+
+// A fun little bit of code to catch user typing into html5 canvas
+function keyType(){
+    if(k[32]){
+            userInput+=" ";
+        }else if(k[190]){
+            userInput+=".";
+        }else if(k[188]){
+          userInput+=","
+        }else if(k[49]&&k[16]){
+            userInput+="!";
+        }else if(k[8]){
+            // https://www.designcise.com/web/tutorial/how-to-remove-the-last-character-from-a-string-in-javascript
+            userInput= userInput.slice(0, -1);
+        }else{
+            // loop through alphabete key codes
+            for(let i=0;i<26;i++){
+                if(k[65+i]){
+                    userInput+=String.fromCharCode(97+i); // 
+                }
+            }
+            for(let i=0;i<10;i++){
+                if(k[48+i]){
+                    userInput+=String.fromCharCode(48+i); // 
+                }
+            }
+        }
+}
+
+}
+
+
+</script>
