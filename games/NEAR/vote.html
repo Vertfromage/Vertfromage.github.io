@@ -113,10 +113,11 @@ function ifLoggedIn(){
 
 // async function to call contract
 async function vote(cName){
-    let result = await window.contract.vote({
+    let vote = await window.contract.vote({
         candidate: cName},
     '100000000000000');
-    voteResults=result;
+	console.log(cName);
+    voteResults=vote;
 	document.getElementById('result').innerHTML=voteResults;
     getCandidates();
   return;
