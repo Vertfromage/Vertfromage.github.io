@@ -117,6 +117,7 @@ async function vote(cName){
         candidate: cName},
     '100000000000000');
     voteResults=vote;
+	document.getElementById('result').innerHTML=voteResults;
     getCandidates();
   return;
 }
