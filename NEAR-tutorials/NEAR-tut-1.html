@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link href="styles.css" rel="stylesheet">
+    <base target="_blank">
+</head>
+
+<body>
+    <h1>NEAR Tutorial, Part 1</h1>
+<section>
+    <h2>Build and explore the basic hello world app</h2>
+    <p>Time to set up some starter code to make the hello world app</p>
+    <pre><code>
+    cd /
+    mkdir near-learning
+    mkdir tutorial1
+    npx create-near-app --help
+    npx create-near-app myFirstApp
+    sudo yarn dev 
+    </code></pre>
+    <p>Same thing explained in more detail 5 minutes of this video:<a href="https://youtu.be/m6LJUpPPHoE?t=2375 " >video</a></p>
+    <p>At this point you've got a boiler plate code opening up in your browser with a login/logout setup and some contracts that change the greeting. Time to open up those files and poke around a bit. </p>
+    <p>For WSL2 (windows subsystem for linux) you can access to home directory from file explorer like this :</p>
+    <pre><code>\\wsl$</code></pre>
+    <p>Your files are going to be in home/username.</p>
+    <p>Open the folder up in your favorite code editor. You're going to want to look first in README.md for an overview of the code, the commands you just ran and how to do a full deployment, for now we can stick to a development version. </p>
+    <p>Then you're going to want to peek into the src folder to see all the front end code. Lots of stuff there, but don't worry we're going to simplify things.</p>
+    <p>Before we're done poking around we'll want to take a peek at the file where the contract is written in assembly: contract/assembly/index.ts </p>
+    <p>There's two functions in our contract getGreeting and setGreeting. </p>
+    <p>One last file to take a peek at neardev/dev-account.env in this file we have interestingly enough our CONTRACT_NAME! If you compare the nearby file dev-account you'll notice both the account and the CONTRACT_NAME are the same, that's because (as you might have read in the README.md file) every contract has it's own account, when you deploy a contract 'for real' you'll make a sub-account on top of your .testnet account. </p>
+    <p>This is interesting because if you remember we can use near-cli to call contract functions from the command line, so let's try that:</p>
+    <pre><code>
+    near view CONTRACT_NAME getGreeting '{"accountId": "YOURNAME.testnet"}'</code></pre>
+    <p>*Make sure you switch out CONTRACT_NAME for what you found in  neardev/dev-account.env and YOURNAME for whatever username you set up for testnet, okay?</p>
+    <p>And voila from the command-line you've called a contract function that in the boiler plate code is being called inside the Javascript code using <a href="https://docs.near.org/docs/develop/front-end/near-api-js" >near-js-api</a>, </p>
+    <p>which is not surprising seeing as near-cli is just calling the near-api-js!
+        <a href="https://docs.near.org/docs/tools/near-cli#near-view">docs</a>
+    </p>
+    <p>So with that in mind we can imagine our contract floating free out there on the NEAR protocol and think about how to write a fun little HTML5 hello-world mini-game that connects us back to the contract functions that came with our boiler plate code. Which is basically what I did for js13kgames even though I didn't really understand how I did it at the time, it seemed to work and that was good enough. So let's have some fun!</p>
+</section>
+
+<section>
+    <h2>Next tutorial</h2>
+    <p>Next we're going to start with a blank html file and make our own front end for an HTML5 mini-game!</p>
+    <a href="NEAR-tut-2.html">NEAR tutorial 2</a>
+</section>
+</body>
+</html>
