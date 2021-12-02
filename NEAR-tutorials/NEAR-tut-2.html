@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="styles.css" rel="stylesheet">
+    <base target="_blank">
+</head>
+<body>
+    <h1>NEAR Tutorial, Part 2</h1>
+    <section>
+        <h2>Set up some boiler plate code</h2>
+        <p>This is going to be a little longer than the last two tutorials because now we're going to get into some front end code. Since we're making HTML5 games we're going to stick with vanilla Javascript</p>
+        <p>This is what we're going to make: <a href="game1.html">Hello game</a></p>
+        <p>Here's some starter code:</p>
+        <pre>&lt;!doctype html&gt;
+            &lt;html&gt;
+                    &lt;head&gt;&lt;meta charset="utf-8" /&gt;
+                        &lt;!-- near-api-js --&gt;
+                        &lt;script src="https://cdn.jsdelivr.net/npm/near-api-js/dist/near-api-js.min.js"&gt;&lt;/script&gt;
+                        &lt;/script&gt;
+                        &lt;!-- Styles, optionally you can have a styles.css file for these. --&gt;
+                        &lt;style&gt;
+                        /* These are my styles you can change to suit youself */
+                          body{
+                            background: #a29bfe;
+                          }
+                          h1,h2{
+                            color: #dfe6e9;
+                          }
+                          canvas{
+                            /*If you don't like pink, go ahead and change it.*/
+                            background: #ff7675; 
+                            width:300px;
+                            height:300px;
+                          }
+                          .after-sign-in{
+                            text-align: center;
+                          }
+                        &lt;/style&gt;
+                  &lt;/head&gt; 
+            &lt;body style="margin:0;overflow: hidden;"&gt;
+                &lt;div class="container"&gt;
+                    &lt;!-- What to show before sign in --&gt;
+                    &lt;div class="sign-in" style="display: none;"&gt;&lt;/div&gt;
+                    &lt;!-- What to show after sign in --&gt;
+                    &lt;div class="after-sign-in" style="display: none;"&gt;
+                        &lt;!-- Our HTML5 canvas where all our cool game stuff goes --&gt;
+                        &lt;canvas id=canvas&gt;   
+                        &lt;/canvas&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;
+            
+            &lt;!-- Our JavaScript code goes here, if you prefer you can put it in a scripts.js file --&gt;
+            &lt;script&gt;
+            &lt;/script&gt;</pre>
+            <p>First thing you'll notice about this starter code is that we have a div called sign in and a div called after-sign-in, this is to control what is seen based on if the user has logged in with testnet.</p>
+            <p>So let's write some code inside the script tag to control that:</p>
+            <p>First we need our CONTRACT_NAME</p>
+            <p>Make sure you use the development contract ID you found in the neardev folder.</p>
+            <pre><code>
+                var CONTRACT_NAME='dev-Somelongnumber';
+            </code></pre>
+            <p>Next we'll drop in some boiler plate code to connect a wallet, I'm going to combine a few things here, but if you'd like a breakdown check out the <a href="https://docs.near.org/docs/api/naj-quick-reference#">NEAR-API-JS Quick Reference guide</a></p>
+            <pre><code>
+        async function connect() {
+        // Connect to nearApi
+        let near = await nearApi.connect({
+        nodeUrl: "https://rpc.testnet.near.org",
+        walletUrl: "https://wallet.testnet.near.org",
+        helperUrl: "https://helper.testnet.near.org",
+        explorerUrl: "https://explorer.testnet.near.org",
+        networkId: 'testnet', // We are using testnet
+        keyStore: new window.nearApi.keyStores.BrowserLocalStorageKeyStore(window.localStorage, 'Example App')
+        });
+
+        // Connect to user's wallet
+        window.walletConnection = new nearApi.WalletConnection(near);
+        let account;
+        if (window.walletConnection.isSignedIn()) {
+            // Logged in account, can write as user signed up through wallet
+            account = walletConnection.account();
+            // connect to a NEAR smart contract
+            window.contract = new nearApi.Contract(account, CONTRACT_NAME, {
+            viewMethods: [],
+            changeMethods: []
+            });
+        } else {
+            // Contract account, normally only gonna work in read only mode
+            account = new nearApi.Account(near.connection, CONTRACT_NAME);
+        }
+    }
+                </code></pre>
+    <p>Let's add right after that some code to call connect, update our page and catch any errors that get returned.</p>
+    <pre><code>
+        nearApi.nearInitPromise = connect()
+        .then(updateUI)
+        .catch(console.error);
+    </code></pre>
+    <p>Now we need that updateUI fuction...</p>
+    <pre><code>
+      // switch between logged in/out
+      function updateUI() {
+          if (!window.walletConnection.getAccountId()) {
+          // If you're not logged in show sign-in div
+          Array.from(document.querySelectorAll('.sign-in')).map(it => it.style =
+           'display: block;margin-left: 10%;margin-top: 10%;');
+           // If you signed out reset to not visible
+           Array.from(document.querySelectorAll('.after-sign-in')).map(it => it.style = 
+          'display: none;');
+  
+      }else {
+          // If you're are logged in show after-sign-in div
+          Array.from(document.querySelectorAll('.after-sign-in')).map(it => it.style = 
+          'display: block;');
+          ifLoggedIn();
+      }
+      }
+    </code></pre>
+    <p>So if you're following my logic you see inside the updateUI that function 'ifLoggedIn()', so let's start filling that in.
+    </p>
+    <pre><code>
+    // Things I want to do if logged in
+    function ifLoggedIn(){
+      // Get username from nearApi without using the contract. 
+      var userName = window.walletConnection.getAccountId();
+      // Format the username to get rid of .testnet
+      userName = userName.slice(0,userName.lastIndexOf('.'));
+    
+    }</code></pre>
+    <p>We're also going to want to add a logout button event listener <b>inside</b> our 'ifLoggedIn()' function:</p>
+    <pre><code>
+    //Logout
+    document.querySelector('.sign-out').addEventListener('click', () => {
+      if (window.walletConnection.isSignedIn()) {
+        window.walletConnection.signOut();
+        updateUI();
+      }
+    });
+    </code></pre>
+    <p>And a login button event listener <b>outside</b> our 'ifLoggedIn()' function:</p>
+    <pre><code>
+    // Log in user using NEAR Wallet on "Sign In" button click
+    document.querySelector('.sign-in').addEventListener('click', () => {
+    window.walletConnection.requestSignIn(CONTRACT_NAME, 'Example App');
+    });
+    </code></pre>
+    <p>Let's take a minute to go back to the html and add the login/logout buttons, and also some headings for both the sign-in and after-sign-in divs:</p>
+    <p>Sign-in:</p>
+    <pre>&lt;h1&gt;Welcome!&lt;/h1&gt;
+        &lt;h2&gt;Sign in with NEAR to say hello!&lt;/h2&gt;
+        &lt;button class="sign-in btn" style="background-color: #0072CE;"&gt;Sign In&lt;/button&gt;
+    </pre>
+    <p>After-sign-in:</p>
+    <pre>
+        &lt;h1&gt;How would you like to be greeted?&lt;/h1&gt;
+        &lt;input id="text" placeholder="Greeting"&gt;&lt;/input&gt;
+        &lt;button id="set-greeting"&gt;Change Greeting&lt;/button&gt;
+        &lt;button class="sign-out btn" style="background-color: #0072CE;"&gt;Sign Out&lt;/button&gt;
+        &lt;h2 id="response"&gt;Loading response...&lt;/h2&gt;</pre>
+        <p>Before we continue to the next section, this is a good time to point out that you will likely need to set up a local testing server, you may already have something you prefer, but here's a quick solution using python:
+        <a href="https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server">How do you set up a local testing server?</a></p>
+        <p>With what we have now, if you run open the file using on local host you should be able to login/logout</p>
+    </section>
+
+    <section>
+        <h2>Calling the contract</h2>
+        <p>Now we need to add the methods in our contract, if you go inside the assembly folder in myFirstApp that you set up you'll see two methods: setGreeting and getGreeting, we need to add those into our async connect() function like this:</p>
+        <pre><code>        
+        window.contract = new nearApi.Contract(account, CONTRACT_NAME, {
+            viewMethods: ['getGreeting'],
+            changeMethods: ['setGreeting']
+        });
+        </code></pre>
+        <p>View methods don't change anything, but change methods change what's stored on the blockchain.</p>
+        <p>You can drop a click listener inside your ifLoggedIn() function:</p>
+        <pre><code>
+        document.getElementById('set-greeting').addEventListener('click', () => {
+            if (window.walletConnection.isSignedIn()) {
+              changeHello();
+            }
+          });
+        </code></pre>
+        <p>So now we have a button that will call a function changeHello(), let's write that function to call our contract method setGreeting:</p>
+        <p></p>
+        <pre><code>    
+          // async function to call a change function setGreeting() 
+          async function changeHello(){
+              // call the contract function
+              let result = await window.contract.setGreeting({
+                 message: document.getElementById('text').value
+                  });
+                  console.log(result);
+                  // clear the form
+                  document.getElementById('text'),innerHTML="";
+              return;
+          }</code></pre>
+          <p>Let's write another async function to call our view function getGreeting</p>
+          <pre><code>
+            // async function to call contract function getGreeting() and change innerHTML
+            async function viewHello(){
+                // call the contract function
+                let result = await window.contract.getGreeting({
+                      accountId: window.walletConnection.getAccountId() }
+                    );
+            
+                // update html with greeting
+                document.getElementById('response').innerHTML=result;
+                return;
+            }               
+          </code></pre>
+          <p>Let's call that function inside our ifLoggedIn() function so that we have a greeting to put inside our canvas.</p>
+          <pre><code>
+            // call the view method to update the greeting on the html page.
+            viewHello();
+          </code></pre>
+    </section>
+
+    <section>
+        <h2>Displaying our greeting within our canvas</h2>
+        <p>Now we need to add some canvas code inside the ifLoggedIn() function bellow the other code.</p>
+        <pre><code>
+          // ###### Canvas Code #########
+          var c = canvas.getContext`2d`;
+          canvas.width = 300; 
+          canvas.height =300;
+          c.w = canvas.height;
+        c.h = canvas.width;
+      
+          // DRAW LOOP
+          let reqAnimationId;
+          function smoothAnimation(e) {
+              canvas.width = 300, canvas.height = 300;
+              c.w=canvas.width, c.h = canvas.height;
+              animate();
+              reqAnimationId = requestAnimationFrame(smoothAnimation)
+          }
+          // to start
+          function start() {
+              reqAnimationId = requestAnimationFrame(smoothAnimation)
+          }
+          function animate(){
+              print(document.getElementById('response').innerHTML, c.w/2, c.h/2, 1, "#FFF");
+          }
+      
+          start();
+      
+          // Canvas print util by vertfromage
+          function print(text, width, height, fontScale, color) {
+          c.textAlign = 'center';
+          c.fillStyle = color;
+          c.font = fontScale+ 'vw Consolas';
+          c.fillText(text, width, height);
+          }
+          // ########## END Canvas Code ################
+        </code></pre>
+        <p>We don't really need our response header to be visible outside our div, so let's make that invisible</p>
+        <pre><code>
+        #response{
+          visibility: hidden;
+        }</code></pre>
+        <p>But of course we're talking about html5 games here we don't want everything to be tied to document.getElementById, so how should we set that up with html5 variables?</p>
+        <p>Easy we save our response in a variable called promise, because that's what our async function is going to return, but we can't access the actual string until the promise is completed, so we use a .then() function like so:</p>
+        <pre><code>    
+          // call the view method to update the greeting on the html page.
+          let promise = viewHello();
+          var greetingText = "Loading response...";
+      
+          promise.then(
+                  function(value) {
+                      greetingText = value;
+                  });
+          </code></pre>
+          <p>and update your print() code, comment out or delete the document.getElementByID line</p>
+        <pre><code>        
+          // let greetingText = document.getElementById('response').innerHTML+", "+userName;
+          print(greetingText+", "+userName, c.w/2, c.h/2, 2, "#FFF");</code></pre>
+        <p>Also update your viewHello() function so that it returns the result rather than adding it to the innerHTML</p>
+        <pre><code>            
+          // async function to call contract function getGreeting() and change innerHTML
+          async function viewHello(){
+              // call the contract function
+              let result = await window.contract.getGreeting({
+                    accountId: window.walletConnection.getAccountId() }
+                  );
+          
+              // // update html with greeting
+              // document.getElementById('response').innerHTML=result;
+              return result;
+          }</code></pre>
+          <p>Finally we have a very little fussy thing... when we call changeHello() it doesn't also call viewHello()...</p>
+          <p>The fix here is in our onClick we can chain the two functions together like so, </p>
+          <pre><code>
+            // set-greeting
+            document.getElementById('set-greeting').addEventListener('click', () => {
+                    if (window.walletConnection.isSignedIn()) {
+                      greetingText = "Processing...";
+                      changeHello().then(
+                          function(){
+                            let promise = viewHello();
+        
+                            promise.then(
+                                    function(value) {
+                                        greetingText = value;
+                                    });
+                          }
+                      )
+                    }
+                  });
+          </code></pre>
+        </section>
+
+    <section>
+        <h2>Next tutorial</h2>
+        <p>Next we will...</p>
+        <a href="NEAR-tut-3.html">NEAR tutorial 3</a>
+    </section>
+
+</body>
+</html>
