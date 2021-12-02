@@ -313,12 +313,163 @@
                   });
           </code></pre>
         </section>
+        <section>
+        <h3>The entire code</h3>
+        <p>This is the end of the tutorial, so here's all the code together incase something goes wrong: </p>
+        <pre><code>
+          &lt;!doctype html&gt;
+&lt;html&gt;
+		&lt;head&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;
+            &lt;!-- near-api-js --&gt;
+            &lt;script src=&quot;https://cdn.jsdelivr.net/npm/near-api-js/dist/near-api-js.min.js&quot;&gt;&lt;/script&gt;
+            &lt;/script&gt;
+            &lt;!-- Styles, optionally you can have a styles.css file for these. --&gt;
+            &lt;style&gt;
+            /* These are my styles you can change to suit youself */
+              body{
+                background: #a29bfe;
+              }
+              h1,h2{
+                color: #dfe6e9;
+              }
+              canvas{
+                /*If you don&#39;t like pink, go ahead and change it.*/
+                background: #ff7675; 
+              }
+              .after-sign-in{
+                text-align: center;
+              }
+              #response{
+                visibility: hidden;
+              }
+            &lt;/style&gt;
+      &lt;/head&gt; 
+&lt;body style=&quot;margin:0;overflow: hidden;&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- What to show before sign in --&gt;
+        &lt;div class=&quot;sign-in&quot; style=&quot;display: none;&quot;&gt;
+            &lt;h1&gt;Welcome!&lt;/h1&gt;
+            &lt;h2&gt;Sign in with NEAR to say hello!&lt;/h2&gt;
+            &lt;button class=&quot;sign-in btn&quot; style=&quot;background-color: #0072CE;&quot;&gt;Sign In&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;!-- What to show after sign in --&gt;
+        &lt;div class=&quot;after-sign-in&quot; style=&quot;display: none;&quot;&gt;
+            &lt;h1&gt;Fill in your name for a little suprise greeting!&lt;/h1&gt;
+            &lt;textarea id=&quot;text&quot; placeholder=&quot;Name&quot;&gt;&lt;/textarea&gt;&lt;br&gt;
+            &lt;button id=&quot;send-greeting&quot;&gt;Send Greeting&lt;/button&gt;
+            &lt;button class=&quot;sign-out btn&quot; style=&quot;background-color: #0072CE;&quot;&gt;Sign Out&lt;/button&gt;
+            &lt;h2 id=&quot;response&quot;&gt;Loading response...&lt;/h2&gt;
+            &lt;!-- Our HTML5 canvas where all our cool game stuff goes --&gt;
+            &lt;canvas id=canvas&gt;   
+            &lt;/canvas&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 
-    <section>
+&lt;!-- Our JavaScript code goes here, if you prefer you can put it in a scripts.js file --&gt;
+&lt;script&gt;
+    var CONTRACT_NAME=&#39;dev-1638464780305-36276259815103&#39;;
+
+    
+    async function connect() {
+    // Connect to nearApi
+    let near = await nearApi.connect({
+    nodeUrl: &quot;https://rpc.testnet.near.org&quot;,
+    walletUrl: &quot;https://wallet.testnet.near.org&quot;,
+    helperUrl: &quot;https://helper.testnet.near.org&quot;,
+    explorerUrl: &quot;https://explorer.testnet.near.org&quot;,
+    networkId: &#39;testnet&#39;, // We are using testnet
+    keyStore: new window.nearApi.keyStores.BrowserLocalStorageKeyStore(window.localStorage, &#39;your key&#39;)
+    });
+
+    // Connect to their wallet
+    window.walletConnection = new nearApi.WalletConnection(near);
+    let account;
+    if (window.walletConnection.isSignedIn()) {
+        // Logged in account, can write as user signed up through wallet
+        account = walletConnection.account();
+        // connect to a NEAR smart contract
+        window.contract = new nearApi.Contract(account, CONTRACT_NAME, {
+            viewMethods: [&#39;getGreeting&#39;],
+            changeMethods: [&#39;setGreeting&#39;]
+        });
+    } else {
+        // Contract account, normally only gonna work in read only mode
+        account = new nearApi.Account(near.connection, CONTRACT_NAME);
+    }
+}
+
+// Log in user using NEAR Wallet on &quot;Sign In&quot; button click
+document.querySelector(&#39;.sign-in&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+  window.walletConnection.requestSignIn(CONTRACT_NAME, &#39;Nearvember&#39;);
+});
+
+nearApi.nearInitPromise = connect()
+  .then(updateUI)
+  .catch(console.error);
+
+
+// switch between logged in/out
+function updateUI() {
+    if (!window.walletConnection.getAccountId()) {
+    // If you&#39;re not logged in show sign-in div
+    Array.from(document.querySelectorAll(&#39;.sign-in&#39;)).map(it =&gt; 
+    it.style = &#39;display: block;margin-left: 10%;margin-top: 10%;&#39;);
+  }else {
+    // If you&#39;re are logged in show after-sign-in div
+    Array.from(document.querySelectorAll(&#39;.after-sign-in&#39;)).map(it =&gt;
+     it.style = &#39;display: block;&#39;);
+    ifLoggedIn();
+  }
+}
+
+// Things I want to do if logged in
+function ifLoggedIn(){
+      // Get username from nearApi without using the contract. 
+      var userName = window.walletConnection.getAccountId();
+      // Format the username to get rid of .testnet
+      userName = userName.slice(0,userName.lastIndexOf(&#39;.&#39;));
+
+      document.getElementById(&#39;send-greeting&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      if (window.walletConnection.isSignedIn()) {
+        callHello();
+      }
+    });
+
+    // async function to call contract
+async function callHello(){
+    // call the contract
+    let contract = await window.contract.set_name({
+          args: { name: document.getElementById(&#39;text&#39;).value }
+        })
+
+    // clear the form
+    document.getElementById(&#39;text&#39;),innerHTML=&quot;&quot;;
+    // Output from contract
+    document.getElementById(&#39;response&#39;).innerHTML=contract;
+    return;
+}
+
+    //Logout
+    document.querySelector(&#39;.sign-out&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      if (window.walletConnection.isSignedIn()) {
+        window.walletConnection.signOut();
+        updateUI();
+      }
+    });
+}
+&lt;/script&gt;
+        </code></pre>
+      
+
+        </section>
+
+    <!-- <section>
         <h2>Next tutorial</h2>
         <p>Next we will...</p>
         <a href="NEAR-tut-3.html">NEAR tutorial 3</a>
-    </section>
+    </section> -->
 
 </body>
 </html>
