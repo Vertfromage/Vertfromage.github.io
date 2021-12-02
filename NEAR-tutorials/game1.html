@@ -1,0 +1,254 @@
+<!doctype html>
+            <html>
+                    <head><meta charset="utf-8" />
+                        <!-- The near api -->
+                        <script src="https://cdn.jsdelivr.net/npm/near-api-js/dist/near-api-js.min.js"></script>
+                        </script>
+                        <!-- Styles, optionally you can have a styles.css file for these. -->
+                        <style>
+                        /* These are my styles you can change to suit youself */
+                          body{
+                            background: #a29bfe;
+                          }
+                          h1,h2{
+                            color: #dfe6e9;
+                          }
+                          canvas{
+                            /*If you don't like pink, go ahead and change it.*/
+                            background: #ff7675; 
+                            width:300px;
+                            height:300px;
+                          }
+                          .after-sign-in{
+                            text-align: center;
+                          }
+                          #response{
+                            visibility: hidden;
+                          }
+                        </style>
+                  </head> 
+            <body style="margin:0;overflow: hidden;">
+                <div class="container">
+                    <!-- What to show before sign in -->
+                    <div class="sign-in" style="display: none;">
+                        <h1>Welcome!</h1>
+                        <h2>Sign in with NEAR to say hello!</h2>
+                        <button class="sign-in btn" style="background-color: #0072CE;">Sign In</button>
+                    </div>
+                    <!-- What to show after sign in -->
+                    <div class="after-sign-in" style="display: none;">
+                        <h1>How would you like to be greeted?</h1>
+                        <input id="text" placeholder="Greeting"></input>
+                        <button id="set-greeting">Change Greeting</button>
+                        <button class="sign-out btn" style="background-color: #0072CE;">Sign Out</button>
+                        <h2 id="response">Loading response...</h2>
+                        <!-- Our HTML5 canvas where all our cool game stuff goes -->
+                        <canvas id=canvas>   
+                        </canvas>
+                    </div>
+                </div>
+            </body>
+            </html>
+            
+            <!-- Our JavaScript code goes here, if you prefer you can put it in a scripts.js file -->
+            <script>
+                // var CONTRACT_NAME='dev-1638464780305-36276259815103';
+                var CONTRACT_NAME='tutorial1.vertfromage.testnet';
+
+                async function connect() {
+        // Connect to nearApi
+        let near = await nearApi.connect({
+        nodeUrl: "https://rpc.testnet.near.org",
+        walletUrl: "https://wallet.testnet.near.org",
+        helperUrl: "https://helper.testnet.near.org",
+        explorerUrl: "https://explorer.testnet.near.org",
+        networkId: 'testnet', // We are using testnet
+        keyStore: new window.nearApi.keyStores.BrowserLocalStorageKeyStore(window.localStorage, 'Example App')
+        });
+
+        // Connect to user's wallet
+        window.walletConnection = new nearApi.WalletConnection(near);
+        let account;
+        if (window.walletConnection.isSignedIn()) {
+            // Logged in account, can write as user signed up through wallet
+            account = walletConnection.account();
+            // connect to a NEAR smart contract
+            window.contract = new nearApi.Contract(account, CONTRACT_NAME, {
+            viewMethods: ['getGreeting'],
+            changeMethods: ['setGreeting']
+            });
+        } else {
+            // Contract account, normally only gonna work in read only mode
+            account = new nearApi.Account(near.connection, CONTRACT_NAME);
+        }
+    }
+
+    nearApi.nearInitPromise = connect()
+        .then(updateUI)
+        .catch(console.error);
+
+    // Log in user using NEAR Wallet on "Sign In" button click
+    document.querySelector('.sign-in').addEventListener('click', () => {
+        window.walletConnection.requestSignIn(CONTRACT_NAME, 'Example App');
+    });
+            
+    // switch between logged in/out
+    function updateUI() {
+        if (!window.walletConnection.getAccountId()) {
+        // If you're not logged in show sign-in div
+        Array.from(document.querySelectorAll('.sign-in')).map(it => it.style =
+         'display: block;margin-left: 10%;margin-top: 10%;');
+         // If you signed out reset to not visible
+         Array.from(document.querySelectorAll('.after-sign-in')).map(it => it.style = 
+        'display: none;');
+
+    }else {
+        // If you're are logged in show after-sign-in div
+        Array.from(document.querySelectorAll('.after-sign-in')).map(it => it.style = 
+        'display: block;');
+        ifLoggedIn();
+    }
+    }
+
+    // Things I want to do if logged in
+    function ifLoggedIn(){
+      // Get username from nearApi without using the contract. 
+      var userName = window.walletConnection.getAccountId();
+      // Format the username to get rid of .testnet
+      userName = userName.slice(0,userName.lastIndexOf('.'));
+    
+       //Logout
+    document.querySelector('.sign-out').addEventListener('click', () => {
+      if (window.walletConnection.isSignedIn()) {
+        window.walletConnection.signOut();
+        updateUI();
+      }
+    });    
+    
+    // call the view method to update the greeting on the html page.
+    let promise = viewHello();
+    var greetingText = "Loading response...";
+
+    promise.then(
+            function(value) {
+                greetingText = value;
+            });
+
+    // set-greeting
+    document.getElementById('set-greeting').addEventListener('click', () => {
+            if (window.walletConnection.isSignedIn()) {
+                greetingText = "Processing...";
+              changeHello().then(
+                  function(){
+                    let promise = viewHello();
+
+                    promise.then(
+                            function(value) {
+                                greetingText = value;
+                            });
+                  }
+              )
+            }
+          });
+
+    // ###### Canvas Code #########
+    var c = canvas.getContext`2d`;
+    canvas.width = 300; 
+    canvas.height =300;
+    c.w = canvas.height;
+	c.h = canvas.width;
+
+    // DRAW LOOP
+    let reqAnimationId;
+    function smoothAnimation(e) {
+        canvas.width = 300, canvas.height = 300;
+        c.w=canvas.width, c.h = canvas.height;
+        animate();
+        reqAnimationId = requestAnimationFrame(smoothAnimation);
+    }
+    // to start
+    function start() {
+        reqAnimationId = requestAnimationFrame(smoothAnimation);
+    }
+    function animate(){
+        snowMan();
+
+        // let greetingText = document.getElementById('response').innerHTML+", "+userName;
+        print(greetingText+", "+userName, c.w/2, c.h*.6, 2, "#000");
+    }
+
+
+
+    
+    // start the animation
+    start();
+
+    // Canvas print util by vertfromage
+    function print(text, width, height, fontScale, color) {
+    c.textAlign = 'center';
+    c.fillStyle = color;
+    c.font = fontScale+ 'vw Consolas';
+    c.fillText(text, width, height);
+    }
+
+    function drawCircle(x,y,size, color){
+        c.fillStyle = color;
+        c.beginPath();
+        c.arc(x, y, size, 0, 2 * Math.PI);
+        c.fill();
+        c.stroke();
+    }
+    function drawLine(sX, sY, eX, eY, color){
+        c.strokeStyle = color;
+        c.beginPath(); 
+        // Staring point
+        c.moveTo(sX,sY);
+        // End point 
+        c.lineTo(eX,eY);
+        // Make the line visible
+        c.stroke();
+   }
+   function snowMan(){
+       // ******** Snow Man *************
+        // cicles: https://www.w3schools.com/tags/canvas_arc.asp
+        let h = c.h*.65;       
+        drawCircle(c.w/2,h,100, "#FFF");
+        drawCircle(c.w/2,h-=100,50, "#FFF");
+        drawCircle(c.w/2,h-=50,25, "#FFF");
+        drawCircle(c.w/2-10,h,5, "#000");
+        drawCircle(c.w/2+10,h,5, "#000");
+        drawCircle(c.w/2,h+=50,5, "#000");
+        drawCircle(c.w/2,h+=20,5, "#000");
+        drawCircle(c.w/2,h+=20,5, "#000");
+        drawLine(c.w*.36,h-50,c.w*.1,c.h*.1, "#000");
+        drawLine(c.w*.64,h-50,c.w*.9,c.h*.1, "#000");
+   }
+    // ########## END Canvas Code ################
+
+    }
+
+          // async function to call a change function setGreeting() 
+          async function changeHello(){
+              // call the contract function
+              let result = await window.contract.setGreeting({
+                 message: document.getElementById('text').value
+                  });
+                  // clear the form
+                  document.getElementById('text'),innerHTML="";
+              return;
+          }
+
+            // async function to call contract function getGreeting() and change innerHTML
+            async function viewHello(){
+                // call the contract function
+                let result = await window.contract.getGreeting({
+                      accountId: window.walletConnection.getAccountId() }
+                    );
+            
+                // // update html with greeting
+                // document.getElementById('response').innerHTML=result;
+                return result;
+            }            
+            
+            
+            </script>
