@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="styles.css" rel="stylesheet">
+    <base target="_blank">
+</head>
+<body>
+    <h1>NEAR Tutorial, Part 3</h1>
+    <h3>Keeping score.</h3>
+    <section>
+        <h2>The Counter Example</h2>
+        <p>There's already an example implementation keeping score on NEAR right here: <a hre="https://examples.near.org/counter">Counter Example</a></p>
+        <p>Obviously there may be other ways to implement this, but since it's an example on near.org and I'm new to this myself, it makes sense to start there.</p>
+        <p>It's good to open the example up in gitpod and poke around a bit, you can hover over the code and definitions will pop up helping you understand. Like in the previous tutorial, you're going to want to open up the assembly folder and look at main.ts</p>
+        <p>First we have a function called incrementCounter, I'm going to change some details for clarity: </p>
+        <pre><code>
+            export function addToScore(value: i32): void {
+                const newScore = storage.getPrimitive<i32>("score", 0) + value;
+                storage.set<i32>("score", newScore);
+              }
+        </code></pre>
+        <p>In this function we're adding a number 'value' to the score, we do this by using storage class function called getPrimitive that gets a value stored under a key. Our key in this case is 'score' and the 0 is a default value if it can't find anything for that key. Then we add whatever 'value' was passed in to the existing score. Then we take newScore and use storage.set to store our newScore under the key "score." </p>
+        <p>If you look at incrementCounter in the counter example, there's also a logging step, but since that's fluff, I didn't include it here.</p>
+        <p>deIncrementCounter is exactly the same, except instead of adding the value you subtract.</p>
+        <p>Two more functions here, getScore and resetScore, so simple:</p>
+        <pre><code>
+            export function getScore(): i32 {
+                return storage.getPrimitive<i32>("score", 0);
+              }
+              
+              export function resetScore(): void {
+                storage.set<i32>("score", 0);
+              }
+        </code></pre>
+        <p>See, exactly the same functions storage.getPrimitive and storage.set, same as you used in addToScore. At this point all you need is to deploy the contract and hook it up to your HTML5 game. This time why don't we actually deploy instead of dev deploy?
+        </p>
+        <p>So let's add that code to our previous project myFirstApp in the index.ts file, we don't need to add any imports, because storage is already being imported.</p>
+        <pre><code>
+            export function addToScore(value: i32): void {
+                const newScore = storage.getPrimitive<i32>("score", 0) + value;
+                storage.set<i32>("score", newScore);
+              }
+              export function subFromScore(value: i32): void {
+                const newScore = storage.getPrimitive<i32>("score", 0) - value;
+                storage.set<i32>("score", newScore);
+              }
+              export function getScore(): i32 {
+                return storage.getPrimitive<i32>("score", 0);
+              }
+              export function resetScore(): void {
+                storage.set<i32>("score", 0);
+              }
+        </code></pre>
+        <p>Go ahead and delete the previous dev-random number account, if you want to keep the last example working, you can go back and add the contract name you deploy to so that it keeps working.</p>
+        <pre><code>near delete devTODELETE YOURACCOUNT.testnet </code></pre>
+        <p>Then we make a special sub account to deploy to:</p>
+        <pre><code>near create-account sub.yourAccount.testnet --masterAccount yourAccount.testnet</code></pre>
+        <p>Pick whatever sub name you want, for example tutorial.yourAccount.testnet would be fine.</p>
+        <p>Make sure you save your changes and then build the contract:</p>
+        <pre><code>yarn build:contract</code></pre>
+        <p>You can find that yarn script and others in the package.json file under scripts.</p>
+        <p>Once it's built you can deploy! There's more than one way to do this, so let's discuss this. The first way is described in the readme, I modified step 3 to just deploy the contract and not the front end:</p>
+        <pre><code>
+            Step 2: set contract name in code
+            ---------------------------------
+            
+            Modify the line in `src/config.js` that sets the account name of the contract. 
+            Set it to the account id you used above.
+            
+            const CONTRACT_NAME = process.env.CONTRACT_NAME || 'myFirstApp.YOUR-NAME.testnet'
+
+            Step 3: deploy!
+            ---------------
+
+            One commands:
+                yarn deploy:contract
+
+        </code></pre>
+        <p>Of course that requires you to change the CONTRACT_NAME in the config.js file, if you want to deploy with just the wasm file, that you now have after the build command:</p>
+        <pre><code>near deploy --accountId sub.yourAccount.testnet --wasmFile out/main.wasm</code></pre>
+        <p>In this case the wasmFile is in out/main.wasm, but depending on how things are set up it may be elsewhere.</p>
+
+
+    </section>
+
+    <section>
+        <h2>Testing from command line</h2>
+        <p>First we can call the view method getScore, it should tell us the score is 0. To make things easier export your sub account ID first, so that you can type less.
+        If it doesn't work check if you made a typo in your name, common mistake.
+        </p>
+        <pre><code>
+            export ID= sub.yourAccount.testnet
+            near view $ID getScore
+        </code></pre>
+        <p>Five commands here: let's add 10 to the score, subtract 5 from the score, and then call view again to make sure it's at 5. Then we'll reset the score and call view one last time to make sure it's back to 0.</p>
+        <pre><code>
+            near call $ID addToScore '{"value":10}' --accountId $ID
+            near call $ID subFromScore '{"value":5}' --accountId $ID
+            near view $ID getScore
+            near call $ID resetScore --accountId $ID
+            near view $ID getScore
+        </code></pre>
+        <p>Refresher here, when you call a method that changes the state it's a call method and you need the accountId of the caller, but it's not necessary when it's just a view method.</p>
+        <p>If you're clever right now is when you realize that this method stores one score accross all users, so if I make a game out of this I'll just end up with everyone points getting squished together! Oh no! *Dramatic pause*</p>
+        <p>All it takes is a tiny change to make this work for individual scores... you need a different key for each user! Look at how the greetings were being saved in the code from before:</p>
+        <pre><code>const accountId = Context.sender</code></pre>
+        <p>So now let's apply that change to our functions:</p>
+        <pre><code>
+            export function addToScore(value: i32): void {
+                const key = Context.sender+"score";
+                const newScore = storage.getPrimitive<i32>(key, 0) + value;
+                storage.set<i32>(key, newScore);
+              }
+              export function subFromScore(value: i32): void {
+                const key = Context.sender+"score";
+                const newScore = storage.getPrimitive<i32>(key, 0) - value;
+                storage.set<i32>(key, newScore);
+              }
+              export function getScore(accountId: string): i32 {
+                return storage.getPrimitive<i32>(accountId+"score", 0);
+              }
+              export function resetScore(): void {
+                const key = Context.sender+"score";
+                storage.set<i32>(key, 0);
+              }
+        </code></pre>
+        <p>Go ahead rebuild and redeploy it:</p>
+        <pre><code>
+        yarn build:contract
+        near deploy --accountId sub.yourAccount.testnet --wasmFile out/main.wasm
+        </code></pre>
+        <p>Test everything again:</p>
+        <pre><code>
+            near call $ID addToScore '{"value":10}' --accountId $ID
+            near call $ID subFromScore '{"value":5}' --accountId $ID
+            near view $ID getScore '{"accountId": "yourAccount.testnet"}'
+            near call $ID resetScore --accountId $ID
+            near view $ID getScore '{"accountId": "yourAccount.testnet"}'
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>MiniGame</h2>
+        <p>This time we'll do the login/logout right inside the canvas element without any buttons/event listeners.</p>
+        <h3>Starter code</h3>
+        <p>Here we start with very similar set up to tutorial 2, we just have a few notable differences:</p>
+        <ul>
+          <li>
+            CONTRACT_NAME = sub.yourAccount.testnet
+          </li>
+          <li>
+            Different view/change methods:
+            <pre>
+              viewMethods: [&#39;getScore&#39;],
+              changeMethods: [&#39;addToScore&#39;, &#39;subFromScore&#39;, &#39;resetScore&#39;]
+            </pre>
+          </li>
+          <li>Instead of updateUI let's call checkStatus after connect()</li>
+        </ul>
+        <pre><code>
+          &lt;!doctype html&gt;
+            &lt;html&gt;
+                    &lt;head&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;
+                        &lt;!-- The near api --&gt;
+                        &lt;script src=&quot;https://cdn.jsdelivr.net/npm/near-api-js/dist/near-api-js.min.js&quot;&gt;&lt;/script&gt;
+                        &lt;/script&gt;
+                        &lt;!-- Styles, optionally you can have a styles.css file for these. --&gt;
+                        &lt;style&gt;
+                        /* These are my styles you can change to suit youself */
+                          body{
+                            text-align: center;
+                          }
+                          canvas{
+                            /*If you don&#39;t like pink, go ahead and change it.*/
+                            background: #ff7675; 
+                            width:300px;
+                            height:300px;
+                          }
+                        &lt;/style&gt;
+                  &lt;/head&gt; 
+            &lt;body style=&quot;margin:0;overflow: hidden;&quot;&gt;
+            &lt;canvas id=canvas&gt;   
+            &lt;/canvas&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;
+            
+            &lt;!-- Our JavaScript code goes here, if you prefer you can put it in a scripts.js file --&gt;
+            &lt;script&gt;
+                var CONTRACT_NAME=&#39;sub.yourAccount.testnet&#39;;
+
+                async function connect() {
+        // Connect to nearApi
+        let near = await nearApi.connect({
+        nodeUrl: &quot;https://rpc.testnet.near.org&quot;,
+        walletUrl: &quot;https://wallet.testnet.near.org&quot;,
+        helperUrl: &quot;https://helper.testnet.near.org&quot;,
+        explorerUrl: &quot;https://explorer.testnet.near.org&quot;,
+        networkId: &#39;testnet&#39;, // We are using testnet
+        keyStore: new window.nearApi.keyStores.BrowserLocalStorageKeyStore(window.localStorage, &#39;Example App&#39;)
+        });
+
+        // Connect to user&#39;s wallet
+        window.walletConnection = new nearApi.WalletConnection(near);
+        let account;
+        if (window.walletConnection.isSignedIn()) {
+            // Logged in account, can write as user signed up through wallet
+            account = walletConnection.account();
+            // connect to a NEAR smart contract
+            window.contract = new nearApi.Contract(account, CONTRACT_NAME, {
+            viewMethods: [&#39;getScore&#39;],
+            changeMethods: [&#39;addToScore&#39;, &#39;subFromScore&#39;, &#39;resetScore&#39;]
+            });
+        } else {
+            // Contract account, normally only gonna work in read only mode
+            account = new nearApi.Account(near.connection, CONTRACT_NAME);
+        }
+    }
+
+    nearApi.nearInitPromise = connect()
+        .then(checkStatus)
+        .catch(console.error);
+&lt;/script&gt;
+        </code></pre>
+        <h3>Some async code</h3>
+        <p>So let's makes some javascript async functions for each contract function, and a score variable.</p>
+        <pre><code>    
+          var score=0;
+          // ###### Async Code #########
+          // async function to call contract view function getScore() and update score
+          async function viewScore(){
+          // call the contract function
+          let result = await window.contract.getScore({
+              accountId: window.walletConnection.getAccountId() }
+              );
+              return result;
+          }
+      
+          // async function to call contract change function addToScore()
+          async function addToScore(n){
+          // call the contract function
+          let result = await window.contract.addToScore({
+              value: n}
+              );
+              return;
+          }
+      
+          // async function to call contract change function subFromScore()
+          async function subFromScore(n){
+          // call the contract function
+          let result = await window.contract.subFromScore({
+              value: n}
+              );
+              return;
+          }
+          
+          // async function to call contract change function resetScore()
+          async function resetScore(){
+          // call the contract function
+          let result = await window.contract.resetScore({});
+              return result;
+          }
+          // ###### END Async Code #########</code></pre>
+          <h3>Test it</h3>
+          <p>Let's make the function checkStatus that is being called after connect, and for now we'll fill it with some testing code. When you load this page, first you'll be required to login, then because of the async functions 0 will be printed first then 10, and if you refresh you'll get 0, then 20.</p>
+          <pre><code>
+            function  checkStatus(){
+              // Check to see if signed in:
+              if (!window.walletConnection.getAccountId()) {
+                  window.walletConnection.requestSignIn(CONTRACT_NAME, 'Example App');
+              } else {
+                  addToScore(10).then(viewScore).then(
+                          function(value) {
+                                  score = value;
+                                  console.log(score);
+                              });
+                  console.log(score);
+              }
+          }
+          </code></pre>
+        <p>You could say we're keeping score of how many times you refresh the page, but that's not really a game, and it only uses one method.</p>
+        <h3>Make a game!</h3>
+        <p>Now you should do your own game here, but I've got a little snowman, so I'm going to make a click on the snowflakes game, you get 10 points when you click on 50 snowflakes and you lose 5 points if you miss 50 snowflakes. We want to avoid sending to many change calls, so we're not going to track every snowflake.</p>
+        <p>I'm not going to include all the code here but this is what it looks like: <a href="game1.html">Snow Flakes</a> and here's a link to the <a href="https://github.com/Vertfromage/Vertfromage.github.io/blob/master/NEAR-tutorials/game1.html">code on github</a></p>
+        <h3>Things to remember</h3>
+        <ol>
+        <li>Change calls shouldn't be overused.</li>
+        <li>The NEAR part isn't that many lines of code.</li>
+        <li><p>Don't put the contact call in a place where it will get called repeatedly.</p><p>For example when I call addToScore(10) I do it inside an if condition that checks if  my counter is >50, then resets the counters right away. If I did not reset the clicked counter every loop after it got to 50 it would keep calling every loop. Alternatively I could have used if(clicked%50 == 0). </p> 
+          <pre><code>
+          if(clicked>50){
+            clicked = 0;
+            missed = 0;
+            if(window.walletConnection.getAccountId()){
+                addToScore(10).then(viewScore).then(
+                function(value) {
+                        score = value;
+                    });
+                }
+          }
+        </code></pre></li>
+        <li>Login and logout are as simple as an onlick event, draw a button or even just text
+          <pre><code>
+            //In onclick event
+            // Click on sign-in/ sign-out
+            if( x&lt;c.w*.3 && y>c.h*.95){
+                if(window.walletConnection.getAccountId()){
+                    window.walletConnection.signOut();
+                }else{
+                    window.walletConnection.requestSignIn(CONTRACT_NAME, 'SnowFlake APP');
+                }
+            }
+          
+          // Inside the animation loop
+          if(window.walletConnection.getAccountId()){
+            print('Sign Out!', c.w*.1, c.h*.99, 1, "#000");
+          }else{
+            print('Sign In!', c.w*.1, c.h*.99, 1, "#000");
+          }
+          </code></pre>
+        </li>
+        <li>Let me know what game you make, I'm on twitter: @vertfromageio</li>
+      </ol>
+        
+
+    </section>
+
+
+
+    <section>
+        <h2>Next tutorial</h2>
+        <p>Next we will make a leaderboard! </p>
+        <a href="NEAR-tut-4.html">NEAR tutorial 4</a>
+    </section>
+
+</body>
+</html>
