@@ -1,0 +1,7 @@
+Sarah - No, not that. For example, 11 + 1 = 13. If I press 1, it would be nice if the 1 on the wheel lit up, showing it accepted me choosing the 1 before I also choose the 3 (and the 3 can light up too). Sometimes I might not tap hard enough, my nail might get in the way, or with clicking I might not have pressed the mouse hard enough. So a confirmation would be helpful that it "accepted" it.
+
+Me - I could, but not in time for the kickstarter, it's just a matter of adding a tween in the right place to make a colored circle change it's alpha over the spot where a click is detected that is over the wheel. If you could save that idea and comment in the comments on launch day, it would be nice.
+
+Note passwords:
+Sarah, FreakySpiderFarts
+kickstarter, TakeThat2020 
