@@ -1,0 +1,487 @@
+<!doctype html>
+            <html>
+                    <head><meta charset="utf-8" />
+                        <!-- The near api -->
+                        <script src="https://cdn.jsdelivr.net/npm/near-api-js/dist/near-api-js.min.js"></script>
+                        </script>
+                        <!-- Styles, optionally you can have a styles.css file for these. -->
+                        <style>
+                        /* These are my styles you can change to suit youself */
+                          body{
+                            text-align: center;
+                          }
+                          canvas{
+                            /*If you don't like pink, go ahead and change it.*/
+                            background: #ff7675; 
+                            width:300px;
+                            height:300px;
+                          }
+                        </style>
+                  </head> 
+            <body style="margin:0;overflow: hidden;">
+            <h2>Score Keeping Tutorial Game Example</h2>
+            <canvas id=canvas>   
+            </canvas>
+            </body>
+            </html>
+            
+            <!-- Our JavaScript code goes here, if you prefer you can put it in a scripts.js file -->
+            <script>
+                var CONTRACT_NAME='tutorial3.vertfromage.testnet';
+
+        async function connect() {
+        // Connect to nearApi
+        let near = await nearApi.connect({
+        nodeUrl: "https://rpc.testnet.near.org",
+        walletUrl: "https://wallet.testnet.near.org",
+        helperUrl: "https://helper.testnet.near.org",
+        explorerUrl: "https://explorer.testnet.near.org",
+        networkId: 'testnet', // We are using testnet
+        keyStore: new window.nearApi.keyStores.BrowserLocalStorageKeyStore(window.localStorage, 'SnowFlake APP')
+        });
+
+        // Connect to user's wallet
+        window.walletConnection = new nearApi.WalletConnection(near);
+        let account;
+        if (window.walletConnection.isSignedIn()) {
+            // Logged in account, can write as user signed up through wallet
+            account = walletConnection.account();
+            // connect to a NEAR smart contract
+            window.contract = new nearApi.Contract(account, CONTRACT_NAME, {
+            viewMethods: ['getScore',  'getHighScoreList'],
+            changeMethods: ['addToScore', 'subFromScore', 'resetScore', 'addHighScore']
+            });
+        } else {
+            // Contract account, normally only gonna work in read only mode
+            account = new nearApi.Account(near.connection, CONTRACT_NAME);
+        }
+    }
+
+    nearApi.nearInitPromise = connect()
+        .then(checkStatus)
+        .catch(console.error);
+
+    // sign in:
+    //  window.walletConnection.requestSignIn(CONTRACT_NAME, 'Example App');
+    
+    function  checkStatus(){
+    // Check to see if signed in:
+    if (!window.walletConnection.getAccountId()) {
+        window.walletConnection.requestSignIn(CONTRACT_NAME, 'SnowFlake APP');
+    } else {
+        viewScore().then(
+                function(value) {
+                        score = value;
+                    });
+        //resetScore();
+        // start the animation
+        start();
+    }
+}
+    var score=0;
+    // ###### Async Code #########
+    // async function to call contract view function getScore() and update score
+    async function viewScore(){
+    // call the contract function
+    let result = await window.contract.getScore({
+        accountId: window.walletConnection.getAccountId() }
+        );
+        return result;
+    }
+
+    // async function to call contract change function addToScore()
+    async function addToScore(n){
+    // call the contract function
+    let result = await window.contract.addToScore({
+        value: n}
+        );
+        return;
+    }
+
+    // async function to call contract change function subFromScore()
+    async function subFromScore(n){
+        // call the contract function
+        let result = await window.contract.subFromScore({
+        value: n
+    });
+        return;
+    }
+    
+    // async function to call contract change function resetScore()
+    async function resetScore(){
+    // call the contract function
+        let result = await window.contract.resetScore({});
+        return result;
+    }
+
+    // ## Highscore code ##
+    var highScoreList =[];
+    // get highscore list 
+    async function getHighScoreList(){
+        let result = await window.contract.getHighScoreList();
+        return result;
+    }
+
+    //add highscore
+    async function addHighScore(s){
+        let result = await window.contract.addHighScore({
+            score: s
+        })
+        return;
+    }
+
+    // ###### END Async Code #########
+
+
+
+    // ###### Canvas Code #########
+    var c = canvas.getContext`2d`;
+    canvas.width = 300; 
+    canvas.height =300;
+    c.w = canvas.height;
+	c.h = canvas.width;
+
+    clicked = 0;
+    missed = 0;
+
+    // DRAW LOOP
+    let reqAnimationId;
+    let scene =0;
+    function smoothAnimation(e) {
+        canvas.width = 300, canvas.height = 300;
+        c.w=canvas.width, c.h = canvas.height;
+        switch (scene) {
+        case 0: game();
+            break;
+        case 1:
+			highscore();
+            break;
+    }
+        reqAnimationId = requestAnimationFrame(smoothAnimation);
+    }
+    // to start
+    function start() {
+        console.log("scene: "+scene);
+        reqAnimationId = requestAnimationFrame(smoothAnimation);
+    }
+    function game(){
+        snowMan();
+        playSnowflakes();
+        print('Click 50 get 10pts, miss 50 lose 5pts.', c.w/2, c.h*.05, 1, "#OOO");
+        print('Score '+score, c.w/2, c.h*.6, 3, "#000");
+        print('Missed '+missed, c.w/2, c.h*.7, 2, "#000");
+        print('Clicked '+clicked, c.w/2, c.h*.8, 2, "#000");
+
+        if(clicked>50){
+            if(window.walletConnection.getAccountId()){
+                addToScore(10).then(viewScore).then(
+                    function(value) {
+                        score = value;
+                    }).then(
+                        function(){
+                            // Check if new highscore >> add to highscore list
+                            if(highScoreList.length<10||highScoreList[9]<score){
+                                addHighScore(score);
+                            } 
+                        });
+                }
+
+            clicked = 0;
+            missed = 0;
+        }
+        if(missed>50){
+          if(score>4 && window.walletConnection.getAccountId()){
+          subFromScore(5).then(viewScore).then(
+                function(value) {
+                        score = value;
+                    });}
+            missed = 0;
+            clicked = 0;
+        }
+        if(window.walletConnection.getAccountId()){
+            print('Sign Out!', c.w*.1, c.h*.99, 1, "#000");
+        }else{
+            print('Sign In!', c.w*.1, c.h*.99, 1, "#000");
+        }
+        print('High Scores!', c.w*.85, c.h*.99, 1, "#000");
+    }
+
+    function highscore(){
+        // Display highscore list
+        print('HIGH SCORES',c.w/2,0,2,"#000");
+        print('Name     Score', c.w/2,c.w*.1,2,"#000");
+        let h = .2;
+        highScoreList.forEach(highscore=>{
+            h+=.05;
+            print(highscore.player, c.w/3,c.h*h,1,"#000" );
+            print(highscore.score, c.w*.7,c.h*h,1,"#000" );
+        });
+
+        // buttons
+        if(window.walletConnection.getAccountId()){
+            print('Sign Out!', c.w*.1, c.h*.99, 1, "#000");
+        }else{
+            print('Sign In!', c.w*.1, c.h*.99, 1, "#000");
+        }
+        print('Play Game!', c.w*.9, c.h*.99, 1, "#000");
+    }
+
+    // Click code e stands for MouseEvent
+    onclick = e => {
+        console.log("Clicked!");
+    let rect = canvas.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            let y = e.clientY - rect.top;
+    
+    // Click on sign-in/ sign-out
+    if(clickBottom(x,y)==0){
+        console.log("Click bottom left");
+        if(window.walletConnection.getAccountId()){
+            window.walletConnection.signOut();
+        }else{
+            window.walletConnection.requestSignIn(CONTRACT_NAME, 'SnowFlake APP');
+        }
+    }
+    
+    if(scene==0){
+        console.log("Scene is 0");
+        // game scene
+        snowflakes.forEach((snowflake)=>{
+            if(snowflake.isClose(x,y,1)&&!snowflake.clicked){
+                snowflake.clicked = true;
+                clicked++;
+            }
+        });
+        // click on Highscore list
+        if(clickBottom(x,y)==1){
+            // NOTE : If loads too slow scene first wait for highscore list to load.
+            getHighScoreList().then(function(value){
+                highScoreList = value;
+                highScoreList.sort((a, b) => b.score - a.score);
+            }).then(scene=1);
+        }
+    }else{
+        console.log("Scene is 1")
+        // click to go back to game
+        if(clickBottom(x,y)==1){
+            scene = 0;
+        }
+    }
+    }
+    
+    // returns 0 if clicked bottom left, 1 if bottom right, -1 if neither
+    function clickBottom(x,y){
+        console.log("Clicked bottom "+x+" "+y);
+        //Bottom-left
+        if(x<c.w*.3&&y>c.h*.95){
+            return 0;       
+        }
+        //Bottom right
+        else if(x>c.w*.7&&y>c.h*.95){
+            return 1;       
+        }
+        else{
+            return -1;
+        }
+    }
+
+    // Canvas print util by vertfromage
+    function print(text, width, height, fontScale, color) {
+    c.textAlign = 'center';
+    c.fillStyle = color;
+    c.font = fontScale+ 'vw Consolas';
+    c.fillText(text, width, height);
+    }
+
+    function snowMan(){
+       // ******** Snow Man *************
+        // cicles: https://www.w3schools.com/tags/canvas_arc.asp
+        let h = c.h*.65;       
+        drawCircle(c.w/2,h,100, "#FFF");
+        drawCircle(c.w/2,h-=100,50, "#FFF");
+        drawCircle(c.w/2,h-=50,25, "#FFF");
+        drawCircle(c.w/2-10,h,5, "#000");
+        drawCircle(c.w/2+10,h,5, "#000");
+        drawCircle(c.w/2,h+=50,5, "#000");
+        drawCircle(c.w/2,h+=20,5, "#000");
+        drawCircle(c.w/2,h+=20,5, "#000");
+        drawLine(c.w*.36,h-50,c.w*.1,c.h*.1, "#000");
+        drawLine(c.w*.64,h-50,c.w*.9,c.h*.1, "#000");
+   }
+
+    function drawCircle(x,y,size, color){
+        c.fillStyle = color;
+        c.beginPath();
+        c.arc(x, y, size, 0, 2 * Math.PI);
+        c.fill();
+        c.stroke();
+    }
+    function drawLine(sX, sY, eX, eY, color){
+        c.strokeStyle = color;
+        c.beginPath(); 
+        // Staring point
+        c.moveTo(sX,sY);
+        // End point 
+        c.lineTo(eX,eY);
+        // Make the line visible
+        c.stroke();
+   }
+
+
+const snowflakes = [];
+while(snowflakes.length<6){
+		makeSnowflake();
+	}
+
+function makeSnowflake(){
+	
+	let x = Math.random()*c.w;
+	let r = Math.random()*1+.7;
+	//speed
+	let sX, sY;
+	sX=  Math.random() * 1 - .5;
+	sY = Math.random() * 1 +.1;
+	
+	snowflakes.push(makeSprite(c,26,25,"snowflake.png",1,10,x,0,r,{x:sX,y:sY}));
+}
+
+function playSnowflakes(){
+	snowflakes.forEach((snowflake)=>{
+		snowflake.move();
+        if(!snowflake.clicked){
+            snowflake.render();
+        }
+		
+    if(snowflake.outOfBounds){
+      if(!snowflake.clicked){
+          missed++;
+      }
+      snowflake.y=0;
+      snowflake.x = Math.random()*c.w;
+      snowflake.sX= Math.random() * 1 - .5;
+	  snowflake.sY = Math.random() * 1 +.1;
+      snowflake.outOfBounds= false;
+      snowflake.clicked = false;
+    }
+    
+	})
+}
+   
+function sprite(options) {
+
+var that = {},
+	frameIndex = 0,
+	tickCount = 0,
+	spot = 0,
+	ticksPerFrame = options.ticksPerFrame || 0,
+	numberOfFrames = options.numberOfFrames || 1;
+
+that.context = options.context;
+that.w = options.width;
+that.h = options.height;
+that.x = options.x;
+that.y = options.y;
+that.image = options.image;
+that.scaleRatio = 1;
+that.s = options.s;
+that.seq = [];
+that.dead = false;
+that.outOfBounds= false;
+that.clicked = false;
+
+that.newSeq = function (seq) {
+	spot = 0;
+	frameIndex = 0;
+	that.seq = seq;
+};
+
+that.switch = function (x) {
+	frameIndex = x;
+};
+
+that.update = function () {
+
+	tickCount += 1;
+
+	if (tickCount > ticksPerFrame) {
+
+		tickCount = 0;
+
+		// If the current frame index is in range
+		if (frameIndex < numberOfFrames - 1) {
+			// Go to the next frame
+			frameIndex += 1;
+			if (that.seq.length > 0) {
+				frameIndex = that.seq[spot];
+				spot += 1;
+			}
+		} else if (that.seq.length < 1) {
+			frameIndex = 0;
+		}
+		if (spot > that.seq.length - 1) {
+			spot = 0;
+		}
+	}
+};
+that.render = function () {
+	// Draw the animation
+	that.context.drawImage(
+		that.image,
+		frameIndex * that.w / numberOfFrames,
+		0,
+		that.w / numberOfFrames,
+		that.h,
+		that.x,
+		that.y,
+		that.w / numberOfFrames * that.scaleRatio,
+		that.h * that.scaleRatio,
+	);
+};
+that.getFrameWidth = function () {
+	return that.w / numberOfFrames;
+};
+that.isClose = function (x, y, t) {
+	var dx = (that.x + that.getFrameWidth() / 2 * that.scaleRatio) - (x + that.getFrameWidth() / 2),
+		dy = (that.y + that.getFrameWidth() / 2 * that.scaleRatio) - (y + that.getFrameWidth() / 2);
+
+	var dist = Math.sqrt(dx * dx + dy * dy);
+
+	if (dist < that.getFrameWidth() * that.scaleRatio * t) {
+		return true;
+	} else {
+		return false;
+	}
+};
+that.move = function(){
+	that.x+= that.s.x;
+	that.y+= that.s.y;
+	if(that.x>c.w || that.y>c.h || that.x<0 ||that.y<-100){
+		that.outOfBounds = true;
+	}
+};
+return that;
+}
+// End sprite function
+
+function makeSprite(c, w, h, img, f, t, x, y, r, s) {
+let i = new Image();
+let sp = sprite({
+	context: c,
+	width: w,
+	height: h,
+	image: i,
+	numberOfFrames: f,
+	ticksPerFrame: t,
+	s: s
+});
+sp.x = x;
+sp.y = y;
+sp.scaleRatio = r;
+i.src = img;
+return sp;
+}
+
+// ########## END Canvas Code ################           
+
+
+</script>
