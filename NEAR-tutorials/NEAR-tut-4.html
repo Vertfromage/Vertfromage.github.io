@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="styles.css" rel="stylesheet">
+    <base target="_blank">
+</head>
+<body>
+<h1>Highscore List</h1>
+<a href="https://vertfromage.github.io./NEAR-tutorials/game3.html">Scoreboard example</a>
+<section>
+    <h2>Starting point: Guestbook Example</h2>
+    <p>Once again we'll start from an example that already exists and adapt it to our needs, <a href="https://examples.near.org/guest-book">Guestbook Example</a>
+    So start by opening it up on gitpod and have a look.</p>
+    <p>You'll notice right away they're using a react front end, we're going to make a HTML5 canvas front end instead. Since we're making a leaderboard it should be displayed inside our game as a view that we can open and close. So for our purposes we're just focused on the assembly folder.</p>
+    <p>You'll also notice we have two files model.ts and main.ts in the assembly folder. You'll notice in model we have a class to represent a message and a PersistentVector collection to store messages. Similarly we'll need a highScore class and a PersistantVector collection to store our highscore objects.</p>
+    <h3>Exploring source code:</h3>
+    <p> If you're on gitpod you can CTRL-click on parts of the code to explore the source code, within a few clicks you'll find this information about PersistantVector: "This class is one of several convenience collections built on top of the `Storage` class
+     exposed by the NEAR platform.  It implements a vector -- a persistent array." If you CTRL-click into collections you'll get all this info too: </p>
+     <pre><code>
+        /**
+        * Contract function calls are stateless.
+        *
+        * All contract data is stored in the same key-value data store on the blockchain
+        * (called `Storage` and imported from `near-sdk-as`) with a few convenience
+        * methods for reading, writing, searching and deleting keys and value.
+        *
+        * We also provide a few collections for convenience including
+        * - `PersistentVector`
+        * - `PersistentMap`
+        * - `PersistentDeque`
+        *
+        * These collections wrap the `Storage` class to mimic a Map, Vector (aka. Array) and Deque.
+        * And of course you can use these as examples as inspiration for your own custom data structures.
+        *
+        * All of these collections read and write from `Storage` abstracting away a lot of what you might
+        * want to add to the `Storage` object.
+        *
+        * IMPORTANT NOTE:
+        * Since all data stored on the blockchain is kept in a single key-value store under the contract account,
+        * you must always use a *unique storage prefix* for different collections to avoid data collision.
+        */
+     </code></pre>
+     <p>Depending on what you're storing and how you intend to use it you may want to use a different collection. For now we'll stick with PersistantVector, but it's nice to keep in mind you have other options.</p>
+</section>
+
+<section>
+    <h2>Writing our own model</h2>
+    <p>Like I said, our model.ts file is going to be fairly similar to the guest book example. Let's open up the project folder we've been working in during the previous tutorials. You'll remember we started with <a href="https://github.com/near/create-near-app">create-near-app</a> and focused on the code for near contracts found in the assembly folder. Previously we made a <a href="NEAR-tut-1.html">hello world app</a> and a <a href="NEAR-tut-3.html">score keeping app</a> using simple methods in our contract, now we'll add a model and some methods for a high score table.</p>
+    <p>Start by opening a new file called model.ts inside our assembly folder and importing context and PersistantVector:</p>
+    <pre><code>import { context, PersistentVector } from "near-sdk-as";</code></pre>
+    <p>Then we need a class to represent a highscore object:</p>
+    <pre><code>
+        /** 
+        * Exporting a new class HighScore so it can be used outside of this file.
+        */
+        @nearBindgen
+        export class HighScore {
+          player: string;
+          constructor(public score: u32) {
+            this.player = context.sender;
+          }
+        }</code></pre>
+        <p>And our PersistantVector:</p>
+        <pre><code>
+        export const highScoreList = new PersistentVector<HighScore>("s");
+        </code></pre>
+</section>
+
+<section>
+    <h2>Adding more methods to index.ts</h2>
+    <p>Now we need some methods that use our HighScore class and highScoreList array. We're going to want to addHighScore, getHighScoreList and resetHighScoreList.</p>
+    <h3>Add a high score</h3>
+    <p>Now in the Guestbook example we have an example addMessage which simply makes a new PostedMessage and pushes it to the list. In our case we want to stop adding after 10 high scores and then if the new score is bigger than the smallest score, we can replace the smallest score with the new one.</p>
+    <p>To keep things simple we'll not sort the list at the backend, we'll sort it on the front end, and on the front end we'll only add scores when we know they are bigger than the smallest score on the list. Here's the function with comments:</p>
+    <pre><code>
+/**
+ * if list length less than 10 add score
+ * then find smallest score and compare to newScore if newScore is bigger swap
+ */
+export function addHighScore(score: u32):void {
+  const newScore = new HighScore(score);
+  // until list up to size add score
+  if(highScoreList.length < HIGHSCORE_LIST_SIZE){
+    highScoreList.push(newScore);
+    return;
+  }
+  // find smallest score in array
+  let smallestScoreIndex = 0;
+  for(let i=1; i < highScoreList.length; i++){
+    if(highScoreList[i].score < highScoreList[smallestScoreIndex].score){
+      smallestScoreIndex = i;
+    }
+  }
+  //compare smallest to newScore if newScore is bigger swap
+  if(highScoreList[smallestScoreIndex].score < newScore.score){
+    highScoreList.replace(smallestScoreIndex,newScore);
+  }
+}
+    </code></pre>
+    <h3>Get the high score list</h3>
+    <p>In this case our method will be simpler than the guestbook example because we're limiting our list length to 10, so the array we return will be the same length as our highScoreList.</p>
+    <pre><code>
+        /*
+* Returns an array of highscores, unsorted.
+*/
+export function getHighScoreList(): HighScore[]{
+  const result = new Array<HighScore>(highScoreList.length);
+  for(let i = 0; i < highScoreList.length; i++) {
+    result[i] = highScoreList[i];
+  }
+  return result;
+}
+    </code></pre>
+    <p>I'm not going to get into it right now, but if you want to sort the result array before returning it, you could use the AssemblyScript Array sort function with a comparator function. Same idea if you want to sort the array in the change method when a new highscore is added.<a href="https://www.assemblyscript.org/stdlib/array.html">Docs: Array</a></p>
+    <h3>Reset the high score list</h3>
+    <p>
+      If you want to be able to reset the highscore list you should add a method for that as well.
+    </p>
+    <pre><code>
+      export function resetHighScoreList(): void{
+        while(highScoreList.length>0){
+          highScoreList.pop();
+        } 
+       }
+    </code></pre>
+
+</section>
+
+<section>
+  <h2>Build the contract</h2>
+  <p>Like in the previous examples now you need to build and deploy the contract so that you can use it. If you are combining multiple functionalities together into one game contract the methods for scores and your highscores could be in the same file.</p>
+  <p>I'm going to give you the steps in bullet points, but if you want a more detailed explanation review the <a href="NEAR-tut-3.html">previous tutorial.</a></p>
+  <ol>
+    <li>If you're re-using a previous contract: 
+    <pre><code>near delete sub.yourAccount.testnet YOURACCOUNT.testnet </code></pre></li>
+    <li>Make the sub-account:
+    <pre><code>near create-account sub.yourAccount.testnet --masterAccount yourAccount.testnet</code></pre>
+    <li>
+      To make things easier export your sub account ID first, so that you can type less.
+      <pre><code>
+        export ID= sub.yourAccount.testnet
+        near view $ID getScore
+      </code></pre>
+    </li>
+    </li>
+    <li>Make sure you save your changes and then build the contract:
+      <pre><code>yarn build:contract</code></pre></li>
+    <li>Deploy the contract:
+      <pre><code>near deploy --accountId $ID --wasmFile out/main.wasm</code></pre>
+    </li>
+    <li>Test every method on the command line to see if it works correctly. You'll want add 11 scores to make sure it's working correctly.
+      
+      <pre><code>near call $ID addHighScore '{"score":10}' --accountId $ID</code></pre>
+      
+      <pre><code>near view $ID getHighScoreList</code></pre>
+      
+      <pre><code>near call $ID resetHighScoreList '{}' --accountId $ID</code></pre>
+      
+    </li>
+  </ol>
+</section>
+<section>
+  <h2>Make the html5 front end display.</h2>
+  <p>For this tutorial I'm just going to implement my highscore list to work with the snowflakes game.</p>
+  <h3>New Async functions</h3>
+  <pre><code>
+    // ## Highscore code ##
+    // get highscore list 
+    async function getHighScoreList(){
+        let result = await window.contract.getHighScoreList();
+        return result;
+    }
+
+    //add highscore
+    async function addHighScore(s){
+        let result = await window.contract.addHighScore({
+            score: s
+        })
+        return;
+    }
+  </code></pre>
+  <h3>How I chose to set up my highscore display</h3>
+  <p>I'm not an expert on game development, but this is my take on it: If it's part of the UI (user interface) try to do what people expect. You think of a high score list, it's usually a page that you can navigate to by way of the title view and/or the game-over view, but if you're got a very simple game without an title/game-over view like I did in the last tutorial I'd have a link to the highscore view.</p>
+  <p>What it looks like: <a href="">highscore implementation</a></p>
+  <h3>Add new scene</h3>
+  <p>Inside our smoothAnimation function we've been just calling our animate function, let's change that so we have two scenes: game and highscore. We'll rename animate to game and make a new function called highscore and put them inside a switch.</p>
+  <pre><code>
+    let scene =0;
+    function smoothAnimation(e) {
+        canvas.width = 300, canvas.height = 300;
+        c.w=canvas.width, c.h = canvas.height;
+        switch (scene) {
+        case 0: game();
+            break;
+        case 1: highscore();
+            break;
+    }
+        reqAnimationId = requestAnimationFrame(smoothAnimation);
+    }
+  </code></pre>
+  <p>Since we're making another scene we'll want to control for that inside the onClick code so that we only respond to clicks for that scene. If this was a more complicated game, I'd put in a switch and move code into functions, but in this case I'm just going to use if/else. I'll leave the sign-in sign-out, because I want it to work on both scenes. clickBottom just returns 0 for bottom-left and 1 for bottom-right, -1 otherwise.</p>
+  <pre><code>
+    // Click code e stands for MouseEvent
+    onclick = e => {
+    let rect = canvas.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            let y = e.clientY - rect.top;
+    
+    // Click on sign-in/ sign-out
+    if(clickBottom(x,y)==0){
+        if(window.walletConnection.getAccountId()){
+            window.walletConnection.signOut();
+        }else{
+            window.walletConnection.requestSignIn(CONTRACT_NAME, 'SnowFlake APP');
+        }
+    }
+    
+    if(scene=0){
+        // game scene
+        snowflakes.forEach((snowflake)=>{
+            if(snowflake.isClose(x,y,1)&&!snowflake.clicked){
+                snowflake.clicked = true;
+                clicked++;
+            }
+        });
+        // click on Highscore list
+        if(clickBottom(x,y)==1){
+            scene = 1;
+        }
+    }else{
+        // click to go back to game
+        if(clickBottom(x,y)==1){
+            scene = 0;
+        }
+    }
+    }
+  </code></pre>
+  <p>Then I'll make sure in game and highscore I'm printing 'High Scores!'' and 'Play Game!' which will act as buttons to go between scenes.</p>
+  <h3>Sorting the highscore list</h3>
+  <p>Since I'm not maintaining the highscore list sorted on blockchain I'll need to sort in the front end. I'm going to call the getHighScoreList in the onclick event.</p>
+  <p>You might want to read the docs for the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort">sort function</a> if you aren't familiar with it.</p>
+  <pre><code>
+    // click on Highscore list
+        if(clickBottom(x,y)==1){
+            getHighScoreList().then(function(value){
+                highScoreList = value;
+                highScoreList.sort((a, b) => b.score - a.score);
+            }).then(scene=1);
+        }
+  </code></pre>
+  <p>Then we can use a forEach loop to display the scoreboard:</p>
+  <pre><code>
+    function highscore(){
+      // Display highscore list
+      print('HIGH SCORES',c.w/2,0,2,"#000");
+      print('Name     Score', c.w/2,c.w*.1,2,"#000");
+      let h = .2;
+      highScoreList.forEach(highscore=>{
+          h+=.05;
+          print(highscore.player, c.w/3,c.h*h,1,"#000" );
+          print(highscore.score, c.w*.7,c.h*h,1,"#000" );
+      });
+
+      // buttons
+      if(window.walletConnection.getAccountId()){
+          print('Sign Out!', c.w*.1, c.h*.99, 1, "#000");
+      }else{
+          print('Sign In!', c.w*.1, c.h*.99, 1, "#000");
+      }
+      print('Play Game!', c.w*.9, c.h*.99, 1, "#000");
+  }
+  </code></pre>
+  <h3>Add highscores</h3>
+  <p>Now we'll put in a check when the score is updated to see if the current player's score belongs on the highscore list, and if it does adding it.</p>
+  <pre><code>
+    addToScore(10).then(viewScore).then(
+                    function(value) {
+                        score = value;
+                    }).then(
+                        function(){
+                            // Check if new highscore >> add to highscore list
+                            if(highScoreList.length < 10 || highScoreList[9] < score ){
+                                addHighScore(score);
+                            } 
+                        });
+  </code></pre>
+  <p><a href="https://github.com/Vertfromage/Vertfromage.github.io/blob/master/NEAR-tutorials/game3.html">Github link Game</a></p>
+
+</section>
+
+<section>
+  <h2>Improvements</h2>
+  <p>These tutorials are meant to get you started for a hackathon, but obviously there's room for improvements. Things that could be improved:</p>
+  <ul>
+    <li>Rather than submitting a value to the highscore list, you could directly access the current stored score for the player that is calling the method.</li>
+    <li>Only allow the game developer's account to reset the highscore list.</li>
+    <li>Only save scores/highscores when directly requested by player. Cuts down on gas fees.</li>
+    <li>Allow the game to be played without login, but scores only save upon login.</li>
+    <li>Make a prettier game. Pretty takes longer than functional.</li>
+  </ul>
+</section>
+
+<section>
+    <h2>Next tutorial</h2>
+    <p>Next we will start building a simple multiplayer game.</p>
+    <a href="NEAR-tut-5.html">NEAR tutorial 5</a>
+</section>
+
+</body>
+</html>
