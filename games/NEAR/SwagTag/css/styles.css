@@ -1,0 +1,42 @@
+body{
+    background: #222f3e;
+    margin: 10px;
+  }
+.after-sign-in{
+    text-align: center;
+  }
+.sign-in{
+  text-align: center;
+}
+  
+h1,h2,p{
+    color: #c8d6e5;
+  }
+
+h1,h2{
+  text-align: center;
+}
+
+  
+img{
+  width: 275px;
+  max-width: 100%;
+  border-radius: 5%;
+  border: 2px solid black;
+  margin: 5px;
+}
+.container{
+  display: grid; 
+}
+
+button{
+  margin:auto;
+}
+#white-paper{
+  margin: 10px;
+}
+#white{
+  margin: 20px;
+  width: 60%;
+  margin-left: 20%;
+}
