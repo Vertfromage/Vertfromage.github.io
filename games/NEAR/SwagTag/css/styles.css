@@ -12,6 +12,9 @@ body{
 h1,h2,p{
     color: #c8d6e5;
   }
+aside{
+    color:#c8d6e5;
+}
 
 h1,h2{
   text-align: center;
