@@ -25,13 +25,12 @@ let level, levelSize, levelFall, fallTimer, dragStartPos, comboCount, score, bes
 // tiles
 const tileColors = 
 [
-    new Color(1,0,0),
-    new Color(1,1,1),
-    new Color(1,1,0),
-    new Color(0,1,0),
-    new Color(0,.6,1),
-    new Color(.6,0,1),
-    //new Color(.5,.5,.5),
+    new Color(20,0,0), //red
+    new Color(1,1,1), // transparent
+    new Color(10,10,0), //yellow
+    new Color(0,6,0), //green
+    new Color(.9,0,1), //purple
+    new Color(250,250,250), //light blue
 ];
 const tileTypeCount = tileColors.length;
 
