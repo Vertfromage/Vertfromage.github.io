@@ -10,7 +10,7 @@ cavasPixelated = 0; // do not use pixelated rendering
 
 const fallTime = .2;
 const cameraOffset = vec2(0,-.5);
-const backgroundColor = new Color(.5,.5,.5);
+const backgroundColor = new Color(0,0,0);
 const minMatchCount = 3;
 const highScoreKey = 'puzzleBestScore';
 
@@ -25,12 +25,12 @@ let level, levelSize, levelFall, fallTimer, dragStartPos, comboCount, score, bes
 // tiles
 const tileColors = 
 [
-    new Color(20,0,0), //red
-    new Color(1,1,1), // transparent
-    new Color(10,10,0), //yellow
-    new Color(0,6,0), //green
-    new Color(.9,0,1), //purple
-    new Color(250,250,250), //light blue
+    new Color(10,10,0), //yellow ?
+    new Color(1,0,1), //purple
+    new Color(20,0,0), //red ?
+    new Color(0,1,0), //green ?
+    new Color(1,1,1), //light blue
+    new Color(0,0,.9), // blue
 ];
 const tileTypeCount = tileColors.length;
 
@@ -61,6 +61,8 @@ function gameInit()
     gravity = -.005;
     fallTimer = new Timer;
     comboCount = score = 0;
+
+    initSky();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -176,8 +178,8 @@ function gameUpdatePost()
 ///////////////////////////////////////////////////////////////////////////////
 function gameRender()
 {
-    // draw a black square for the background
-    //drawRect(cameraPos.subtract(cameraOffset), levelSize, new Color(0,0,0));
+
+    drawSky();
 
     // draw the blocks
     const pos = vec2();
@@ -197,23 +199,16 @@ function gameRender()
         if (fallTimer.active() && levelFall[pos.x + pos.y*levelSize.x])
             drawPos.y += 1-fallTimer.getPercent();
 
-        // draw background
-        const color = tileColors[data];
-        //drawRect(drawPos, vec2(.95), color);
-        
-        // use darker color for icon
-        const color2 = color.scale(.8, 1);
-        drawTile(drawPos, vec2(1.3), data, vec2(64), color2);
+        //const color = tileColors[data];
+        drawTile(drawPos, vec2(1.3), data, vec2(1120));
+
 
         // highlight drag start
-
         if (dragStartPos && pos.x == dragStartPos.x && pos.y == dragStartPos.y)
             drawRect(drawPos, vec2(1.30),new Color(0,0,255,125));
-
-        
     }
     // draw a grey square at top to cover up incomming tiles
-    drawRect(cameraPos.subtract(cameraOffset).add(vec2(0,levelSize.y)), levelSize, backgroundColor);
+    //drawRect(cameraPos.subtract(cameraOffset).add(vec2(0,levelSize.y)), levelSize, backgroundColor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -226,7 +221,7 @@ function gameRenderPost()
 
 ///////////////////////////////////////////////////////////////////////////////
 // Startup LittleJS Engine
-engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRenderPost, 'tiles_brown.png');
+engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRenderPost, 'tiles_brown2.png');
 
 ///////////////////////////////////////////////////////////////////////////////
 // find and remove all runs of 3 or higher
