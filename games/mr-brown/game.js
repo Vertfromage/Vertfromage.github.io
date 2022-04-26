@@ -1,9 +1,3 @@
-/*
-    LittleJS Puzzle Example
-    - A match 3 style puzzle game to get you started
-    - Uses a higher resolution texture
-*/
-
 'use strict';
 
 cavasPixelated = 0; // do not use pixelated rendering
@@ -25,9 +19,9 @@ let level, levelSize, levelFall, fallTimer, dragStartPos, comboCount, score, bes
 // tiles
 const tileColors = 
 [
-    new Color(10,10,0), //yellow ?
+    new Color(1,1,0), //yellow ?
     new Color(1,0,1), //purple
-    new Color(20,0,0), //red ?
+    new Color(1,0,0), //red ?
     new Color(0,1,0), //green ?
     new Color(1,1,1), //light blue
     new Color(0,0,.9), // blue
@@ -200,12 +194,15 @@ function gameRender()
             drawPos.y += 1-fallTimer.getPercent();
 
         //const color = tileColors[data];
-        drawTile(drawPos, vec2(1.3), data, vec2(1120));
-
+        // const color2 = color.scale(.8, 1);
+        const newColor = new Color(1,1,1).scale(.8, 1);
 
         // highlight drag start
-        if (dragStartPos && pos.x == dragStartPos.x && pos.y == dragStartPos.y)
-            drawRect(drawPos, vec2(1.30),new Color(0,0,255,125));
+        if (dragStartPos && pos.x == dragStartPos.x && pos.y == dragStartPos.y){
+            drawTile(drawPos, vec2(1.3), data, vec2(1120),newColor);
+        }else{
+            drawTile(drawPos, vec2(1.3), data, vec2(1120));
+        }
     }
     // draw a grey square at top to cover up incomming tiles
     //drawRect(cameraPos.subtract(cameraOffset).add(vec2(0,levelSize.y)), levelSize, backgroundColor);
