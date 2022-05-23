@@ -16,7 +16,7 @@ class MathDungeon extends Phaser.GameObjects.Container {
             rotationTime: 500,
             tweenSpeed: 400,
             monsterSpeed: 12000,
-            monsterScale: .2,
+            monsterScale: .4,
             repeat: 1,
             topButtonH: game.config.height * .055,
             resultText: ["", "✔", "✘", "⌛"],
