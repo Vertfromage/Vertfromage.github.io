@@ -25,7 +25,7 @@ class SceneLoad extends Phaser.Scene {
             this.load.image("moneybag", "images/bag.svg");
             this.load.spritesheet("knife", "images/Blade7-in.png", {frameWidth:331,frameHeight:696});
             this.load.spritesheet("arrows","images/arrows.png", {frameWidth:200,frameHeight:89});
-            this.load.spritesheet("troll","images/troll.png", {frameWidth:505,frameHeight:526});
+            this.load.spritesheet("troll","images/troll2.png", {frameWidth:227,frameHeight:237});
             this.load.spritesheet("dudeBlink","images/dudeBlink.png", {frameWidth:453,frameHeight:627});
             this.load.spritesheet("dudetteBlink","images/dudetteBlink.png", {frameWidth:460,frameHeight:627});
             this.load.audio('backgroundMusic',["audio/random-race.mp3","audio/random-race.ogg"]);
