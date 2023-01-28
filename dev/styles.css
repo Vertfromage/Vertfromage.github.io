@@ -5,7 +5,7 @@ body, html {
 
 .bgimg {
   /* Background image */
-  background-image: url('/w3images/forestbridge.jpg');
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Jan_Vermeer_van_Delft_013.jpg/800px-Jan_Vermeer_van_Delft_013.jpg');
   /* Full-screen */
   height: 100%;
   /* Center the background image */
