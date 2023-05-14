@@ -4,8 +4,6 @@
 layout: home
 ---
 
-Recent: [NEAR Tutorials](https://vertfromage.github.io./NEAR-tutorials/)
-
 **History of my progress as a programmer:**
 
 * Aug 3, 2017 - Completed my first programming course [MITx 6.00.1x](https://courses.edx.org/certificates/b5b76097fe4744a6a5b291b0415df7da "Introduction to Computer Science and Programming Using Python Certificate")
@@ -29,15 +27,5 @@ Recent: [NEAR Tutorials](https://vertfromage.github.io./NEAR-tutorials/)
 * Participated in JS13Kgames 2021 [Jeff's Nightmare](https://js13kgames.com/entries/jeffs-nightmare) and [Space Invasion Simulator](https://js13kgames.com/entries/space-invasion-simulator), everyone thought Jeff's Nightmare was better. I also modified a piano project by xem to make the ingame music [piano playback](https://vertfromage.github.io/miniPiano/pianoPlayback.html) althought I had reviews telling me the sound was too loud, I guess I'll fix it if I use it next year.
 * HelloWorld app NEARvember 2021 [Hello](https://vertfromage.github.io./games/NEAR/index.html) Features a little html5 sprite I made the first js13kgames I participated in. 
 * Guestbook app NEARvember 2021 [Guestbook](https://vertfromage.github.io./guest-book/) Uses React front end, barely understand it. 
-
-**Currently Working on**
-* Trying to complete as many CS courses as I can remotely.
-* Learning about NEAR protocol to make a cool html5 tutorial for NEAR and eventually a fun game. [Tutorial Proposal](https://gov.near.org/t/proposal-beginners-near-tutorial-series-for-html5-games/7567)
+* Learned about NEAR protocol to make a cool html5 tutorial for NEAR and eventually a fun game. [Tutorial Proposal](https://gov.near.org/t/proposal-beginners-near-tutorial-series-for-html5-games/7567) [NEAR Tutorials](https://vertfromage.github.io./NEAR-tutorials/)
 * 
-
-**Goals**
-- Publish an educational game 
-- Make a fancy Developer's Portfolio site with fun animations.
-- Get a CS degree remotely using previous incomplete BSc credits to fill in the electives.
-- Take a business course on marketing. 
-- Use programming skills and creative ideas to earn a full salary as a entrepreneur.
