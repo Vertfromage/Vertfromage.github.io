@@ -18,10 +18,10 @@ I'm not feeling like trying to make this pretty. I think I enjoy programming mor
 
 ## Hackathon Games
    
--**Mirrored Planes**
+- **Mirrored Planes**
 [Play here!](https://vertfromage.github.io/games/planes/) I made this for [JS1024 2022](https://js1024.fun/demos/2022/8) for my entry I had to cut out the actual game play to make it small enough so it was only an visual experiment that I ended up submitting. I got 24th place. 
 
-**Incomplete game: Burning Plants**
+- **Incomplete game: Burning Plants**
 [Try here](https://js13kgames.com/entries/burning-the-plants) I guess I didn't really know what to do for JS13k 2022 when the theme was death... I started to go with this idea about killing plants, I was going to have a fire sprite vs a water sprite and you play as the fire sprite. I wasn't really super enthusiastic about the idea so I ran out of time and didn't finish. I helped curtis with the decentralized part of his entry though so I feel like I participated this year. [Curtis' entry](https://js13kgames.com/entries/world-of-emojis) the [contract](https://github.com/Vertfromage/near-pets) I did for him using the js SDK for near protocol 
    
 - **Jeff's Nightmare**
