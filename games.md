@@ -23,6 +23,9 @@ I'm not feeling like trying to make this pretty. I think I enjoy programming mor
 
 - **Incomplete game: Burning Plants**
 [Try here](https://js13kgames.com/entries/burning-the-plants) I guess I didn't really know what to do for JS13k 2022 when the theme was death... I started to go with this idea about killing plants, I was going to have a fire sprite vs a water sprite and you play as the fire sprite. I wasn't really super enthusiastic about the idea so I ran out of time and didn't finish. I helped curtis with the decentralized part of his entry though so I feel like I participated this year. [Curtis' entry](https://js13kgames.com/entries/world-of-emojis) the [contract](https://github.com/Vertfromage/near-pets) I did for him using the js SDK for near protocol 
+
+- **Human Guild Game Jam**
+I made a fun platformer game [Pretty Lost In Space](https://itch.io/jam/human-game-jam/rate/1443388) using LittleJS game engine based on the pretty punks NFT collection on NEAR, it used the NFT marketplace API to pull in the NFT as a pilot based on user account. I got 3rd place, there were only 5 submissions. This is also where I met Curtis.
    
 - **Jeff's Nightmare**
 [Play here!](https://js13kgames.com/entries/jeffs-nightmare)
