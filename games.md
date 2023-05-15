@@ -10,7 +10,7 @@ I'm not feeling like trying to make this pretty. I think I enjoy programming mor
 
 ## Polished Games:
 - **Mr. Brown Ice Breaker 2022**
-[Play here!](https://neararcade.com/mrbrown/) Game collaboration with [Curtis Robinson](linkedin.com/in/curtis-robinson-31b11115) and art by [Lomaking](https://mrbrownproject.com/) 
+[Play here!](https://neararcade.com/mrbrown/) Game collaboration with [Curtis Robinson](https://www.linkedin.com/in/curtis-robinson-31b11115/) and art by [Lomaking](https://mrbrownproject.com/) 
 
 - **Math Dungeons 2020**
 [Current](https://vertfromage.github.io/games/mathDungeonsPhaser/index.html) ,and [Super early Prototype](https://vertfromage.github.io./games/mathdungeons/mathdungeons.html) I made it using phaser in 2020. I tried doing a kickstarter to see if anyone was interested in it. I didn't get enough traction so I moved on. 
