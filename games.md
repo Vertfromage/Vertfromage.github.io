@@ -17,6 +17,9 @@ I'm not feeling like trying to make this pretty. I think I enjoy programming mor
 
 
 ## Hackathon Games
+
+- **Journey to the East; Silk Road Adventure**
+[Play here!](https://vertfromage.github.io/js13k-2023/) I made this for [JS13Kgames 2023](https://js13kgames.com/entries/journey-to-the-east-silk-road-adventure) I came in 44th out of 163, which is shockingly good for me. I probably would have done even better except there were still problems with my resizing function on some devices... I probably could have fixed it but I was getting worn out on it. I still haven't fixed it, so if it doesn't resize properly on your screen I'm sorry. 
    
 - **Mirrored Planes**
 [Play here!](https://vertfromage.github.io/games/planes/) I made this for [JS1024 2022](https://js1024.fun/demos/2022/8) for my entry I had to cut out the actual game play to make it small enough so it was only an visual experiment that I ended up submitting. I got 24th place. 
