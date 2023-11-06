@@ -15,6 +15,9 @@ I'm not feeling like trying to make this pretty. I think I enjoy programming mor
 - **Math Dungeons 2020**
 [Current](https://vertfromage.github.io/games/mathDungeonsPhaser/index.html) ,and [Super early Prototype](https://vertfromage.github.io./games/mathdungeons/mathdungeons.html) I made it using phaser in 2020. I tried doing a kickstarter to see if anyone was interested in it. I didn't get enough traction so I moved on. 
 
+## Course Games
+- ** Assignment 1 : Individual 3D platformer
+[Video Demo](https://youtu.be/H0IWnuxk0kI) I made this for my Game Development course at Dalhousie University. It's made with Unity using pre-builds provided by the professor. I enjoyed the assignment and found that C# as used in Unity for scripting was no problem. I got 100% on the assignment.   
 
 ## Hackathon Games
 
