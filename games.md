@@ -8,6 +8,9 @@ permalink: /games/
 
 I'm not feeling like trying to make this pretty. I think I enjoy programming more than decorating. Oh dear, I'm becoming more self-aware, time to move on...
 
+## [Itch.io](https://vertfromage.itch.io/) 
+Only a few games on here. 
+
 ## Polished Games:
 - **Mr. Brown Ice Breaker 2022**
 [Play here!](https://neararcade.com/mrbrown/) Game collaboration with [Curtis Robinson](https://www.linkedin.com/in/curtis-robinson-31b11115/) and art by [Lomaking](https://mrbrownproject.com/) 
@@ -16,10 +19,18 @@ I'm not feeling like trying to make this pretty. I think I enjoy programming mor
 [Current](https://vertfromage.github.io/games/mathDungeonsPhaser/index.html) ,and [Super early Prototype](https://vertfromage.github.io./games/mathdungeons/mathdungeons.html) I made it using phaser in 2020. I tried doing a kickstarter to see if anyone was interested in it. I didn't get enough traction so I moved on. 
 
 ## Course Games
+- ** Course Project : 3D Hybrid top-down/first-person Tower Defense Game
+I made this with a team for my Game Development course at Dalhousie University. MalSalvo’s Last Stand is a tower defense game developed in Unity 3D. It’s a spin on the traditional defense games. In this game, players take up the role of a mad scientist defending their tower from aliens on planets in outer space.
+
+The game is played like a classic tower defense, where players place items from a top-down view to attack enemies on their way to the tower. In addition, during the battle players switch to a first-person shooter perspective, where players can actively combat enemies, fix and upgrade towers.  
+[Play Here](https://mabrar02.itch.io/malsalvos-last-stand) 
+ 
 - ** Assignment 1 : Individual 3D platformer
-[Video Demo](https://youtu.be/H0IWnuxk0kI) I made this for my Game Development course at Dalhousie University. It's made with Unity using pre-builds provided by the professor. I enjoyed the assignment and found that C# as used in Unity for scripting was no problem. I got 100% on the assignment.   
+[Video Demo](https://youtu.be/H0IWnuxk0kI) I made this for my Game Development course at Dalhousie University. It's made with Unity using pre-builds provided by the professor. I enjoyed the assignment and found that C# as used in Unity for scripting was no problem. I got 100% on the assignment.
 
 ## Hackathon Games
+-- **Teaboy and Watergirl**
+Buit on Unity for a short game jam. Used an overly complicated platformer controller and it got messed up. Lots of bugs. [Play Here](https://vertfromage.itch.io/uncomplete-teaboy-and-watergirl)
 
 - **Journey to the East; Silk Road Adventure**
 [Play here!](https://vertfromage.github.io/js13k-2023/) I made this for [JS13Kgames 2023](https://js13kgames.com/entries/journey-to-the-east-silk-road-adventure) I came in 44th out of 163, which is shockingly good for me. I probably would have done even better except there were still problems with my resizing function on some devices... I probably could have fixed it but I was getting worn out on it. I still haven't fixed it, so if it doesn't resize properly on your screen I'm sorry. 
