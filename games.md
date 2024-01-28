@@ -29,10 +29,10 @@ The game is played like a classic tower defense, where players place items from 
 [Video Demo](https://youtu.be/H0IWnuxk0kI) I made this for my Game Development course at Dalhousie University. It's made with Unity using pre-builds provided by the professor. I enjoyed the assignment and found that C# as used in Unity for scripting was no problem. I got 100% on the assignment.
 
 ## Hackathon Games
--- **Dad Simulator **
+- **Dad Simulator **
 Built on Unity with a team of 6, I did the carry script for moving laundry/garbage around the house minigames and set up the navMesh and the scripts for the annoying child minigame. Other members did all the amazing 3D models, cooking minigames, UI, etc. Someone was doing a lawnmower minigame but ran out of time. [Download Here](https://globalgamejam.org/games/2024/dad-simulator-1997-4)
  
--- **Teaboy and Watergirl**
+- **Teaboy and Watergirl**
 Buit on Unity for a short game jam. Used an overly complicated platformer controller and it got messed up. Lots of bugs. [Play Here](https://vertfromage.itch.io/uncomplete-teaboy-and-watergirl)
 
 - **Journey to the East; Silk Road Adventure**
