@@ -181,3 +181,19 @@ li a.active:hover{
   font-size: 1rem;
   margin: 0.5rem 0 0;
 }
+
+
+.parent {
+  display: grid;
+  place-items: center;
+  height: 100vh; /* or any height you prefer */
+}
+
+.container {
+  margin: 10px;
+  /* outline-style: dotted;
+  outline-width: 5px; */
+  width: 80vw;
+  float: center;
+}
+
