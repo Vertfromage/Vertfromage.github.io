@@ -186,7 +186,6 @@ li a.active:hover{
 .parent {
   display: grid;
   place-items: center;
-  height: 100vh; /* or any height you prefer */
 }
 
 .container {
@@ -195,5 +194,7 @@ li a.active:hover{
   outline-width: 5px; */
   width: 80vw;
   float: center;
+  border-style: solid;
+  border-color: transparent transparent hotpink transparent;
 }
 
